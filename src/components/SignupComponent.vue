@@ -1,82 +1,85 @@
 <template>
-    <div class="container">
-      <div id="alert"  class="alert alert-success  d-none " role="alert">
+ 
+
+<div class="max-w-md mx-auto">
+  <div id="alert" class=" hidden font-medium p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
   
 </div>
-   <div>
-     <div class="mb-3">
-       <label for="exampleInputfullname1" class="form-label">fullname address</label>
-       <input type="text"  v-model= "user.name"  class="form-control" id="exampleInputfullname1" aria-describedby="fullnameHelp">
-     </div>
-     <div class="mb-3">
-       <label for="exampleInputEmail1" class="form-label">Email address</label>
-       <input type="email" v-model= "user.email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-      
-       <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-     </div>
-     <div class="mb-3">
-       <label for="exampleInputPassword1" class="form-label">Password</label>
-       <input type="password"   v-model= "user.password"  class="form-control" id="exampleInputPassword1">
-     </div>
-     <div class="mb-3 form-check">
-       <input type="checkbox" class="form-check-input" id="exampleCheck1">
-       <label class="form-check-label" for="exampleCheck1">Check me out</label>
-     </div>
-     <button type="submit"   @click="register()" class="btn btn-primary">Submit</button>
-   </div>
- </div>
+  <div class="relative z-0 w-full mb-5 group">
+      <input  type="text"  v-model="user.name"  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+      <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+  </div>
+  <div class="relative z-0 w-full mb-5 group">
+      <input type="email"   v-model="user.email" name="floating_email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+      <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+  </div>
+  <div class="relative z-0 w-full mb-5 group">
+      <input type="password"  v-model="user.password" name="floating_password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+      <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+  </div>
+  
+ 
+   
+  <button type="submit" @click="register()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+</div>
+
 </template>
 <script>
-    import axios from '@/axios/axios-config.js';  
-    import $ from 'jquery';
+import axios from '@/axios/axios-config.js';
+import $ from 'jquery';
 export default {
- data() {
-   return {
-     user: {
-       id:'',
-       name: '',
-       email: '',
-       password: ''
-     },
-     errorMessage: '', // New property to store error message
-     successMessage: '' // New property to store success message
-   };
- },
- methods: {
-   register() {
-  
+  data() {
+    return {
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        password: ''
+      },
+      errorMessage: '',
+      successMessage: ''
+    };
+  },
+  methods: {
+    register() {
+
       var button = $(this)
-      button.prop('disabled', true);  
-     axios.post('/register', this.user)
-       .then(response => {
-         
-          if (response.data) {
-        
-              $("#alert").removeClass("alert-danger").addClass("alert-success").html("login success");
-            }
-      
-         
-        
-       })
-       .catch(error => {
-         console.error('Error registering user:', error.response.data);
-        let whrong = "";
-        error.response.data.forEach(e => {
-          whrong +=(e + "\n" );
+      button.prop('disabled', true);
+      axios.post('/register', this.user)
+        .then(response => {
+          $("#alert").removeClass("hidden");
+          $("#alert").html("");
+
+          if (response.data.status) {
+
+            $("#alert").removeClass("alert-danger").addClass("alert-success").html(response.data.message);
+
+          } else {
+            $("#alert").addClass("alert-danger").removeClass("alert-success");
+            response.data.error.forEach(e => {
+              $("#alert").append("<div>" + e + "</div>");
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error registering user:', error.response.data);
+          let whrong = "";
+          error.response.data.forEach(e => {
+            whrong += (e + "\n");
+          });
+
+          $("#alert").addClass("alert-danger").removeClass("alert-success").html("something s wrong" + "\n" +
+            whrong
+          );
+
+        }).finally(() => {
+          this.user.email = "";
+          this.user.password = "";
+          this.user.name = "";
+          button.prop('disabled', false);
         });
-        
-        $("#alert").addClass("alert-danger").removeClass("alert-success").html("something s wrong" + "\n" +
-        whrong
-        );
-      
-       }).finally(() => {
-        this.user.email = "";
-        this.user.password = "";
-        this.user.name = "";
-        button.prop('disabled', false);  
-    });
-   }
- }
+    }
+  }
 }
 </script>
 

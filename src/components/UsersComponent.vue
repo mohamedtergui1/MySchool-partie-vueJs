@@ -19,15 +19,16 @@
 
 import axios from '@/axios/axios-config.js';
 import $ from 'jquery';
- 
+
 export default {
     created() {
-        this.showUsers();  
+        this.showUsers();
     },
     methods: {
         showUsers() {
             axios.get('/admin/users').then(response => {
-                response.data.users.forEach(e => {
+                console.log(response)
+                response.data.data.users.data.forEach(e => {
 
                     $("#table_body").append(
 
@@ -39,7 +40,7 @@ export default {
                         <td>${e.password}</td>
                         </tr>
                 
-                `
+                       `
                     );
 
                 });
