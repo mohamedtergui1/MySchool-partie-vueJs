@@ -1,10 +1,16 @@
-import './index.css'
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-Vue.config.productionTip = false
+import "./style.css";
 
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+import "../node_modules/flowbite-vue/dist/index.css";
+
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+
+import App from "./App.vue";
+import router from "./router";
+
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+
+app.mount("#app");

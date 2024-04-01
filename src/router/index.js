@@ -1,47 +1,52 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from "vue-router";
 
-Vue.use(VueRouter)
+import GuestLayout from "@/layouts/GuestLayout.vue";
+import AdminLayout from "@/layouts/AdminLayout.vue";
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/login',
-    name: 'log-in',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/LoginView.vue')
-  },
-  {
-    path: '/signup',
-    name: 'sign-up',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/SignupView.vue')
-  },
-  {
-    path: '/admin/users',
-    name: 'users',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AllUsersView.vue')
-  } 
-  ,
-  
-]
+const _import_ = (file) => () => import("../views/" + file + ".vue");
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: "/",
+      component: GuestLayout,
+      redirect: "/home",
+      children: [
+        {
+          path: "/home",
+          name: "home",
+          component: _import_("HomeView"),
+        },
+        {
+          path: "/about",
+          name: "about",
+          component: _import_("AboutView"),
+        },
+        {
+          path: "/login",
+          name: "login",
+          component: _import_("Login"),
+        },
+        {
+          path: "/signup",
+          name: "signup",
+          component: _import_("Signup"),
+        },
+      ],
+    },
+    {
+      path: "/admin",
+      component: AdminLayout,
+      redirect: "/dashboard",
+      children: [
+        {
+          path: "/dashboard",
+          name: "dashboard",
+          component: _import_("admin/Dashboard"),
+        },
+      ],
+    },
+  ],
+});
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
-
-export default router
+export default router;
