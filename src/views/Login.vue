@@ -2,14 +2,28 @@
     <div class="p-2 md:m-24 m-4 rounded-xl  bg-gradient-to-r from-blue-500 to-green-500  ">
         <div class="min-h-screen  px-8 bg-slate-50 rounded-xl  flex justify-center gap-5 items-center ">
             <form @submit.prevent="login" class="lg:w-1/2  w-full flex flex-col gap-5 ">
+                <div v-show="errors">
+                    <fwb-alert v-for="(error, index) in errors" :key="index" closable icon="danger" type="danger">
+                        {{ error[0] }}
+                    </fwb-alert>
+                </div>
 
-                <fwb-input v-model="user.email" type="email" required placeholder="enter your email address"
-                    label="Email" validation-status="">
+                <fwb-input v-model="user.email" type="email" @blur="frontValidateEmail(user.email)"
+                    placeholder="enter your email address" label="Email"
+                    :validation-status="frontValidateEmail(user.email) ? 'success' : 'error'">
+
                     <template #validationMessage>
-                        Please enter a valid email address
+                        <span v-if="frontValidateEmail(user.email)">
+                            Valid email address
+                        </span>
+                        <span v-else>
+                            Please enter a valid email address
+                        </span>
                     </template>
+
                 </fwb-input>
-                <fwb-input v-model="user.password" type="password" required placeholder="***********" label="password"
+
+                <fwb-input v-model="user.password" type="password" placeholder="***********" label="password"
                     validation-status="">
                     <template #validationMessage>
                         Please enter a valid password address
@@ -31,11 +45,13 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
-import { FwbInput, FwbButton } from 'flowbite-vue'
+import { FwbInput, FwbButton, FwbAlert } from 'flowbite-vue'
 import { useAuthStore } from "@/stores/authUser.js"
 import { useRouter } from 'vue-router';
 const loading = ref(false)
 const message = ref('')
+const errors = ref(null)
+
 const user = reactive({
     email: "",
     password: ""
@@ -75,15 +91,19 @@ const login = async () => {
 
 
         } catch (error) {
-            console.log(error)
+
             if (error.response.status === 401) {
-                console.log(error.response)
-            } else if (error.response.status = 400) {
-                console.log(error.response)
+                errors.value = {
+                    error: ["your credential not matched  our record"]
+                }
+            } else if (error.response.status === 400 || error.response.status === 422) {
+                errors.value = error.response.data.errors
             }
 
         } finally {
             loading.value = false;
         }
 }
+const frontValidateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+
 </script>

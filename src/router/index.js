@@ -8,12 +8,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: "/r",
       component: GuestLayout,
-      redirect: "/home",
+      redirect: "/",
       children: [
         {
-          path: "/home",
+          path: "/",
           name: "home",
           component: _import_("HomeView"),
         },
@@ -43,6 +43,11 @@ const router = createRouter({
           path: "/dashboard",
           name: "dashboard",
           component: _import_("admin/Dashboard"),
+        },
+        {
+          path: "/students",
+          name: "students",
+          component: _import_("admin/Students"),
         },
       ],
     },

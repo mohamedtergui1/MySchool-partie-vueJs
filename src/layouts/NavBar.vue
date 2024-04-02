@@ -28,7 +28,7 @@
                         {{ user.name }}
                     </fwb-button>
 
-                    <fwb-button @click="logout">
+                    <fwb-button :loading="active" @click="logout">
                         logout
                     </fwb-button>
                 </div>
@@ -63,17 +63,20 @@ import {
 import router from '@/router'
 const routeName = ref(useRoute().name)
 const authStore = useAuthStore();
-const user = ref(authStore.getUser);
+const active = ref(false);
 
+const user = ref(authStore.getUser);
 const logout = async () => {
+    active.value = true;
     try {
-        await authStore.logout()
-        await router.push("/login")
+        await authStore.logout();
+        await router.push("/login");
     } catch (error) {
         console.error("Error while logging out:", error);
-
+    } finally {
+        active.value = false;
     }
-}
+};
 
 watch(() => authStore.getUser, (newValue) => {
     user.value = newValue;
