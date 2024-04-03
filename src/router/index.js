@@ -53,7 +53,7 @@ const router = createRouter({
     },
     {
       path: "/test",
-      component: _import_("Sidebar"),
+      component: _import_("Applaoding"),
       name: "test",
     },
   ],

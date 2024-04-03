@@ -22,7 +22,7 @@
                 <fwb-button @click="closeModalDelete" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="deleteStudents" color="red">
+                <fwb-button @click="deleteStudents" :disabled="loader" type="submit" :loading="loader" color="red">
                     confirm
                 </fwb-button>
             </div>
@@ -164,7 +164,8 @@ import { studentsStore } from "@/stores/studentsStore.js"
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 const currentPage = ref(1)
 const lastPage = ref(10)
-
+import { useToast } from "vue-toastification";
+const toast = useToast();
 import {
     FwbA,
     FwbTable,
@@ -204,7 +205,7 @@ const showModalEdit = (id) => {
     for (let i = 0; i < students.value.length; i++) {
         let element = students.value[i];
         if (element.id === id) {
-            
+
             for (const key in element) {
 
                 student[key] = element[key];
@@ -212,7 +213,7 @@ const showModalEdit = (id) => {
             break;
         }
     }
-   
+
     action.value = false
     isShowModalAdd.value = true
 }
@@ -229,7 +230,9 @@ const addEditStudent = async () => {
                     if (key != "role" && key != "password")
                         student[key] = "";
                 }
-               
+                toast.success("user added with success", {
+                    timeout: 2000
+                });
                 isShowModalAdd.value = false;
             } else {
                 console.error("Failed to add student:", response.error);
@@ -241,7 +244,7 @@ const addEditStudent = async () => {
             loader.value = false;
         }
     } else {
-     
+
         try {
             const response = await store.updateStudent(student, student.id);
             if (response.status) {
@@ -249,8 +252,11 @@ const addEditStudent = async () => {
                     if (key != "role" && key != "password")
                         student[key] = "";
                 }
-                
+
                 isShowModalAdd.value = false;
+                toast.success("user updated with success", {
+                    timeout: 2000
+                });
             } else {
                 console.error("Failed to add student:", response.error);
             }
@@ -272,10 +278,14 @@ const getStudents = async (page = 1) => await store.getStudents(page)
 
 
 const deleteStudents = async () => {
-
+    loader.value = true;
     await store.deleteStudents(studentRef.value)
 
     isShowModal.value = false
+    loader.value = false;
+    toast.success("user deleted with success", {
+        timeout: 2000
+    });
 
 }
 
