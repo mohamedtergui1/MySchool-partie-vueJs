@@ -29,6 +29,9 @@
         </template>
     </fwb-modal>
 
+
+
+
     <fwb-modal size="5xl" v-if="isShowModalAdd" @close="closeModalAdd">
         <template #header>
 
@@ -96,7 +99,7 @@
                 <fwb-button @click="closeModalAdd" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button v-on:click="addStudent" :disabled="loader" type="submit" :loading="loader" color="blue">
+                <fwb-button v-on:click="addEditStudent" :disabled="loader" type="submit" :loading="loader" color="blue">
                     submit
                 </fwb-button>
             </div>
@@ -130,7 +133,8 @@
                         <fwb-dropdown text="">
                             <div class="w-20 overflow-hidden ">
                                 <fwb-list-group>
-                                    <fwb-list-group-item class="text-blue-500  cursor-pointer ">
+                                    <fwb-list-group-item @click="showModalEdit(student.id)"
+                                        class="text-blue-500  cursor-pointer ">
                                         Edit
                                     </fwb-list-group-item>
                                     <fwb-list-group-item @click="showModalDelete(student.id)"
@@ -157,7 +161,7 @@
 
 <script setup>
 import { studentsStore } from "@/stores/studentsStore.js"
-import { ref, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 const currentPage = ref(1)
 const lastPage = ref(10)
 
@@ -171,14 +175,6 @@ import {
     FwbTableRow,
     FwbDropdown, FwbListGroup, FwbListGroupItem, FwbButton, FwbModal, FwbPagination, FwbInput
 } from 'flowbite-vue'
-
-
-const students = ref([])
-const studentRef = ref(null)
-const store = studentsStore()
-const isShowModal = ref(false)
-const isShowModalAdd = ref(false)
-
 const initialStudentValues = {
     username: "",
     email: "",
@@ -192,28 +188,84 @@ const initialStudentValues = {
     role: "student"
 };
 
-const student = ref(initialStudentValues);
+const student = reactive(initialStudentValues);
 const loader = ref(false);
+const students = ref([])
+const studentRef = ref(null)
+const store = studentsStore()
+const isShowModal = ref(false)
+const isShowModalAdd = ref(false)
+const action = ref(true)
+const selectedStudent = computed(() => {
+    // Call the getObjectById getter from the store
+    return store.getters.getObjectById(studentRef.value);
+});
+const showModalEdit = (id) => {
+    for (let i = 0; i < students.value.length; i++) {
+        let element = students.value[i];
+        if (element.id === id) {
+            
+            for (const key in element) {
 
-const addStudent = async () => {
-    loader.value = true;
-    try {
-        const response = await store.addStudents(student.value);
-        if (response.status) {
-            student.value = { ...initialStudentValues };
-            isShowModalAdd.value = false;
-        } else {
-
-            console.error("Failed to add student:", response.error);
+                student[key] = element[key];
+            }
+            break;
         }
-    } catch (error) {
-        console.error("Error occurred while adding student:", error);
+    }
+   
+    action.value = false
+    isShowModalAdd.value = true
+}
 
-    } finally {
-        loader.value = false;
+
+const addEditStudent = async () => {
+
+    loader.value = true;
+    if (action.value) {
+        try {
+            const response = await store.addStudents(student);
+            if (response.status) {
+                for (const key in initialStudentValues) {
+                    if (key != "role" && key != "password")
+                        student[key] = "";
+                }
+               
+                isShowModalAdd.value = false;
+            } else {
+                console.error("Failed to add student:", response.error);
+            }
+        } catch (error) {
+            console.error("Error occurred while adding student:", error);
+
+        } finally {
+            loader.value = false;
+        }
+    } else {
+     
+        try {
+            const response = await store.updateStudent(student, student.id);
+            if (response.status) {
+                for (const key in initialStudentValues) {
+                    if (key != "role" && key != "password")
+                        student[key] = "";
+                }
+                
+                isShowModalAdd.value = false;
+            } else {
+                console.error("Failed to add student:", response.error);
+            }
+        } catch (error) {
+            console.error("Error occurred while adding student:", error);
+
+        } finally {
+            loader.value = false;
+        }
     }
 };
+// const editStudent = computed(() => {
 
+//     return store.getters.getObjectById('123');
+// });
 
 const getStudents = async (page = 1) => await store.getStudents(page)
 
@@ -250,7 +302,11 @@ const closeModalAdd = () => {
     isShowModalAdd.value = false
 }
 const showModalAdd = () => {
-
+    action.value = true
+    for (const key in initialStudentValues) {
+        if (key != "role" && key != "password")
+            student[key] = "";
+    }
     isShowModalAdd.value = true
 }
 
