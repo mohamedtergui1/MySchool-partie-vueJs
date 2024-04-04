@@ -74,13 +74,13 @@ const login = async () => {
             authStore.role = role;
 
             switch (role) {
-                case "admin":
+                case 1:
                     router.push("/dashboard");
                     break;
-                case "teacher":
+                case 2:
                     router.push("/teacher");
                     break;
-                case "student":
+                case 3:
                     router.push("/student");
                     break;
                 default:

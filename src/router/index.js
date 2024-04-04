@@ -49,6 +49,11 @@ const router = createRouter({
           name: "students",
           component: _import_("admin/Students"),
         },
+        {
+          path: "/promos",
+          name: "promos",
+          component: _import_("admin/promos"),
+        },
       ],
     },
     {

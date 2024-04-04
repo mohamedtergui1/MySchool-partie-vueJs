@@ -90,6 +90,7 @@
                             Please enter a valid date d'inscription
                         </template>
                     </fwb-input>
+                    <fwb-select v-model="student.role_id" :options="roles" label="Select a role" />
                 </div>
 
             </form>
@@ -127,8 +128,8 @@
                 <fwb-table-row v-for="(student, index) in students" :key="index">
                     <fwb-table-cell>{{ student.username }}</fwb-table-cell>
                     <fwb-table-cell>{{ student.email }}</fwb-table-cell>
-                    <fwb-table-cell>Accessories</fwb-table-cell>
-                    <fwb-table-cell>$99</fwb-table-cell>
+                    <fwb-table-cell>{{ student.grade_id }}</fwb-table-cell>
+                    <fwb-table-cell>{{ student.role }}</fwb-table-cell>
                     <fwb-table-cell>
                         <fwb-dropdown text="">
                             <div class="w-20 overflow-hidden ">
@@ -174,7 +175,7 @@ import {
     FwbTableHead,
     FwbTableHeadCell,
     FwbTableRow,
-    FwbDropdown, FwbListGroup, FwbListGroupItem, FwbButton, FwbModal, FwbPagination, FwbInput
+    FwbDropdown, FwbListGroup, FwbListGroupItem, FwbButton, FwbModal, FwbPagination, FwbInput, FwbSelect
 } from 'flowbite-vue'
 const initialStudentValues = {
     username: "",
@@ -184,11 +185,15 @@ const initialStudentValues = {
     lastName: "",
     grade_id: "",
     address: "",
-    phoneNumber: "",
+    number_phone: "",
     date_d_inscription: "",
-    role: "student"
+    role_id: ""
 };
-
+const roles = [
+    { value: '1', name: 'admin' },
+    { value: '2', name: 'teacher' },
+    { value: '3', name: 'student' },
+]
 const student = reactive(initialStudentValues);
 const loader = ref(false);
 const students = ref([])
@@ -198,7 +203,7 @@ const isShowModal = ref(false)
 const isShowModalAdd = ref(false)
 const action = ref(true)
 const selectedStudent = computed(() => {
-    // Call the getObjectById getter from the store
+   
     return store.getters.getObjectById(studentRef.value);
 });
 const showModalEdit = (id) => {
@@ -312,18 +317,18 @@ const closeModalAdd = () => {
     isShowModalAdd.value = false
 }
 const showModalAdd = () => {
-    action.value = true
-    for (const key in initialStudentValues) {
-        if (key != "role" && key != "password")
-            student[key] = "";
+    if (!action.value) {
+        action.value = true
+        for (const key in initialStudentValues) {
+            if (key != "role" && key != "password")
+                student[key] = "";
+        }
     }
     isShowModalAdd.value = true
 }
 
 
-
-
-
+ 
 
 watch(() => store.students, (newValue) => {
     students.value = newValue.data;

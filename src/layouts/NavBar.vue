@@ -25,7 +25,7 @@
             <template #right-side>
                 <div v-if="user" class="flex gap-2">
                     <fwb-button color="alternative">
-                        {{ user.name }}
+                        {{ user.username }}
                     </fwb-button>
 
                     <fwb-button :loading="active" @click="logout">
