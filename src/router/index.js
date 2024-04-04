@@ -52,7 +52,7 @@ const router = createRouter({
         {
           path: "/promos",
           name: "promos",
-          component: _import_("admin/promos"),
+          component: _import_("admin/Promos"),
         },
       ],
     },
