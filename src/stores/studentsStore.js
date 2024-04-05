@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 import router from "@/router";
 
-export const studentsStore = defineStore("studentsStore", {
+export const studentsStore = defineStore(  {
+  id: "studentsStore",
   state: () => ({
     students: [],
   }),
