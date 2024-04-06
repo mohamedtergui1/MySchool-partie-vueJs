@@ -14,29 +14,29 @@ import {
     FwbTableRow, FwbModal, FwbButton, FwbInput, FwbCheckbox
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
-import { classroomStore } from '@/stores/classroomsStore.js'
+import { gradeStore } from '@/stores/gradesStore.js'
 
 
-const classroomstore = classroomStore();
-const { classrooms, isShowModal, idDeleteclassroom, classroom, isShowModalDelete, loader } = storeToRefs(classroomstore);
+const gradestore = gradeStore();
+const { grades, isShowModal, idDeletegrade, grade, isShowModalDelete, loader } = storeToRefs(gradestore);
 
-const { getclassrooms } = classroomstore;
-const { deleteclassroom } = classroomstore;
-const { updateAndEdit } = classroomstore;
+const { getgrades } = gradestore;
+const { deletegrade } = gradestore;
+const { updateAndEdit } = gradestore;
 const handelClick = () => {
     updateAndEdit()
 }
 const handleDeleteButtonClick = (id) => {
-    idDeleteclassroom.value = id
+    idDeletegrade.value = id
     isShowModalDelete.value = true
 }
 const handleEditButtonClick = (id) => {
 
-    let tmp = classroomstore.getclassroomById(id);
-    console.log(tmp)
-    for (const key of Object.keys(classroom.value)) {
+    let tmp = gradestore.getgradeById(id);
+   console.log(tmp)
+    for (const key of Object.keys(grade.value)) {
 
-        classroom.value[key] = tmp[key];
+        grade.value[key] = tmp[key];
     }
 
     isShowModal.value = true
@@ -48,11 +48,11 @@ function closeModal() {
     isShowModal.value = false
 }
 function showModal() {
-    classroom.value = classroomstore.intialValues
+    grade.value = gradestore.intialValues
     isShowModal.value = true
 }
 onMounted(() => {
-    getclassrooms();
+    getgrades();
 })
 
 </script>
@@ -73,13 +73,7 @@ onMounted(() => {
 
     <fwb-table>
         <fwb-table-head>
-            <fwb-table-head-cell>name</fwb-table-head-cell>
-            <fwb-table-head-cell>teacher</fwb-table-head-cell>
-            <fwb-table-head-cell>promo</fwb-table-head-cell>
-            <fwb-table-head-cell>grade</fwb-table-head-cell>
-
-
-
+            <fwb-table-head-cell>grades</fwb-table-head-cell>
 
             <fwb-table-head-cell>
                 <span class="sr-only">Edit</span>
@@ -88,21 +82,14 @@ onMounted(() => {
         <fwb-table-body>
 
 
-            <fwb-table-row v-for="(c, index) in classrooms " :key="index">
-                <fwb-table-cell>{{ c.name }} </fwb-table-cell>
-                <fwb-table-cell>{{ c.teacher.firstName + ' ' + c.teacher.lastName }} </fwb-table-cell>
-                <fwb-table-cell>{{ c.promo.year }} </fwb-table-cell>
-                <fwb-table-cell>{{ c.grade.name }} </fwb-table-cell>
-
-
-
-
+            <fwb-table-row v-for="(g, index) in grades " :key="index">
+                <fwb-table-cell>{{ g.name }}  </fwb-table-cell>
 
                 <fwb-table-cell class="flex justify-end gag-2">
-                    <FwbButton @click="handleDeleteButtonClick(c.id)" color="red">delete</FwbButton>
-                    <FwbButton @click="handleEditButtonClick(c.id)">edit</FwbButton>
+                    <FwbButton @click="handleDeleteButtonClick(g.id)" color="red">delete</FwbButton>
+                    <FwbButton @click="handleEditButtonClick(g.id)">edit</FwbButton>
 
-                    <!-- <button @click="idEditclassrooms = p.id">edit</button> -->
+                    <!-- <button @click="idEditgrades = p.id">edit</button> -->
                 </fwb-table-cell>
             </fwb-table-row>
 
@@ -138,7 +125,7 @@ onMounted(() => {
                 <fwb-button @click="isShowModalDelete = !isShowModalDelete" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="deleteclassroom" :disabled="loader" type="submit" :loading="loader" color="red">
+                <fwb-button @click="deletegrade" :disabled="loader" type="submit" :loading="loader" color="red">
                     confirm
                 </fwb-button>
             </div>
@@ -159,9 +146,9 @@ onMounted(() => {
         </template>
         <template #body>
             <div class="flex gap-2   flex-col justify-center items-center">
-                <fwb-input v-model="classroom.name" placeholder="enter year" label="Year" />
+                <fwb-input v-model="grade.name" placeholder="enter year" label="Year" />
 
-                <!-- <fwb-checkbox v-if="classroom.TheCurrent"  v-model="classroom.TheCurrent" label=" current classroom" /> -->
+                <!-- <fwb-checkbox v-if="grade.TheCurrent"  v-model="grade.TheCurrent" label=" current grade" /> -->
 
 
             </div>
@@ -172,7 +159,7 @@ onMounted(() => {
                     Decline
                 </fwb-button>
                 <fwb-button @click="handelClick" :disabled="loader" :loading="loader" color="blue">
-                    {{ classroom.id ? 'update' : 'add' }}
+                    {{ grade.id ? 'update' : 'add' }}
                 </fwb-button>
             </div>
         </template>
