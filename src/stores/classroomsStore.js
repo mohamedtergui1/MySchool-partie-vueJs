@@ -8,6 +8,9 @@ export const classroomStore = defineStore("classroomStore", {
     classroom: {
       id: null,
       name: "",
+      teacher_id: "",
+      grad_id: "",
+      promo_id: "",
     },
     classrooms: {},
     allResponse: {},
@@ -20,12 +23,6 @@ export const classroomStore = defineStore("classroomStore", {
     getclassroomById: function (state) {
       return function (ID) {
         return state.classrooms.find((obj) => obj.id === ID);
-      };
-    },
-    intialValues: function (state) {
-      return {
-        id: null,
-        name: "",
       };
     },
   },
@@ -80,14 +77,17 @@ export const classroomStore = defineStore("classroomStore", {
           if (response.status === 200) {
             for (let i = 0; i < tmp.length; i++) {
               if (tmp[i].id === this.classroom.id) {
-                tmp[i] = this.classroom;
+                tmp[i] = response.data.data;
                 break;
               }
             }
             this.classrooms = tmp;
             this.classroom = {
               id: null,
+              teacher_id: "",
               name: "",
+              grad_id: "",
+              promo_id: "",
             };
 
             this.isShowModal = false;
@@ -100,11 +100,17 @@ export const classroomStore = defineStore("classroomStore", {
         }
       } else {
         try {
-          const response = await instance.post("/admin/classrooms", this.classroom);
+          const response = await instance.post(
+            "/admin/classrooms",
+            this.classroom
+          );
           this.classrooms.unshift(response.data.data);
           this.classroom = {
             id: null,
+            teacher_id: "",
             name: "",
+            grad_id: "",
+            promo_id: "",
           };
 
           this.isShowModal = false;

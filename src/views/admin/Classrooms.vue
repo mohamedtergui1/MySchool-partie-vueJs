@@ -26,18 +26,22 @@ const { updateAndEdit } = classroomstore;
 const handelClick = () => {
     updateAndEdit()
 }
-const handleDeleteButtonClick = (id) => {
+const handleDeleteButtonClick = (id,index) => {
     idDeleteclassroom.value = id
     isShowModalDelete.value = true
 }
-const handleEditButtonClick = (id) => {
+const handleEditButtonClick = (id,index) => {
 
-    let tmp = classroomstore.getclassroomById(id);
+    let tmp = classrooms.value[index];
     console.log(tmp)
-    for (const key of Object.keys(classroom.value)) {
-
-        classroom.value[key] = tmp[key];
+    for (const key of Object.keys(tmp)) {
+       
+        if (classroom.value.hasOwnProperty(key)) {
+             
+             classroom.value[key]=tmp[key] ;
+        }
     }
+    console.log(classroom.value);
 
     isShowModal.value = true
 }
@@ -99,8 +103,8 @@ onMounted(() => {
 
 
                 <fwb-table-cell class="flex justify-end gag-2">
-                    <FwbButton @click="handleDeleteButtonClick(c.id)" color="red">delete</FwbButton>
-                    <FwbButton @click="handleEditButtonClick(c.id)">edit</FwbButton>
+                    <FwbButton @click="handleDeleteButtonClick(c.id,index)" color="red">delete</FwbButton>
+                    <FwbButton @click="handleEditButtonClick(c.id,index)">edit</FwbButton>
 
                     <!-- <button @click="idEditclassrooms = p.id">edit</button> -->
                 </fwb-table-cell>
