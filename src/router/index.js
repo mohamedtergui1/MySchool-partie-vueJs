@@ -54,6 +54,16 @@ const router = createRouter({
           name: "promos",
           component: _import_("admin/Promos"),
         },
+        {
+          path: "/grades",
+          name: "grades",
+          component: _import_("admin/Grades"),
+        },
+        {
+          path: "/classrooms",
+          name: "classrooms",
+          component: _import_("admin/Classrooms"),
+        },
       ],
     },
     {
