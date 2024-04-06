@@ -11,7 +11,7 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbCheckbox
+    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbCheckbox, FwbSelect
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
 import { classroomStore } from '@/stores/classroomsStore.js'
@@ -26,23 +26,24 @@ const { updateAndEdit } = classroomstore;
 const handelClick = () => {
     updateAndEdit()
 }
-const handleDeleteButtonClick = (id,index) => {
+const handleDeleteButtonClick = (id, index) => {
     idDeleteclassroom.value = id
     isShowModalDelete.value = true
 }
-const handleEditButtonClick = (id,index) => {
+const handleEditButtonClick = (id, index) => {
+
+    console.log(classroom.value);
+
 
     let tmp = classrooms.value[index];
-    console.log(tmp)
     for (const key of Object.keys(tmp)) {
-       
+
         if (classroom.value.hasOwnProperty(key)) {
-             
-             classroom.value[key]=tmp[key] ;
+
+            classroom.value[key] = tmp[key];
         }
     }
     console.log(classroom.value);
-
     isShowModal.value = true
 }
 
@@ -52,7 +53,10 @@ function closeModal() {
     isShowModal.value = false
 }
 function showModal() {
-    classroom.value = classroomstore.intialValues
+    let tmp = classroomstore.intialValues
+    for (const key of Object.keys(tmp)) {
+        classroom.value[key] = tmp[key];
+    }
     isShowModal.value = true
 }
 onMounted(() => {
@@ -103,8 +107,8 @@ onMounted(() => {
 
 
                 <fwb-table-cell class="flex justify-end gag-2">
-                    <FwbButton @click="handleDeleteButtonClick(c.id,index)" color="red">delete</FwbButton>
-                    <FwbButton @click="handleEditButtonClick(c.id,index)">edit</FwbButton>
+                    <FwbButton @click="handleDeleteButtonClick(c.id, index)" color="red">delete</FwbButton>
+                    <FwbButton @click="handleEditButtonClick(c.id, index)">edit</FwbButton>
 
                     <!-- <button @click="idEditclassrooms = p.id">edit</button> -->
                 </fwb-table-cell>
@@ -162,8 +166,16 @@ onMounted(() => {
             </div>
         </template>
         <template #body>
-            <div class="flex gap-2   flex-col justify-center items-center">
-                <fwb-input v-model="classroom.name" placeholder="enter year" label="Year" />
+            <div class="flex gap-2   flex-col justify-start items-center">
+                <fwb-input class="w-full" v-model="classroom.name" placeholder="enter year" label="name" />
+                <fwb-select class="w-full" v-model="classroom.teacher_id" :options="teachers" disabled label="Select a teacher"
+                    placeholder="You can't select" />
+                <fwb-select class="w-full" v-model="promo_id" :options="promos" disabled label="Select a promo"
+                    placeholder="You can't select" />
+                <fwb-select class="w-full" v-model="grade_id" :options="grades" disabled label="Select a grade"
+                    placeholder="You can't select" />
+
+
 
                 <!-- <fwb-checkbox v-if="classroom.TheCurrent"  v-model="classroom.TheCurrent" label=" current classroom" /> -->
 
@@ -171,7 +183,7 @@ onMounted(() => {
             </div>
         </template>
         <template #footer>
-            <div class="flex justify-between">
+            <div class="flex justify-end gap-2">
                 <fwb-button @click="closeModal" color="alternative">
                     Decline
                 </fwb-button>

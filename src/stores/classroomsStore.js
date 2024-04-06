@@ -9,7 +9,7 @@ export const classroomStore = defineStore("classroomStore", {
       id: null,
       name: "",
       teacher_id: "",
-      grad_id: "",
+      grade_id: "",
       promo_id: "",
     },
     classrooms: {},
@@ -23,6 +23,15 @@ export const classroomStore = defineStore("classroomStore", {
     getclassroomById: function (state) {
       return function (ID) {
         return state.classrooms.find((obj) => obj.id === ID);
+      };
+    },
+    intialValues: function (state) {
+      return {
+        id: null,
+        name: "",
+        teacher_id: "",
+        grade_id: "",
+        promo_id: "",
       };
     },
   },
@@ -84,9 +93,9 @@ export const classroomStore = defineStore("classroomStore", {
             this.classrooms = tmp;
             this.classroom = {
               id: null,
-              teacher_id: "",
               name: "",
-              grad_id: "",
+              teacher_id: "",
+              grade_id: "",
               promo_id: "",
             };
 
@@ -107,9 +116,9 @@ export const classroomStore = defineStore("classroomStore", {
           this.classrooms.unshift(response.data.data);
           this.classroom = {
             id: null,
-            teacher_id: "",
             name: "",
-            grad_id: "",
+            teacher_id: "",
+            grade_id: "",
             promo_id: "",
           };
 

@@ -30,9 +30,9 @@ const handleDeleteButtonClick = (id) => {
   idDeletePromo.value = id
   isShowModalDelete.value = true
 }
-const handleEditButtonClick = (id) => {
+const handleEditButtonClick = (id,index) => {
 
-  let tmp = promostore.getPromoById(id);
+  let tmp = promos.value[index];
 
   for (const key of Object.keys(tmp)) {
 

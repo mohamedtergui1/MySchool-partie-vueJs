@@ -30,10 +30,10 @@ const handleDeleteButtonClick = (id) => {
     idDeletegrade.value = id
     isShowModalDelete.value = true
 }
-const handleEditButtonClick = (id) => {
+const handleEditButtonClick = (id,index) => {
 
-    let tmp = gradestore.getgradeById(id);
-   console.log(tmp)
+    let tmp = grades.value[index];
+    
     for (const key of Object.keys(grade.value)) {
 
         grade.value[key] = tmp[key];
@@ -87,7 +87,7 @@ onMounted(() => {
 
                 <fwb-table-cell class="flex justify-end gag-2">
                     <FwbButton @click="handleDeleteButtonClick(g.id)" color="red">delete</FwbButton>
-                    <FwbButton @click="handleEditButtonClick(g.id)">edit</FwbButton>
+                    <FwbButton @click="handleEditButtonClick(g.id,index)">edit</FwbButton>
 
                     <!-- <button @click="idEditgrades = p.id">edit</button> -->
                 </fwb-table-cell>
