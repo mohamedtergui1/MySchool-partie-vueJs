@@ -8,7 +8,7 @@ export const promoStore = defineStore("promoStore", {
     promo: {
       id: null,
       year: "",
-      TheCurrent: true,
+      TheCurrent: true
     },
     promos: {},
     allResponse: {},
@@ -78,31 +78,50 @@ export const promoStore = defineStore("promoStore", {
             "/admin/promos/" + this.promo.id,
             this.promo
           );
+          
           let tmp = this.promos;
-          if (response.status === 200) {
+          
             for (let i = 0; i < tmp.length; i++) {
-              if (tmp[i].id === this.idDeletePromo) {
-                tmp = this.promo;
+              if (tmp[i].id === this.promo.id) {
+                tmp[i] = response.data.data;
                 break;
               }
-            }
-            this.promos = tmp;
+          }
+           this.promos =tmp;
             this.promo = {
               id: null,
               year: "",
               TheCurrent: true,
             };
 
-            this.isShowModalDelete = false;
+            this.isShowModal = false;
             return true;
-          }
         } catch (err) {
           console.log(err);
         } finally {
           this.loader = false;
         }
       } else {
-        // add
+         try {
+          const response = await instance.post(
+            "/admin/promos",
+            this.promo
+          );
+            this.promos.unshift(response.data.data);
+            this.promo = {
+              id: null,
+              year: "",
+              TheCurrent: true,
+            };
+
+            this.isShowModal = false;
+            return true;
+          
+        } catch (err) {
+          console.log(err);
+        } finally {
+          this.loader = false;
+        }
       }
     },
   },
