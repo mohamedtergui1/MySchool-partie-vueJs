@@ -33,8 +33,8 @@ const handleDeleteButtonClick = (id) => {
 const handleEditButtonClick = (id,index) => {
 
   let tmp = promos.value[index];
-
-  for (const key of Object.keys(tmp)) {
+ 
+  for (const key of Object.keys(promo.value)) {
 
     promo.value[key] = tmp[key];
   }
@@ -87,7 +87,7 @@ onMounted(() => {
 
         <fwb-table-cell class="flex justify-end gap-2" >
           <FwbButton @click="handleDeleteButtonClick(p.id)" color="red" >delete</FwbButton>
-          <FwbButton @click="handleEditButtonClick(p.id)">edit</FwbButton>
+          <FwbButton @click="handleEditButtonClick(p.id,index)">edit</FwbButton>
 
           <!-- <button @click="idEditPromos = p.id">edit</button> -->
         </fwb-table-cell>

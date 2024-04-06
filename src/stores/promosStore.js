@@ -49,19 +49,11 @@ export const promoStore = defineStore("promoStore", {
         const response = await instance.delete(
           "/admin/promos/" + this.idDeletePromo
         );
-        let tmp = this.promos;
-        if (response.status === 200) {
-          for (let i = 0; i < tmp.length; i++) {
-            if (tmp[i].id === this.idDeletePromo) {
-              tmp.splice(i, 1);
-              break;
-            }
-          }
-          this.promos = tmp;
-          this.idDeletePromo = null;
-          this.isShowModalDelete = false;
-          return true;
-        }
+      
+      this.promos = this.promos.filter(t => t.id !== this.idDeletePromo)
+        this.idDeletePromo = null;
+        this.isShowModalDelete = false;
+        return true;
       } catch (err) {
         console.log(err);
       } finally {
