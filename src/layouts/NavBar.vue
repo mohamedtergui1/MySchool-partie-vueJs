@@ -33,16 +33,14 @@
                     </fwb-button>
                 </div>
                 <div v-else class="flex gap-2">
-                  <router-link>  
-                    <span class="px-2 py-1 border rounded ">
-                       Login
-                    </span>
-                </router-link>
-                <router-link>
-                    <span class="px-2 py-1  border rounded ">
-                        Register
-                    </span>
-                </router-link>
+                    
+                    
+                        <router-link :to="{ name: 'login' }"><span class="px-2 py-1 border rounded ">Login </span></router-link>
+                   
+
+                  
+                        <router-link :to="{ name: 'signup' }">  <span class="px-2 py-1  border rounded ">Register</span></router-link>
+                    
                 </div>
 
 

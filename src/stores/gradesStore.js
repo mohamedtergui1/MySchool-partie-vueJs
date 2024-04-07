@@ -7,7 +7,7 @@ export const gradeStore = defineStore("gradeStore", {
   state: () => ({
     grade: {
       id: null,
-      name: ""
+      name: "",
     },
     grades: {},
     allResponse: {},
@@ -25,17 +25,28 @@ export const gradeStore = defineStore("gradeStore", {
     intialValues: function (state) {
       return {
         id: null,
-        name: ""
+        name: "",
       };
     },
   },
   actions: {
+    async getgradesWithoutPaginate() {
+      try {
+        const response = await instance.get("/admin/allgrades");
+        
+        this.grades = response.data.data;
+
+      
+      } catch (err) {
+        console.log(err);
+      }
+    },
     async getgrades() {
       try {
         const response = await instance.get("/admin/grades");
         this.allResponse = response.data;
         this.grades = this.allResponse.data.data;
-        
+
         return this.grades;
       } catch (err) {
         console.log(err);
@@ -47,12 +58,10 @@ export const gradeStore = defineStore("gradeStore", {
         const response = await instance.delete(
           "/admin/grades/" + this.idDeletegrade
         );
-        
+
         if (response.status === 200) {
-            this.grades = this.grades.filter(
-              (t) => t.id !== this.idDeletegrade
-            );
-           
+          this.grades = this.grades.filter((t) => t.id !== this.idDeletegrade);
+
           this.idDeletegrade = null;
           this.isShowModalDelete = false;
           return true;
@@ -64,8 +73,6 @@ export const gradeStore = defineStore("gradeStore", {
       }
     },
     async updateAndEdit() {
-       
-
       if (this.grade.id) {
         // update
         try {
@@ -73,20 +80,16 @@ export const gradeStore = defineStore("gradeStore", {
             "/admin/grades/" + this.grade.id,
             this.grade
           );
-       
+
           if (response.status === 200) {
-      
-               this.grades = this.grades.map(
-                 (t) => {
-                   if (t.id !== this.grade.id) return t
-                   else return this.grade;
-                 }
-            );
-            
+            this.grades = this.grades.map((t) => {
+              if (t.id !== this.grade.id) return t;
+              else return this.grade;
+            });
+
             this.grade = {
               id: null,
               name: "",
-  
             };
 
             this.isShowModal = false;
@@ -103,7 +106,7 @@ export const gradeStore = defineStore("gradeStore", {
           this.grades.unshift(response.data.data);
           this.grade = {
             id: null,
-            name: "" 
+            name: "",
           };
 
           this.isShowModal = false;

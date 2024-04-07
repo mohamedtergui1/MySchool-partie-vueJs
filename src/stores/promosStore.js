@@ -8,7 +8,7 @@ export const promoStore = defineStore("promoStore", {
     promo: {
       id: null,
       year: "",
-      TheCurrent: true
+      TheCurrent: true,
     },
     promos: {},
     allResponse: {},
@@ -32,6 +32,17 @@ export const promoStore = defineStore("promoStore", {
     },
   },
   actions: {
+    async getpromosWithoutPaginate() {
+      try {
+        const response = await instance.get("/admin/allpromos");
+         
+        this.promos = response.data.data;
+        console.log(this.promos);
+         
+      } catch (err) {
+        console.log(err);
+      }
+    },
     async getPromos() {
       try {
         const response = await instance.get("/admin/promos");
@@ -49,8 +60,8 @@ export const promoStore = defineStore("promoStore", {
         const response = await instance.delete(
           "/admin/promos/" + this.idDeletePromo
         );
-      
-      this.promos = this.promos.filter(t => t.id !== this.idDeletePromo)
+
+        this.promos = this.promos.filter((t) => t.id !== this.idDeletePromo);
         this.idDeletePromo = null;
         this.isShowModalDelete = false;
         return true;
@@ -70,45 +81,41 @@ export const promoStore = defineStore("promoStore", {
             "/admin/promos/" + this.promo.id,
             this.promo
           );
-          
-          let tmp = this.promos;
-          
-            for (let i = 0; i < tmp.length; i++) {
-              if (tmp[i].id === this.promo.id) {
-                tmp[i] = response.data.data;
-                break;
-              }
-          }
-           this.promos =tmp;
-            this.promo = {
-              id: null,
-              year: "",
-              TheCurrent: true,
-            };
 
-            this.isShowModal = false;
-            return true;
+          let tmp = this.promos;
+
+          for (let i = 0; i < tmp.length; i++) {
+            if (tmp[i].id === this.promo.id) {
+              tmp[i] = response.data.data;
+              break;
+            }
+          }
+          this.promos = tmp;
+          this.promo = {
+            id: null,
+            year: "",
+            TheCurrent: true,
+          };
+
+          this.isShowModal = false;
+          return true;
         } catch (err) {
           console.log(err);
         } finally {
           this.loader = false;
         }
       } else {
-         try {
-          const response = await instance.post(
-            "/admin/promos",
-            this.promo
-          );
-            this.promos.unshift(response.data.data);
-            this.promo = {
-              id: null,
-              year: "",
-              TheCurrent: true,
-            };
+        try {
+          const response = await instance.post("/admin/promos", this.promo);
+          this.promos.unshift(response.data.data);
+          this.promo = {
+            id: null,
+            year: "",
+            TheCurrent: true,
+          };
 
-            this.isShowModal = false;
-            return true;
-          
+          this.isShowModal = false;
+          return true;
         } catch (err) {
           console.log(err);
         } finally {

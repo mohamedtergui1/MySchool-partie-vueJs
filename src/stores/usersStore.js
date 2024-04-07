@@ -58,7 +58,7 @@ export const userStore = defineStore("userStore", {
   },
   actions: {
     async getusers() {
-      await this.gradeStoreState.getgrades();
+      await this.gradeStoreState.getgradesWithoutPaginate();
 
       try {
         const response = await instance.get("/admin/users");

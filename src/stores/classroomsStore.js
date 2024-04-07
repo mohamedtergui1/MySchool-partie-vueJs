@@ -58,8 +58,8 @@ export const classroomStore = defineStore("classroomStore", {
   },
   actions: {
     async getclassrooms() {
-      await this.gradeStoreState.getgrades();
-      await this.promoStoreState.getPromos();
+      await this.gradeStoreState.getgradesWithoutPaginate();
+      await this.promoStoreState.getpromosWithoutPaginate();
 
       try {
         const response = await instance.get("/admin/classrooms");
