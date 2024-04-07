@@ -1,7 +1,7 @@
 router-link<template>
     <div class="bg-gray-100">
 
-        <div class="h-screen flex overflow-hidden bg-gray-200">
+        <div class="h-auto flex  bg-gray-200">
             <!-- Sidebar -->
             <div :class="openSidebarButton ? '-translate-x-full' : ''"
                 class="absolute z-50 bg-gray-50 text-white w-64 min-h-screen overflow-y-auto transition-transform transform  ease-in-out duration-300"
@@ -54,7 +54,7 @@ router-link<template>
                                 </router-link>
                             </li>
                             <li>
-                                <router-link :to="{ name: 'students' }"
+                                <router-link :to="{ name: 'users' }"
                                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -78,7 +78,7 @@ router-link<template>
                                 </router-link>
                             </li>
                             <li>
-                                <router-link :to="{ name: 'students' }"
+                                <router-link :to="{ name: 'users' }"
                                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -134,7 +134,7 @@ router-link<template>
                     </div>
                 </div>
                 <!-- Content Body -->
-                <div class="px-4">
+                <div class="p-4 ">
                     <RouterView />
                 </div>
 

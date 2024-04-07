@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
+import { gradeStore } from "./gradesStore";
+import { promoStore } from "./promosStore";
 
 export const classroomStore = defineStore("classroomStore", {
   id: "classroomStore",
@@ -18,6 +20,8 @@ export const classroomStore = defineStore("classroomStore", {
     isShowModalDelete: false,
     loader: false,
     isShowModal: false,
+    gradeStoreState: gradeStore(),
+    promoStoreState: promoStore(),
   }),
   getters: {
     getclassroomById: function (state) {
@@ -34,9 +38,29 @@ export const classroomStore = defineStore("classroomStore", {
         promo_id: "",
       };
     },
+    getGrades: (state) => {
+      const grades = state.gradeStoreState.grades;
+
+      return grades.map((grade) => ({
+        value: grade.id,
+        name: grade.name,
+      }));
+    },
+    getPromos: (state) => {
+      const promos = state.promoStoreState.promos;
+      const test = promos.map((promo) => ({
+        value: promo.id,
+        name: promo.year,
+      }));
+      console.log(test);
+      return  test 
+    },
   },
   actions: {
     async getclassrooms() {
+      await this.gradeStoreState.getgrades();
+      await this.promoStoreState.getPromos();
+
       try {
         const response = await instance.get("/admin/classrooms");
         this.allResponse = response.data;
@@ -53,15 +77,12 @@ export const classroomStore = defineStore("classroomStore", {
         const response = await instance.delete(
           "/admin/classrooms/" + this.idDeleteclassroom
         );
-        let tmp = this.classrooms;
+
         if (response.status === 200) {
-          for (let i = 0; i < tmp.length; i++) {
-            if (tmp[i].id === this.idDeleteclassroom) {
-              tmp.splice(i, 1);
-              break;
-            }
-          }
-          this.classrooms = tmp;
+          this.classrooms = this.classrooms.filter(
+            (t) => t.id !== this.idDeleteclassroom
+          );
+
           this.idDeleteclassroom = null;
           this.isShowModalDelete = false;
           return true;

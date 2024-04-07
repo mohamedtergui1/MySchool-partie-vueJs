@@ -45,9 +45,9 @@ const router = createRouter({
           component: _import_("admin/Dashboard"),
         },
         {
-          path: "/students",
-          name: "students",
-          component: _import_("admin/Students"),
+          path: "/users",
+          name: "users",
+          component: _import_("admin/Users"),
         },
         {
           path: "/promos",

@@ -1,9 +1,6 @@
 <script setup>
 import { onMounted, ref, watch, computed } from 'vue'
-// import { Swiper, SwiperSlide } from 'swiper/vue';
-
-// Import Swiper styles
-// import 'swiper/css';
+ 
 import {
     FwbA,
     FwbTable,
@@ -15,14 +12,17 @@ import {
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
 import { classroomStore } from '@/stores/classroomsStore.js'
+ 
 
 
 const classroomstore = classroomStore();
+ 
 const { classrooms, isShowModal, idDeleteclassroom, classroom, isShowModalDelete, loader } = storeToRefs(classroomstore);
 
 const { getclassrooms } = classroomstore;
 const { deleteclassroom } = classroomstore;
 const { updateAndEdit } = classroomstore;
+
 const handelClick = () => {
     updateAndEdit()
 }
@@ -37,9 +37,7 @@ const handleEditButtonClick = (id, index) => {
 
     let tmp = classrooms.value[index];
     for (const key of Object.keys(tmp)) {
-
         if (classroom.value.hasOwnProperty(key)) {
-
             classroom.value[key] = tmp[key];
         }
     }
@@ -85,9 +83,6 @@ onMounted(() => {
             <fwb-table-head-cell>teacher</fwb-table-head-cell>
             <fwb-table-head-cell>promo</fwb-table-head-cell>
             <fwb-table-head-cell>grade</fwb-table-head-cell>
-
-
-
 
             <fwb-table-head-cell>
                 <span class="sr-only">Edit</span>
@@ -168,13 +163,13 @@ onMounted(() => {
         <template #body>
             <div class="flex gap-2   flex-col justify-start items-center">
                 <fwb-input class="w-full" v-model="classroom.name" placeholder="enter year" label="name" />
-                <fwb-select class="w-full" v-model="classroom.teacher_id" :options="teachers" disabled label="Select a teacher"
-                    placeholder="You can't select" />
-                <fwb-select class="w-full" v-model="promo_id" :options="promos" disabled label="Select a promo"
-                    placeholder="You can't select" />
-                <fwb-select class="w-full" v-model="grade_id" :options="grades" disabled label="Select a grade"
-                    placeholder="You can't select" />
+                <fwb-select class="w-full" v-model="classroom.teacher_id" :options="teachers" label="Select a teacher"
+                    placeholder="select a teacher" />
+                <fwb-select class="w-full" v-model="classroom.grade_id" :options="classroomstore.getGrades"
+                    label="Select a grade" placeholder="select a grade " />
 
+                <fwb-select class="w-full" v-model="classroom.promo_id" :options="classroomstore.getPromos"
+                    label="Select a promo" placeholder="select a promo" />
 
 
                 <!-- <fwb-checkbox v-if="classroom.TheCurrent"  v-model="classroom.TheCurrent" label=" current classroom" /> -->

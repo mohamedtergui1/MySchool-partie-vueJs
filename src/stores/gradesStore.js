@@ -35,8 +35,8 @@ export const gradeStore = defineStore("gradeStore", {
         const response = await instance.get("/admin/grades");
         this.allResponse = response.data;
         this.grades = this.allResponse.data.data;
-        console.log(this.grades);
-        return this.allResponse;
+        
+        return this.grades;
       } catch (err) {
         console.log(err);
       }
@@ -47,15 +47,12 @@ export const gradeStore = defineStore("gradeStore", {
         const response = await instance.delete(
           "/admin/grades/" + this.idDeletegrade
         );
-        let tmp = this.grades;
+        
         if (response.status === 200) {
-          for (let i = 0; i < tmp.length; i++) {
-            if (tmp[i].id === this.idDeletegrade) {
-              tmp.splice(i, 1);
-              break;
-            }
-          }
-          this.grades = tmp;
+            this.grades = this.grades.filter(
+              (t) => t.id !== this.idDeletegrade
+            );
+           
           this.idDeletegrade = null;
           this.isShowModalDelete = false;
           return true;
@@ -67,7 +64,7 @@ export const gradeStore = defineStore("gradeStore", {
       }
     },
     async updateAndEdit() {
-      console.log(this.grade);
+       
 
       if (this.grade.id) {
         // update
@@ -76,15 +73,16 @@ export const gradeStore = defineStore("gradeStore", {
             "/admin/grades/" + this.grade.id,
             this.grade
           );
-          let tmp = this.grades;
+       
           if (response.status === 200) {
-            for (let i = 0; i < tmp.length; i++) {
-              if (tmp[i].id === this.grade.id) {
-                tmp[i] = this.grade;
-                break;
-              }
-            }
-            this.grades = tmp;
+      
+               this.grades = this.grades.map(
+                 (t) => {
+                   if (t.id !== this.grade.id) return t
+                   else return this.grade;
+                 }
+            );
+            
             this.grade = {
               id: null,
               name: "",
