@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
-import { gradeStore } from "./gradesStore";
+ 
 import { useToast } from "vue-toastification";
 
 export const userStore = defineStore("userStore", {
@@ -26,8 +26,7 @@ export const userStore = defineStore("userStore", {
     idDeleteuser: null,
     isShowModalDelete: false,
     loader: false,
-    isShowModal: false,
-    gradeStoreState: gradeStore(),
+    isShowModal: false 
   }),
   getters: {
     getuserById: function (state) {
@@ -50,25 +49,18 @@ export const userStore = defineStore("userStore", {
         genre : ""
       };
     },
-    getGrades: (state) => {
-      const grades = state.gradeStoreState.grades;
-
-      return grades.map((grade) => ({
-        value: grade.id,
-        name: grade.name,
-      }));
-    },
+   
   },
   actions: {
     async getusers() {
-      await this.gradeStoreState.getgradesWithoutPaginate();
+      
 
       try {
         const response = await instance.get("/admin/users");
         this.allResponse = response.data;
         this.users = this.allResponse.data.data;
         console.log(response);
-        return this.users;
+         
       } catch (err) {
         console.log(err);
       }

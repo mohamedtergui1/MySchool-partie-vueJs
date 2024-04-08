@@ -28,15 +28,20 @@ export const gradeStore = defineStore("gradeStore", {
         name: "",
       };
     },
+    getGrades: (state) => {
+      const grades = state.grades;
+      return grades.map((grade) => ({
+        value: grade.id,
+        name: grade.name,
+      }));
+    },
   },
   actions: {
     async getgradesWithoutPaginate() {
       try {
         const response = await instance.get("/admin/allgrades");
-        
-        this.grades = response.data.data;
 
-      
+        this.grades = response.data.data;
       } catch (err) {
         console.log(err);
       }
