@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 h-screen">
+    <div class="bg-gray-100 h-auto">
         <div class="py-10 max-w-screen-lg mx-auto">
             <div class="text-center mb-16">
                 <p class="mt-4 text-sm leading-7 text-gray-500 font-regular">
@@ -11,9 +11,9 @@
             </div>
 
 
-            <div class="grid grid-cols-3 col-gap-10">
+            <div class="grid md:grid-cols-3 justify-center col-gap-10">
 
-                <div class="text-center bg-white">
+                <div class="text-center md:w-auto  bg-white">
                     <img class="w-100"
                         src="https://images.pexels.com/photos/1587014/pexels-photo-1587014.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;w=500">
                     <div class="p-4">

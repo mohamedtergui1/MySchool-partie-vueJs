@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
 import { gradeStore } from "./gradesStore";
+import { useToast } from "vue-toastification";
 
 export const userStore = defineStore("userStore", {
   id: "userStore",
@@ -18,6 +19,7 @@ export const userStore = defineStore("userStore", {
       number_phone: "",
       date_d_inscription: "",
       role_id: "",
+      image :""
     },
     users: {},
     allResponse: {},
@@ -45,6 +47,7 @@ export const userStore = defineStore("userStore", {
         number_phone: "",
         date_d_inscription: "",
         role_id: "",
+        genre : ""
       };
     },
     getGrades: (state) => {
@@ -82,7 +85,9 @@ export const userStore = defineStore("userStore", {
 
           this.idDeleteuser = null;
           this.isShowModalDelete = false;
-          return true;
+          useToast().success("user deleted with success", {
+            timeout: 2000,
+          });
         }
       } catch (err) {
         console.log(err);
@@ -116,10 +121,14 @@ export const userStore = defineStore("userStore", {
               number_phone: "",
               date_d_inscription: "",
               role_id: "",
+              genre: "",
             };
 
             this.isShowModal = false;
-            return true;
+
+              useToast().success("user updated with success", {
+                timeout: 2000,
+              });
           }
         } catch (err) {
           console.log(err);
@@ -141,10 +150,13 @@ export const userStore = defineStore("userStore", {
             number_phone: "",
             date_d_inscription: "",
             role_id: "",
+            genre: "",
           };
 
           this.isShowModal = false;
-          return true;
+           useToast().success("user created with success", {
+             timeout: 2000,
+           });
         } catch (err) {
           console.log(err);
         } finally {

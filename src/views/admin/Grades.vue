@@ -17,15 +17,11 @@ import { storeToRefs } from "pinia";
 import { gradeStore } from '@/stores/gradesStore.js'
 
 
-const gradestore = gradeStore();
-const { grades, isShowModal, idDeletegrade, grade, isShowModalDelete, loader } = storeToRefs(gradestore);
+ 
+const { grades, isShowModal, idDeletegrade, grade, isShowModalDelete, loader } = storeToRefs(gradeStore());
 
-const { getgrades } = gradestore;
-const { deletegrade } = gradestore;
-const { updateAndEdit } = gradestore;
-const handelClick = () => {
-    updateAndEdit()
-}
+
+
 const handleDeleteButtonClick = (id) => {
     idDeletegrade.value = id
     isShowModalDelete.value = true
@@ -48,11 +44,11 @@ function closeModal() {
     isShowModal.value = false
 }
 function showModal() {
-    grade.value = gradestore.intialValues
+    grade.value = gradeStore().intialValues
     isShowModal.value = true
 }
 onMounted(() => {
-    getgrades();
+    gradeStore().getgrades();
 })
 
 </script>
@@ -83,7 +79,7 @@ onMounted(() => {
 
 
             <fwb-table-row v-for="(g, index) in grades " :key="index">
-                <fwb-table-cell>{{ g.name }}  </fwb-table-cell>
+                <fwb-table-cell>{{ g.name }} </fwb-table-cell>
 
                 <fwb-table-cell class="flex justify-end gag-2">
                     <FwbButton @click="handleDeleteButtonClick(g.id)" color="red">delete</FwbButton>
@@ -125,7 +121,8 @@ onMounted(() => {
                 <fwb-button @click="isShowModalDelete = !isShowModalDelete" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="deletegrade" :disabled="loader" type="submit" :loading="loader" color="red">
+                <fwb-button @click="gradeStore().deletegrade()" :disabled="loader" type="submit" :loading="loader"
+                    color="red">
                     confirm
                 </fwb-button>
             </div>
@@ -158,7 +155,7 @@ onMounted(() => {
                 <fwb-button @click="closeModal" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="handelClick" :disabled="loader" :loading="loader" color="blue">
+                <fwb-button @click="gradeStore().updateAndEdit()" :disabled="loader" :loading="loader" color="blue">
                     {{ grade.id ? 'update' : 'add' }}
                 </fwb-button>
             </div>

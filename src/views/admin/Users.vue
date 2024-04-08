@@ -18,6 +18,11 @@ const roles = [
     { value: '2', name: 'teacher' },
     { value: '3', name: 'student' },
 ]
+const genres = [
+    { value: 'man', name: 'man' },
+    { value: 'woman', name: 'woman' }
+    
+]
 
 const userstore = userStore();
 const { users, isShowModal, idDeleteuser, user, isShowModalDelete, loader } = storeToRefs(userstore);
@@ -94,7 +99,7 @@ onMounted(() => {
                 <fwb-table-cell>{{ user.grade.name }}</fwb-table-cell>
                 <fwb-table-cell>{{ user.role.name }}</fwb-table-cell>
 
-                <fwb-table-cell class="flex justify-end gag-2">
+                <fwb-table-cell class=" flex justify-end gap-2">
                     <FwbButton @click="handleDeleteButtonClick(user.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(user.id, index)">edit</FwbButton>
 
@@ -152,7 +157,7 @@ onMounted(() => {
         </template>
         <template #body>
             <form class="flex justify-around">
-                <div class="w-1/2 px-2">
+                <div class="w-1/2 flex flex-col gap-2 px-2">
                     <fwb-input v-model="user.firstName" required placeholder="enter your first Name address"
                         label="first Name" validation-status="">
                         <template #validationMessage>
@@ -171,11 +176,13 @@ onMounted(() => {
                             Please enter a valid email address
                         </template>
                     </fwb-input>
-                     
+
                     <fwb-select class="w-full" v-model="user.grade_id" :options="userstore.getGrades"
                         label="Select a grade" placeholder="select a grade " />
+                    <fwb-select v-model="user.genre" :options="genres" label="Select a genre" />
+
                 </div>
-                <div class="w-1/2 px-2 ">
+                <div class="w-1/2  flex flex-col gap-2 px-2 ">
                     <fwb-input v-model="user.lastName" required placeholder="enter your first Name address"
                         label="first Name" validation-status="">
                         <template #validationMessage>

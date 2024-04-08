@@ -16,16 +16,19 @@ const router = createRouter({
           path: "/",
           name: "home",
           component: _import_("HomeView"),
+          meta: { title: "Home" },
         },
         {
           path: "/about",
           name: "about",
           component: _import_("AboutView"),
+          meta: { title: "about" },
         },
         {
           path: "/login",
           name: "login",
           component: _import_("Login"),
+          meta: { title: "login" },
         },
         {
           path: "/signup",
@@ -43,6 +46,7 @@ const router = createRouter({
           path: "/dashboard",
           name: "dashboard",
           component: _import_("admin/Dashboard"),
+          meta: { title: "dashboard" },
         },
         {
           path: "/users",
@@ -67,9 +71,9 @@ const router = createRouter({
       ],
     },
     {
-      path: "/test",
-      component: _import_("Applaoding"),
-      name: "test",
+      path: "/(.*)",
+      component: () => import("@/errors/404.vue"),
+      name: "404",
     },
   ],
 });

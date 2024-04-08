@@ -13,8 +13,8 @@ import Location from '@/sections/Location.vue'
   <main>
     <Carousel />
     <Hero />
-    <Team/>
-    <Testimonials />
+    <Team   />
+    <Testimonials   />
     <Faq />
     <Location />
   </main>

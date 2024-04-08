@@ -18,14 +18,12 @@ import { promoStore } from '@/stores/promosStore.js'
 
 
 const promostore = promoStore();
-const { promos, isShowModal, idDeletePromo, promo, isShowModalDelete, loader } = storeToRefs(promostore);
+const { promos, isShowModal, idDeletePromo, promo, isShowModalDelete, loader } = storeToRefs(promoStore());
 
-const { getPromos } = promostore;
+ 
 const { deletePromo } = promostore;
 const { updateAndEdit } = promostore;
-const handelClick = () => {
-  updateAndEdit()
-}
+ 
 const handleDeleteButtonClick = (id) => {
   idDeletePromo.value = id
   isShowModalDelete.value = true
@@ -52,7 +50,7 @@ function showModal() {
   isShowModal.value = true
 }
 onMounted(() => {
-  getPromos();
+  promoStore().getPromos()
 })
 
 </script>
@@ -61,7 +59,7 @@ onMounted(() => {
 
 
 
-  <div class="flex justify-end p-5 "  >
+  <div class="flex justify-end p-5 ">
     <fwb-button @click="showModal">
       add
     </fwb-button>
@@ -85,8 +83,8 @@ onMounted(() => {
       <fwb-table-row v-for="(p, index) in promos " :key="index">
         <fwb-table-cell>{{ p.year }} {{ p.TheCurrent ? '(current promo)' : '' }} </fwb-table-cell>
 
-        <fwb-table-cell class="flex justify-end gap-2" >
-          <FwbButton @click="handleDeleteButtonClick(p.id)" color="red" >delete</FwbButton>
+        <fwb-table-cell class="flex justify-end gap-2">
+          <FwbButton @click="handleDeleteButtonClick(p.id)" color="red">delete</FwbButton>
           <FwbButton @click="handleEditButtonClick(p.id,index)">edit</FwbButton>
 
           <!-- <button @click="idEditPromos = p.id">edit</button> -->
@@ -125,7 +123,7 @@ onMounted(() => {
         <fwb-button @click="isShowModalDelete = !isShowModalDelete" color="alternative">
           Decline
         </fwb-button>
-        <fwb-button @click="deletePromo" :disabled="loader" type="submit" :loading="loader" color="red">
+        <fwb-button @click=" promoStore().deletePromo()" :disabled="loader" type="submit" :loading="loader" color="red">
           confirm
         </fwb-button>
       </div>
@@ -158,7 +156,7 @@ onMounted(() => {
         <fwb-button @click="closeModal" color="alternative">
           Decline
         </fwb-button>
-        <fwb-button @click="handelClick" :disabled="loader" :loading="loader" color="blue">
+        <fwb-button @click="promoStore().updateAndEdit()" :disabled="loader" :loading="loader" color="blue">
           {{ promo.id ? 'update' : 'add' }}
         </fwb-button>
       </div>

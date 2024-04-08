@@ -105,17 +105,12 @@ onMounted(() => {
                     <FwbButton @click="handleDeleteButtonClick(c.id, index)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(c.id, index)">edit</FwbButton>
 
-                    <!-- <button @click="idEditclassrooms = p.id">edit</button> -->
+                   
                 </fwb-table-cell>
             </fwb-table-row>
 
         </fwb-table-body>
-        <!-- <swiper :slides-per-view="3" :space-between="50" @swiper="onSwiper" @slideChange="onSlideChange">
-        <swiper-slide>Slide 1</swiper-slide>
-        <swiper-slide>Slide 2</swiper-slide>
-        <swiper-slide>Slide 3</swiper-slide>
-        ...
-      </swiper> -->
+         
     </fwb-table>
 
     <!-- modal delete -->
@@ -172,8 +167,7 @@ onMounted(() => {
                     label="Select a promo" placeholder="select a promo" />
 
 
-                <!-- <fwb-checkbox v-if="classroom.TheCurrent"  v-model="classroom.TheCurrent" label=" current classroom" /> -->
-
+              
 
             </div>
         </template>

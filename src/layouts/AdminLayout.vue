@@ -157,10 +157,10 @@ const toggleSidebar = () => {
     openSidebarButton.value = !openSidebarButton.value
 }
 import { useRoute } from 'vue-router'
-import { useAuthStore } from "@/stores/authUser.js"
+import { userAuthStore } from "@/stores/userAuthStore.js"
 import router from '@/router'
 const routeName = ref(useRoute().name)
-const authStore = useAuthStore();
+const authStore = userAuthStore();
 const active = ref(false);
 
 const user = ref(authStore.getUser);
