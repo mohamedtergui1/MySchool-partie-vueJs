@@ -50,7 +50,7 @@ function showModal() {
   isShowModal.value = true
 }
 onMounted(() => {
-  promoStore().getPromos()
+  promoStore().getpromos()
 })
 
 </script>

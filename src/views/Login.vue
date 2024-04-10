@@ -31,7 +31,7 @@ const isPasswordValid = computed(() => {
                         <fwb-alert closable icon="danger" type="danger">
                             <div class="flex flex-col gap-2">
                                 <li v-for="(error, index) in errors" :key="index">
-                                    {{ error[0] ? error[0] : error }}
+                                    {{ error.isArray ? error[0] : error }}
                                 </li>
                             </div>
 
@@ -40,8 +40,8 @@ const isPasswordValid = computed(() => {
                     </div>
                     <div class="w-full flex-1 mt-8">
                         <div class="mx-auto flex flex-col gap-6 max-w-xs">
-                            <fwb-input v-model="userCredential.email" type="email"
-                                placeholder="email@email.com" label="Email"
+                            <fwb-input v-model="userCredential.email" type="email" placeholder="email@email.com"
+                                label="Email"
                                 :validation-status="userCredential.email.length < 4 ? '' : (isEmailValid ? 'success' : 'error')">
                                 <template #validationMessage>
                                     <p v-if="!isEmailValid && userCredential.email">enter a valid email</p>
@@ -59,6 +59,13 @@ const isPasswordValid = computed(() => {
                                 :loading="loading" color="blue" size="md">
                                 login
                             </fwb-button>
+                            <div class="flex justify-start">
+                                <p class="text-sm underline  italic " >
+                                    <router-link :to="{ name:'forgotpassword'}">Forgot Password</router-link>
+                                </p>
+                            </div>
+
+
                             <p class="mt-6 text-xs text-gray-600 text-center">
                                 I agree to abide by templatana's
                                 <a href="#" class="border-b border-gray-500 border-dotted">

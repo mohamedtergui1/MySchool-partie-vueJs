@@ -8,29 +8,29 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow,   FwbButton
+    FwbTableRow, FwbButton
 } from 'flowbite-vue'
-import ModalAddEditUser from "@/components/modals/ModalAddEditUser.vue"
-import ModalDeleteUser from "@/components/modals/ModalDeleteUser.vue"
+import ModalAddEditStudent from "@/components/modals/ModalAddEditStudent.vue"
+import ModalDeleteStudent from "@/components/modals/ModalDeleteStudent.vue"
 
 import { storeToRefs } from "pinia";
-import { userStore } from '@/stores/usersStore.js'
+import { studentStore } from '@/stores/studentStore.js'
 import { gradeStore } from '@/stores/gradesStore.js'
 
-const { users, isShowModal, idDeleteuser, user, isShowModalDelete } = storeToRefs(userStore());
+const { students, isShowModal, idDeletestudent, student, isShowModalDelete } = storeToRefs(studentStore());
 
- 
+
 const handleDeleteButtonClick = (id) => {
-    idDeleteuser.value = id
+    idDeletestudent.value = id
     isShowModalDelete.value = true
 }
 const handleEditButtonClick = (id, index) => {
 
-    let tmp = users.value[index];
+    let tmp = students.value[index];
 
-    for (const key of Object.keys(user.value)) {
+    for (const key of Object.keys(student.value)) {
 
-        user.value[key] = tmp[key];
+        student.value[key] = tmp[key];
     }
 
     isShowModal.value = true
@@ -39,18 +39,18 @@ const handleEditButtonClick = (id, index) => {
 
 
 function showModal() {
-    console.log(user.value);
-    let tmp = userStore().intialValues
-    for (const key of Object.keys(user.value)) {
+    console.log(student.value);
+    let tmp = studentStore().intialValues
+    for (const key of Object.keys(student.value)) {
 
-        user.value[key] = tmp[key];
+        student.value[key] = tmp[key];
     }
-    console.log(user.value);
+     
 
     isShowModal.value = true
 }
 onMounted(() => {
-    userStore().getusers();
+    studentStore().getstudents();
     gradeStore().getgradesWithoutPaginate();
 })
 
@@ -64,7 +64,7 @@ onMounted(() => {
         </fwb-button>
     </div>
 
-    <fwb-table class="pb-10" striped>
+    <fwb-table striped>
         <fwb-table-head>
             <fwb-table-head-cell>name</fwb-table-head-cell>
             <fwb-table-head-cell>email</fwb-table-head-cell>
@@ -77,15 +77,15 @@ onMounted(() => {
         <fwb-table-body>
 
 
-            <fwb-table-row v-for="(user, index) in users" :key="index">
-                <fwb-table-cell>{{ user.username }}</fwb-table-cell>
-                <fwb-table-cell>{{ user.email }}</fwb-table-cell>
-                <fwb-table-cell>{{ user.grade.name }}</fwb-table-cell>
-                <fwb-table-cell>{{ user.role_id ? user.role.name : 'null' }}</fwb-table-cell>
+            <fwb-table-row v-for="(student, index) in students" :key="index">
+                <fwb-table-cell>{{ student.username }}</fwb-table-cell>
+                <fwb-table-cell>{{ student.email }}</fwb-table-cell>
+                <fwb-table-cell>{{ student.grade.name }}</fwb-table-cell>
+                <fwb-table-cell>{{ student.date_d_inscription }}</fwb-table-cell>
 
                 <fwb-table-cell class=" flex justify-end gap-2">
-                    <FwbButton @click="handleDeleteButtonClick(user.id)" color="red">delete</FwbButton>
-                    <FwbButton @click="handleEditButtonClick(user.id, index)">edit</FwbButton>
+                    <FwbButton @click="handleDeleteButtonClick(student.id)" color="red">delete</FwbButton>
+                    <FwbButton @click="handleEditButtonClick(student.id, index)">edit</FwbButton>
 
 
                 </fwb-table-cell>
@@ -98,14 +98,14 @@ onMounted(() => {
     </fwb-table>
 
     <!-- modal delete -->
-   
-    <ModalDeleteUser/>
-     <!-- end delete modal -->
+
+    <ModalDeleteStudent />
+    <!-- end delete modal -->
 
 
 
     <!-- modal add and edit -->
 
-    <ModalAddEditUser />
+    <ModalAddEditStudent />
 
 </template>

@@ -5,6 +5,7 @@ import { useToast } from "vue-toastification";
 export const userAuthStore = defineStore("userAuthStore", {
   id: "userAuthStore",
   state: () => ({
+     
     userCredential: {
       email: "",
       password: "",
@@ -31,11 +32,11 @@ export const userAuthStore = defineStore("userAuthStore", {
         this.token = token;
         this.role = role;
         this.user = response.data.data.user;
-        this.errors = null
+        this.errors = null;
 
-          useToast().success("user login with success", {
-            timeout: 2000,
-          });
+        useToast().success("user login with success", {
+          timeout: 2000,
+        });
         switch (this.role) {
           case 1:
             router.push("/dashboard");
@@ -53,7 +54,6 @@ export const userAuthStore = defineStore("userAuthStore", {
         this.userCredential.password = "";
         console.log(error);
         if (error.response.status === 422) {
-         
           this.errors = error.response.data.errors;
         } else if (error.response.status === 401) {
           this.errors = {
@@ -86,11 +86,51 @@ export const userAuthStore = defineStore("userAuthStore", {
         throw error;
       } finally {
         this.loading = false;
-         useToast().success("user logout with success", {
-           timeout: 2000,
-         });
+        useToast().success("user logout with success", {
+          timeout: 2000,
+        });
         router.push("/login");
       }
     },
+    async forgotPassword() {
+      this.loading = true;
+      try {
+        const response = await instance.post(
+          "/forgot-password",
+          this.userCredential
+        );
+
+      } catch (error) {
+        this.message = "Error sending reset link.";
+        console.error(error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async resetPassword() {
+      this.loading = true;
+
+      try {
+        
+        
+          const response = await instance.post(
+            "/reset-password",
+            Object.assign({}, this.userCredential, {
+              token : this.token
+            } )
+        )
+        this.userCredential.password = ""
+        this.token = ""
+
+        router.push("/login")
+
+          
+        } catch (error) {
+          
+          console.error(error);
+        } finally {
+          this.loading = false;
+        }
+    }
   },
 });

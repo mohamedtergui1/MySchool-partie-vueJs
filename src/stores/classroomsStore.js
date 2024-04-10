@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
-import { gradeStore } from "./gradesStore";
-import { promoStore } from "./promosStore";
+
 
 export const classroomStore = defineStore("classroomStore", {
   id: "classroomStore",
@@ -19,9 +18,7 @@ export const classroomStore = defineStore("classroomStore", {
     idDeleteclassroom: null,
     isShowModalDelete: false,
     loader: false,
-    isShowModal: false,
-    gradeStoreState: gradeStore(),
-    promoStoreState: promoStore(),
+    isShowModal: false
   }),
   getters: {
     getclassroomById: function (state) {
@@ -38,28 +35,12 @@ export const classroomStore = defineStore("classroomStore", {
         promo_id: "",
       };
     },
-    getGrades: (state) => {
-      const grades = state.gradeStoreState.grades;
-
-      return grades.map((grade) => ({
-        value: grade.id,
-        name: grade.name,
-      }));
-    },
-    getPromos: (state) => {
-      const promos = state.promoStoreState.promos;
-      const test = promos.map((promo) => ({
-        value: promo.id,
-        name: promo.year,
-      }));
-      console.log(test);
-      return  test 
-    },
+     
+    
   },
   actions: {
     async getclassrooms() {
-      await this.gradeStoreState.getgradesWithoutPaginate();
-      await this.promoStoreState.getpromosWithoutPaginate();
+       
 
       try {
         const response = await instance.get("/admin/classrooms");

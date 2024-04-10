@@ -30,20 +30,28 @@ export const promoStore = defineStore("promoStore", {
         TheCurrent: true,
       };
     },
+    getPromos: (state) => {
+      const promos = state.promos;
+      const test = promos.map((promo) => ({
+        value: promo.id,
+        name: promo.year,
+      }));
+      console.log(test);
+      return test;
+    }
   },
   actions: {
     async getpromosWithoutPaginate() {
       try {
         const response = await instance.get("/admin/allpromos");
-         
+
         this.promos = response.data.data;
         console.log(this.promos);
-         
       } catch (err) {
         console.log(err);
       }
     },
-    async getPromos() {
+    async getpromos() {
       try {
         const response = await instance.get("/admin/promos");
         this.allResponse = response.data;

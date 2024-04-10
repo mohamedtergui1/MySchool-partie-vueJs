@@ -1,6 +1,5 @@
 <script setup>
 import { onMounted, ref, watch, computed } from 'vue'
- 
 import {
     FwbA,
     FwbTable,
@@ -12,20 +11,20 @@ import {
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
 import { classroomStore } from '@/stores/classroomsStore.js'
- 
+
+import { gradeStore } from "@/stores/gradesStore.js";
+import { promoStore } from "@/stores/promosStore.js";
+// import { userStore } from "@/stores/studentStore.js";
 
 
-const classroomstore = classroomStore();
- 
-const { classrooms, isShowModal, idDeleteclassroom, classroom, isShowModalDelete, loader } = storeToRefs(classroomstore);
 
-const { getclassrooms } = classroomstore;
-const { deleteclassroom } = classroomstore;
-const { updateAndEdit } = classroomstore;
 
-const handelClick = () => {
-    updateAndEdit()
-}
+
+const { classrooms, isShowModal, idDeleteclassroom, classroom, isShowModalDelete, loader } = storeToRefs(classroomStore());
+
+
+
+
 const handleDeleteButtonClick = (id, index) => {
     idDeleteclassroom.value = id
     isShowModalDelete.value = true
@@ -51,14 +50,17 @@ function closeModal() {
     isShowModal.value = false
 }
 function showModal() {
-    let tmp = classroomstore.intialValues
+    let tmp = classroomStore().intialValues
     for (const key of Object.keys(tmp)) {
         classroom.value[key] = tmp[key];
     }
     isShowModal.value = true
 }
 onMounted(() => {
-    getclassrooms();
+    classroomStore().getclassrooms();
+    promoStore().getpromosWithoutPaginate()
+    gradeStore().getgradesWithoutPaginate()
+
 })
 
 </script>
@@ -105,12 +107,12 @@ onMounted(() => {
                     <FwbButton @click="handleDeleteButtonClick(c.id, index)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(c.id, index)">edit</FwbButton>
 
-                   
+
                 </fwb-table-cell>
             </fwb-table-row>
 
         </fwb-table-body>
-         
+
     </fwb-table>
 
     <!-- modal delete -->
@@ -160,14 +162,14 @@ onMounted(() => {
                 <fwb-input class="w-full" v-model="classroom.name" placeholder="enter year" label="name" />
                 <fwb-select class="w-full" v-model="classroom.teacher_id" :options="teachers" label="Select a teacher"
                     placeholder="select a teacher" />
-                <fwb-select class="w-full" v-model="classroom.grade_id" :options="classroomstore.getGrades"
+                <fwb-select class="w-full" v-model="classroom.grade_id" :options="gradeStore().getGrades"
                     label="Select a grade" placeholder="select a grade " />
 
-                <fwb-select class="w-full" v-model="classroom.promo_id" :options="classroomstore.getPromos"
+                <fwb-select class="w-full" v-model="classroom.promo_id" :options="promoStore().getPromos"
                     label="Select a promo" placeholder="select a promo" />
 
 
-              
+
 
             </div>
         </template>
@@ -176,7 +178,8 @@ onMounted(() => {
                 <fwb-button @click="closeModal" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="handelClick" :disabled="loader" :loading="loader" color="blue">
+                <fwb-button @click=" classroomStore().updateAndEdit()" :disabled="loader" :loading="loader"
+                    color="blue">
                     {{ classroom.id ? 'update' : 'add' }}
                 </fwb-button>
             </div>

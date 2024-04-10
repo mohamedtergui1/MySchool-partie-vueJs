@@ -35,6 +35,16 @@ const router = createRouter({
           name: "signup",
           component: _import_("Signup"),
         },
+        {
+          path: "/forgot-password",
+          name: "forgotpassword",
+          component: _import_("ForgotPassword"),
+        },
+        {
+          path: "/reset-password",
+          name: "reset-password",
+          component: _import_("ResetPassword")
+        },
       ],
     },
     {
@@ -49,9 +59,9 @@ const router = createRouter({
           meta: { title: "dashboard" },
         },
         {
-          path: "/users",
-          name: "users",
-          component: _import_("admin/Users"),
+          path: "/students",
+          name: "students",
+          component: _import_("admin/Students"),
         },
         {
           path: "/promos",

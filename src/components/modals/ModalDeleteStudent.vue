@@ -1,11 +1,11 @@
 <script setup>
 import {
-     FwbModal, FwbButton
+    FwbModal, FwbButton
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
 
-import { userStore } from '@/stores/usersStore.js'
-const { users, isShowModalDelete, loader } = storeToRefs(userStore());
+import { studentStore } from '@/stores/studentStore.js'
+const { users, isShowModalDelete, loader } = storeToRefs(studentStore());
 </script>
 <template>
     <fwb-modal v-if="isShowModalDelete" @close="isShowModalDelete = !isShowModalDelete">
@@ -30,7 +30,7 @@ const { users, isShowModalDelete, loader } = storeToRefs(userStore());
                 <fwb-button @click="isShowModalDelete = !isShowModalDelete" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="userStore().deleteuser()" :disabled="loader" type="submit" :loading="loader"
+                <fwb-button @click="studentStore().deletestudent()" :disabled="loader" type="submit" :loading="loader"
                     color="red">
                     confirm
                 </fwb-button>
@@ -38,4 +38,3 @@ const { users, isShowModalDelete, loader } = storeToRefs(userStore());
         </template>
     </fwb-modal>
 </template>
-

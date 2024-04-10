@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: "http://localhost/api",
-  timeout: 5000,
+  timeout: 10000,
 });
 
 // Interceptor to attach the Bearer token to every request
