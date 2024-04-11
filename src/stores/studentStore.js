@@ -72,6 +72,7 @@ export const studentStore = defineStore("studentStore", {
       }
     },
     async updateAndEdit() {
+      
       if (this.student.id) {
         // update
         try {
@@ -81,6 +82,7 @@ export const studentStore = defineStore("studentStore", {
           );
 
           if (response.status === 200) {
+            console.log(response);
             this.students = this.students.map((t) => {
               if (t.id !== this.student.id) return t;
               else return response.data.data;
@@ -101,7 +103,16 @@ export const studentStore = defineStore("studentStore", {
         }
       } else {
         try {
-          const response = await instance.post("/admin/students", this.student);
+          let formData = new FormData();
+          console.log(this.student);
+          for (const [key, value] of Object.entries(this.student)) {
+            formData.append(key, value);
+          }
+          const response = await instance.post("/admin/students", formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
           this.students.unshift(response.data.data);
           this.student = studentInitiolvalue;
 

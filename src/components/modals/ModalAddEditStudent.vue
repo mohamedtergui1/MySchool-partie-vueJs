@@ -1,18 +1,31 @@
 <script setup>
+import {ref} from 'vue'
 import {
-    FwbModal, FwbButton, FwbInput, FwbCheckbox, FwbSelect
+    FwbModal, FwbButton, FwbInput, FwbCheckbox, FwbSelect, FwbFileInput
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
 import { studentStore } from '@/stores/studentStore.js'
 import { gradeStore } from '@/stores/gradesStore.js'
-
+const { isShowModal, student, loader } = storeToRefs(studentStore());
+const imageUrl = ref(null)
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imageUrl.value = e.target.result;
+            student.image = file;
+        };
+        reader.readAsDataURL(file);
+    }
+}
  
 const genres = [
     { value: 'man', name: 'man' },
     { value: 'woman', name: 'woman' }
 ]
 
-const { isShowModal, student, loader } = storeToRefs(studentStore());
 
 const closeModal = () => {
     isShowModal.value = false
@@ -29,7 +42,7 @@ const closeModal = () => {
             </div>
         </template>
         <template #body>
-            <form class="flex justify-around">
+            <div class="flex justify-around">
                 <div class="w-1/2 flex flex-col gap-2 px-2">
                     <fwb-input v-model="student.firstName" required placeholder="enter your first Name address"
                         label="first Name" validation-status="">
@@ -74,16 +87,21 @@ const closeModal = () => {
                             Please enter a valid date d'inscription
                         </template>
                     </fwb-input>
-                    <fwb-input v-model="student.address" required placeholder="enter address" label="address" type="text"
-                        validation-status="">
+                    <fwb-input v-model="student.address" required placeholder="enter address" label="address"
+                        type="text" validation-status="">
                         <template #validationMessage>
-                            Please enter a valid date d'inscription
+                            Please enter a valid address
                         </template>
                     </fwb-input>
-                    
+
+
                 </div>
 
-            </form>
+            </div>
+            <div v-if="imageUrl">
+                <img class="h-24 overflow-hidden p-2 " :src="imageUrl" alt="Uploaded Image">
+            </div>
+            <fwb-file-input v-model="student.image" @change="handleFileUpload" label="Upload file" />
         </template>
         <template #footer>
             <div class="flex justify-between">

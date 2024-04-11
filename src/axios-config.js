@@ -1,7 +1,12 @@
 import axios from "axios";
+console.log(import.meta.env);
 
+
+const baseUrl = import.meta.env.APP_API_URL;
+
+console.log(baseUrl);
 const instance = axios.create({
-  baseURL: "http://localhost/api",
+  baseURL: baseUrl+"/api",
   timeout: 10000,
 });
 

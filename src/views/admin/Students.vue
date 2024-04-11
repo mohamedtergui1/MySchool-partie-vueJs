@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch, computed } from 'vue'
+import { onMounted } from 'vue'
 
 import {
     FwbA,
@@ -8,7 +8,7 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow, FwbButton
+    FwbTableRow, FwbButton, FwbAvatar
 } from 'flowbite-vue'
 import ModalAddEditStudent from "@/components/modals/ModalAddEditStudent.vue"
 import ModalDeleteStudent from "@/components/modals/ModalDeleteStudent.vue"
@@ -32,7 +32,7 @@ const handleEditButtonClick = (id, index) => {
 
         student.value[key] = tmp[key];
     }
-
+    console.log(student.value);
     isShowModal.value = true
 }
 
@@ -69,7 +69,7 @@ onMounted(() => {
             <fwb-table-head-cell>name</fwb-table-head-cell>
             <fwb-table-head-cell>email</fwb-table-head-cell>
             <fwb-table-head-cell>grade</fwb-table-head-cell>
-            <fwb-table-head-cell>role</fwb-table-head-cell>
+            <fwb-table-head-cell>date   </fwb-table-head-cell>
             <fwb-table-head-cell>
                 <span class="sr-only">Edit</span>
             </fwb-table-head-cell>
@@ -78,7 +78,9 @@ onMounted(() => {
 
 
             <fwb-table-row v-for="(student, index) in students" :key="index">
-                <fwb-table-cell>{{ student.username }}</fwb-table-cell>
+                <fwb-table-cell class="flex justify-start gap-1 "> <fwb-avatar
+                        img="https://th.bing.com/th/id/R.9731022f0be7c965e880505461643850?rik=F4m%2flw%2f%2bHhnKsA&pid=ImgRaw&r=0"
+                        status-position="bottom-right" status="online" /> {{ student.username }}</fwb-table-cell>
                 <fwb-table-cell>{{ student.email }}</fwb-table-cell>
                 <fwb-table-cell>{{ student.grade.name }}</fwb-table-cell>
                 <fwb-table-cell>{{ student.date_d_inscription }}</fwb-table-cell>
