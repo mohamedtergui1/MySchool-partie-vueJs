@@ -28,18 +28,21 @@
                         {{ user.username }}
                     </fwb-button>
 
-                    <fwb-button :loading="active" @click="logout">
+                    <fwb-button :loading="loading" :disabled="loading" @click="userAuthStore().logout()">
                         logout
                     </fwb-button>
                 </div>
                 <div v-else class="flex gap-2">
-                    <fwb-button color="alternative">
-                        <router-link :to="{ name: 'login' }">Login</router-link>
-                    </fwb-button>
 
-                    <fwb-button>
-                        <router-link :to="{ name: 'signup' }">Register</router-link>
-                    </fwb-button>
+
+                    <router-link :to="{ name: 'login' }"><span class="px-2 py-1 border rounded ">Login
+                        </span></router-link>
+
+
+
+                    <router-link :to="{ name: 'signup' }"> <span
+                            class="px-2 py-1  border rounded ">Register</span></router-link>
+
                 </div>
 
 
@@ -49,37 +52,19 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import router from '@/router'
 import { useRoute } from 'vue-router'
-import { useAuthStore } from "@/stores/authUser.js"
 import AppLogo from '@/components/AppLogo.vue'
 import {
     FwbButton,
     FwbNavbar,
     FwbNavbarCollapse,
     FwbNavbarLink
-
+    
 } from 'flowbite-vue'
-import router from '@/router'
-const routeName = ref(useRoute().name)
-const authStore = useAuthStore();
-const active = ref(false);
-
-const user = ref(authStore.getUser);
-const logout = async () => {
-    active.value = true;
-    try {
-        await authStore.logout();
-        await router.push("/login");
-    } catch (error) {
-        console.error("Error while logging out:", error);
-    } finally {
-        active.value = false;
-    }
-};
-
-watch(() => authStore.getUser, (newValue) => {
-    user.value = newValue;
-});
-
+import { storeToRefs } from "pinia";
+import { userAuthStore } from "@/stores/userAuthStore.js"
+    
+const { token, role, user, loading } = storeToRefs(userAuthStore());
+ 
 </script>

@@ -1,8 +1,7 @@
 <template>
     <fwb-footer footer-type="socialmedia">
         <div class="md:flex md:justify-between">
-            <fwb-footer-brand alt="Flowbite Logo" href="https://flowbite.com" name="Flowbite"
-                src="https://flowbite.com/docs/images/logo.svg" />
+            <AppLogo  />
             <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                 <div>
                     <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
@@ -105,4 +104,6 @@ import {
     FwbFooterLink,
     FwbFooterLinkGroup,
 } from 'flowbite-vue'
+
+import AppLogo from "@/components/AppLogo.vue"
 </script>

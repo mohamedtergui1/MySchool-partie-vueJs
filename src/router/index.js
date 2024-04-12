@@ -16,21 +16,34 @@ const router = createRouter({
           path: "/",
           name: "home",
           component: _import_("HomeView"),
+          meta: { title: "Home" },
         },
         {
           path: "/about",
           name: "about",
           component: _import_("AboutView"),
+          meta: { title: "about" },
         },
         {
           path: "/login",
           name: "login",
           component: _import_("Login"),
+          meta: { title: "login" },
         },
         {
           path: "/signup",
           name: "signup",
           component: _import_("Signup"),
+        },
+        {
+          path: "/forgot-password",
+          name: "forgotpassword",
+          component: _import_("ForgotPassword"),
+        },
+        {
+          path: "/reset-password",
+          name: "reset-password",
+          component: _import_("ResetPassword")
         },
       ],
     },
@@ -43,6 +56,7 @@ const router = createRouter({
           path: "/dashboard",
           name: "dashboard",
           component: _import_("admin/Dashboard"),
+          meta: { title: "dashboard" },
         },
         {
           path: "/students",
@@ -54,12 +68,22 @@ const router = createRouter({
           name: "promos",
           component: _import_("admin/Promos"),
         },
+        {
+          path: "/grades",
+          name: "grades",
+          component: _import_("admin/Grades"),
+        },
+        {
+          path: "/classrooms",
+          name: "classrooms",
+          component: _import_("admin/Classrooms"),
+        },
       ],
     },
     {
-      path: "/test",
-      component: _import_("Applaoding"),
-      name: "test",
+      path: "/(.*)",
+      component: () => import("@/errors/404.vue"),
+      name: "404",
     },
   ],
 });

@@ -30,9 +30,28 @@ export const promoStore = defineStore("promoStore", {
         TheCurrent: true,
       };
     },
+    getPromos: (state) => {
+      const promos = state.promos;
+      const test = promos.map((promo) => ({
+        value: promo.id,
+        name: promo.year,
+      }));
+      console.log(test);
+      return test;
+    }
   },
   actions: {
-    async getPromos() {
+    async getpromosWithoutPaginate() {
+      try {
+        const response = await instance.get("/admin/allpromos");
+
+        this.promos = response.data.data;
+        console.log(this.promos);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getpromos() {
       try {
         const response = await instance.get("/admin/promos");
         this.allResponse = response.data;
@@ -49,19 +68,11 @@ export const promoStore = defineStore("promoStore", {
         const response = await instance.delete(
           "/admin/promos/" + this.idDeletePromo
         );
-        let tmp = this.promos;
-        if (response.status === 200) {
-          for (let i = 0; i < tmp.length; i++) {
-            if (tmp[i].id === this.idDeletePromo) {
-              tmp.splice(i, 1);
-              break;
-            }
-          }
-          this.promos = tmp;
-          this.idDeletePromo = null;
-          this.isShowModalDelete = false;
-          return true;
-        }
+
+        this.promos = this.promos.filter((t) => t.id !== this.idDeletePromo);
+        this.idDeletePromo = null;
+        this.isShowModalDelete = false;
+        return true;
       } catch (err) {
         console.log(err);
       } finally {
@@ -78,31 +89,46 @@ export const promoStore = defineStore("promoStore", {
             "/admin/promos/" + this.promo.id,
             this.promo
           );
-          let tmp = this.promos;
-          if (response.status === 200) {
-            for (let i = 0; i < tmp.length; i++) {
-              if (tmp[i].id === this.idDeletePromo) {
-                tmp = this.promo;
-                break;
-              }
-            }
-            this.promos = tmp;
-            this.promo = {
-              id: null,
-              year: "",
-              TheCurrent: true,
-            };
 
-            this.isShowModalDelete = false;
-            return true;
+          let tmp = this.promos;
+
+          for (let i = 0; i < tmp.length; i++) {
+            if (tmp[i].id === this.promo.id) {
+              tmp[i] = response.data.data;
+              break;
+            }
           }
+          this.promos = tmp;
+          this.promo = {
+            id: null,
+            year: "",
+            TheCurrent: true,
+          };
+
+          this.isShowModal = false;
+          return true;
         } catch (err) {
           console.log(err);
         } finally {
           this.loader = false;
         }
       } else {
-        // add
+        try {
+          const response = await instance.post("/admin/promos", this.promo);
+          this.promos.unshift(response.data.data);
+          this.promo = {
+            id: null,
+            year: "",
+            TheCurrent: true,
+          };
+
+          this.isShowModal = false;
+          return true;
+        } catch (err) {
+          console.log(err);
+        } finally {
+          this.loader = false;
+        }
       }
     },
   },

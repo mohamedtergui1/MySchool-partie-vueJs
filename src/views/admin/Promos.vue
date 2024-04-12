@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 // import { Swiper, SwiperSlide } from 'swiper/vue';
 
 // Import Swiper styles
@@ -18,28 +18,28 @@ import { promoStore } from '@/stores/promosStore.js'
 
 
 const promostore = promoStore();
-const { promos, isShowModal, idDeletePromo, promo, isShowModalDelete, loader } = storeToRefs(promostore);
+const { promos, isShowModal, idDeletePromo, promo, isShowModalDelete, loader } = storeToRefs(promoStore());
 
-const { getPromos } = promostore;
+ 
 const { deletePromo } = promostore;
 const { updateAndEdit } = promostore;
-const handelClick = () => {
-  updateAndEdit()
-}
+ 
 const handleDeleteButtonClick = (id) => {
   idDeletePromo.value = id
   isShowModalDelete.value = true
 }
-const handleEditButtonClick = (id) => {
-  let tmp = promostore.getPromoById(id);
+const handleEditButtonClick = (id,index) => {
 
-  for (const key of Object.keys(tmp)) {
+  let tmp = promos.value[index];
+ 
+  for (const key of Object.keys(promo.value)) {
 
     promo.value[key] = tmp[key];
   }
 
   isShowModal.value = true
 }
+
 
 
 function closeModal() {
@@ -50,12 +50,55 @@ function showModal() {
   isShowModal.value = true
 }
 onMounted(() => {
-  getPromos();
+  promoStore().getpromos()
 })
 
 </script>
 
 <template>
+
+
+
+  <div class="flex justify-end p-5 ">
+    <fwb-button @click="showModal">
+      add
+    </fwb-button>
+  </div>
+
+
+
+
+
+  <fwb-table>
+    <fwb-table-head>
+      <fwb-table-head-cell>promos</fwb-table-head-cell>
+
+      <fwb-table-head-cell>
+        <span class="sr-only">Edit</span>
+      </fwb-table-head-cell>
+    </fwb-table-head>
+    <fwb-table-body>
+
+
+      <fwb-table-row v-for="(p, index) in promos " :key="index">
+        <fwb-table-cell>{{ p.year }} {{ p.TheCurrent ? '(current promo)' : '' }} </fwb-table-cell>
+
+        <fwb-table-cell class="flex justify-end gap-2">
+          <FwbButton @click="handleDeleteButtonClick(p.id)" color="red">delete</FwbButton>
+          <FwbButton @click="handleEditButtonClick(p.id,index)">edit</FwbButton>
+
+          <!-- <button @click="idEditPromos = p.id">edit</button> -->
+        </fwb-table-cell>
+      </fwb-table-row>
+
+    </fwb-table-body>
+    <!-- <swiper :slides-per-view="3" :space-between="50" @swiper="onSwiper" @slideChange="onSlideChange">
+        <swiper-slide>Slide 1</swiper-slide>
+        <swiper-slide>Slide 2</swiper-slide>
+        <swiper-slide>Slide 3</swiper-slide>
+        ...
+      </swiper> -->
+  </fwb-table>
 
   <!-- modal delete -->
   <fwb-modal v-if="isShowModalDelete" @close="isShowModalDelete = !isShowModalDelete">
@@ -80,7 +123,7 @@ onMounted(() => {
         <fwb-button @click="isShowModalDelete = !isShowModalDelete" color="alternative">
           Decline
         </fwb-button>
-        <fwb-button @click="deletePromo" :disabled="loader" type="submit" :loading="loader" color="red">
+        <fwb-button @click=" promoStore().deletePromo()" :disabled="loader" type="submit" :loading="loader" color="red">
           confirm
         </fwb-button>
       </div>
@@ -91,9 +134,7 @@ onMounted(() => {
 
 
   <!-- modal add and edit -->
-  <fwb-button @click="showModal">
-    add
-  </fwb-button>
+
 
   <fwb-modal v-if="isShowModal" @close="closeModal">
     <template #header>
@@ -105,9 +146,9 @@ onMounted(() => {
       <div class="flex gap-2   flex-col justify-center items-center">
         <fwb-input v-model="promo.year" placeholder="enter year" label="Year" />
 
-        <fwb-checkbox v-if="promo.id" v-model="promo.TheCurrent" label=" current promo" />
+        <!-- <fwb-checkbox v-if="promo.TheCurrent"  v-model="promo.TheCurrent" label=" current promo" /> -->
 
-        
+
       </div>
     </template>
     <template #footer>
@@ -115,7 +156,7 @@ onMounted(() => {
         <fwb-button @click="closeModal" color="alternative">
           Decline
         </fwb-button>
-        <fwb-button @click="handelClick" :disabled="loader" :loading="loader" color="blue">
+        <fwb-button @click="promoStore().updateAndEdit()" :disabled="loader" :loading="loader" color="blue">
           {{ promo.id ? 'update' : 'add' }}
         </fwb-button>
       </div>
@@ -123,34 +164,4 @@ onMounted(() => {
   </fwb-modal>
 
 
-  <fwb-table>
-    <fwb-table-head>
-      <fwb-table-head-cell>promo</fwb-table-head-cell>
-
-      <fwb-table-head-cell>
-        <span class="sr-only">Edit</span>
-      </fwb-table-head-cell>
-    </fwb-table-head>
-    <fwb-table-body>
-
-
-      <fwb-table-row v-for="(p, index) in promos " :key="index">
-        <fwb-table-cell>{{ p.year }} {{ p.TheCurrent ? '(current promo)' : '' }} </fwb-table-cell>
-
-        <fwb-table-cell>
-          <FwbButton @click="handleDeleteButtonClick(p.id)">delete</FwbButton>
-          <FwbButton @click="handleEditButtonClick(p.id)">edit</FwbButton>
-
-          <!-- <button @click="idEditPromos = p.id">edit</button> -->
-        </fwb-table-cell>
-      </fwb-table-row>
-
-    </fwb-table-body>
-    <!-- <swiper :slides-per-view="3" :space-between="50" @swiper="onSwiper" @slideChange="onSlideChange">
-        <swiper-slide>Slide 1</swiper-slide>
-        <swiper-slide>Slide 2</swiper-slide>
-        <swiper-slide>Slide 3</swiper-slide>
-        ...
-      </swiper> -->
-  </fwb-table>
 </template>
