@@ -1,12 +1,10 @@
 import axios from "axios";
-console.log(import.meta.env);
 
+// Access Vite environment variables through import.meta.env
+const baseUrl = import.meta.env.VITE_API_URL;
 
-const baseUrl = import.meta.env.APP_API_URL;
-
-console.log(baseUrl);
 const instance = axios.create({
-  baseURL: baseUrl+"/api",
+  baseURL: `${baseUrl}/api`, // Ensure that VITE_API_URL ends with a trailing slash
   timeout: 10000,
 });
 

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
- 
+
 import { useToast } from "vue-toastification";
 const studentInitiolvalue = {
   id: null,
@@ -72,13 +72,19 @@ export const studentStore = defineStore("studentStore", {
       }
     },
     async updateAndEdit() {
-      
       if (this.student.id) {
         // update
         try {
+          // let formData = new FormData();
+          // for (const [key, value] of Object.entries(this.student)) {
+          //   console.log(key + " " + value);
+          //   formData.append(key, value);
+          // }
+          
+          
           const response = await instance.put(
             "/admin/students/" + this.student.id,
-            this.student
+            this.student 
           );
 
           if (response.status === 200) {
@@ -104,14 +110,14 @@ export const studentStore = defineStore("studentStore", {
       } else {
         try {
           let formData = new FormData();
-          console.log(this.student);
+       
           for (const [key, value] of Object.entries(this.student)) {
             formData.append(key, value);
           }
           const response = await instance.post("/admin/students", formData, {
             headers: {
-              'Content-Type': 'multipart/form-data'
-            }
+              "Content-Type": "multipart/form-data",
+            },
           });
           this.students.unshift(response.data.data);
           this.student = studentInitiolvalue;

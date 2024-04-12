@@ -2,7 +2,13 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import dotenv from "dotenv";
+
+// Load environment variables from .env
 dotenv.config();
+
+// Define only the necessary environment variables
+const { VUE_APP_API_URL } = process.env;
+
 export default defineConfig({
   plugins: [vue()],
   resolve: {
@@ -11,6 +17,7 @@ export default defineConfig({
     },
   },
   define: {
-    "process.env": process.env,
+    // Expose only the necessary environment variables
+    "process.env.VUE_APP_API_URL": JSON.stringify(VUE_APP_API_URL),
   },
 });

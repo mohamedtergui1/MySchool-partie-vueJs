@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted , ref } from 'vue'
 
 import {
     FwbA,
@@ -49,11 +49,14 @@ function showModal() {
 
     isShowModal.value = true
 }
+
+const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
+
 onMounted(() => {
+    console.log(baseUrlfroPic);
     studentStore().getstudents();
     gradeStore().getgradesWithoutPaginate();
 })
-
 </script>
 
 <template>
@@ -69,7 +72,7 @@ onMounted(() => {
             <fwb-table-head-cell>name</fwb-table-head-cell>
             <fwb-table-head-cell>email</fwb-table-head-cell>
             <fwb-table-head-cell>grade</fwb-table-head-cell>
-            <fwb-table-head-cell>date   </fwb-table-head-cell>
+            <fwb-table-head-cell>date </fwb-table-head-cell>
             <fwb-table-head-cell>
                 <span class="sr-only">Edit</span>
             </fwb-table-head-cell>
@@ -78,9 +81,18 @@ onMounted(() => {
 
 
             <fwb-table-row v-for="(student, index) in students" :key="index">
-                <fwb-table-cell class="flex justify-start gap-1 "> <fwb-avatar
-                        img="https://th.bing.com/th/id/R.9731022f0be7c965e880505461643850?rik=F4m%2flw%2f%2bHhnKsA&pid=ImgRaw&r=0"
-                        status-position="bottom-right" status="online" /> {{ student.username }}</fwb-table-cell>
+                <fwb-table-cell class="flex justify-start gap-4">
+                    <fwb-avatar :img="student.image ? baseUrlfroPic + student.image : ''" status-position="bottom-right"
+                        status="online" />
+
+                    <div class="flex flex-col items-between " >
+                        <span>{{ student.lastName + " " + student.firstName }}</span>
+                        <span>{{ student.username }}</span>
+
+                    </div>
+
+                </fwb-table-cell>
+
                 <fwb-table-cell>{{ student.email }}</fwb-table-cell>
                 <fwb-table-cell>{{ student.grade.name }}</fwb-table-cell>
                 <fwb-table-cell>{{ student.date_d_inscription }}</fwb-table-cell>
@@ -88,8 +100,6 @@ onMounted(() => {
                 <fwb-table-cell class=" flex justify-end gap-2">
                     <FwbButton @click="handleDeleteButtonClick(student.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(student.id, index)">edit</FwbButton>
-
-
                 </fwb-table-cell>
 
             </fwb-table-row>
