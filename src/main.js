@@ -1,20 +1,31 @@
 import "./style.css";
-
 import "../node_modules/flowbite-vue/dist/index.css";
+import "primevue/resources/themes/aura-light-green/theme.css";
+import "vue-toastification/dist/index.css";
+import "primevue/resources/primevue.min.css";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import Toast from "vue-toastification";
 import App from "./App.vue";
 import router from "./router";
- 
-import "vue-toastification/dist/index.css";
+import PrimeVue from "primevue/config";
+
+import PickList from "primevue/picklist";
+
+import ProgressBar from "primevue/progressbar";
+
+import Message from "primevue/message";
 
 const app = createApp(App);
-
-
 
 app.use(createPinia());
 app.use(Toast);
 app.use(router);
+app.use(PrimeVue);
+
+app.component("ProgressBar", ProgressBar);
+app.component("PickList", PickList);
+
+ 
 
 app.mount("#app");

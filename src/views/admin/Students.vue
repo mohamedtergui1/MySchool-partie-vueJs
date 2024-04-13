@@ -1,6 +1,5 @@
 <script setup>
 import { onMounted , ref } from 'vue'
-
 import {
     FwbA,
     FwbTable,
@@ -61,6 +60,7 @@ onMounted(() => {
 
 <template>
 
+    
     <div class="flex justify-end p-5 ">
         <fwb-button @click="showModal">
             add
@@ -85,7 +85,7 @@ onMounted(() => {
                     <fwb-avatar :img="student.image ? baseUrlfroPic + student.image : ''" status-position="bottom-right"
                         status="online" />
 
-                    <div class="flex flex-col items-between " >
+                    <div class="flex flex-col items-between ">
                         <span>{{ student.lastName + " " + student.firstName }}</span>
                         <span>{{ student.username }}</span>
 
@@ -100,6 +100,8 @@ onMounted(() => {
                 <fwb-table-cell class=" flex justify-end gap-2">
                     <FwbButton @click="handleDeleteButtonClick(student.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(student.id, index)">edit</FwbButton>
+
+
                 </fwb-table-cell>
 
             </fwb-table-row>

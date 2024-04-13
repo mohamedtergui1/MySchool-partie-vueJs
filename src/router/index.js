@@ -43,7 +43,7 @@ const router = createRouter({
         {
           path: "/reset-password",
           name: "reset-password",
-          component: _import_("ResetPassword")
+          component: _import_("ResetPassword"),
         },
       ],
     },
@@ -77,6 +77,11 @@ const router = createRouter({
           path: "/classrooms",
           name: "classrooms",
           component: _import_("admin/Classrooms"),
+        },
+        {
+          path: "/employees",
+          name: "employees",
+          component: _import_("admin/Employees"),
         },
       ],
     },

@@ -1,9 +1,8 @@
 <script setup>
-import {  RouterView } from 'vue-router'
-// import GitNavBar from './layouts/GitNavBar.vue';
+import { RouterView } from 'vue-router' 
 </script>
 
 <template>
-  
+   
    <RouterView />
 </template>

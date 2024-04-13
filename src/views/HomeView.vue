@@ -6,16 +6,20 @@ import Team from '@/sections/Team.vue'
 
 import Hero from '@/sections/Hero.vue'
 import Location from '@/sections/Location.vue'
+import Test from '@/sections/Test.vue'
+
 
 </script>
 
 <template>
   <main>
-    <Carousel />
-    <Hero />
-    <Team   />
-    <Testimonials   />
-    <Faq />
-    <Location />
+    <Carousel     />
+    <Hero    />
+    <Team    />
+    <Testimonials    />
+    <Faq   />
+    <Location   />
+    
   </main>
 </template>
+ 

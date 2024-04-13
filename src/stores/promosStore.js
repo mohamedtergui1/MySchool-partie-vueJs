@@ -46,7 +46,7 @@ export const promoStore = defineStore("promoStore", {
         const response = await instance.get("/admin/allpromos");
 
         this.promos = response.data.data;
-        console.log(this.promos);
+         
       } catch (err) {
         console.log(err);
       }
@@ -56,7 +56,7 @@ export const promoStore = defineStore("promoStore", {
         const response = await instance.get("/admin/promos");
         this.allResponse = response.data;
         this.promos = this.allResponse.data.data;
-        console.log(this.promos);
+        
         return this.allResponse;
       } catch (err) {
         console.log(err);
