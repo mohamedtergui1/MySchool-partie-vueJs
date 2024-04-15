@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-
+import { userAuthStore } from "@/stores/userAuthStore";
 import GuestLayout from "@/layouts/GuestLayout.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 
@@ -56,32 +56,55 @@ const router = createRouter({
           path: "/dashboard",
           name: "dashboard",
           component: _import_("admin/Dashboard"),
-          meta: { title: "dashboard" },
+          meta: {
+            title: "dashboard",
+            role: ["1", "4"],
+          },
         },
         {
           path: "/students",
           name: "students",
           component: _import_("admin/Students"),
+          meta: {
+            title: "dashboard",
+            role: ["1", "4"],
+          },
         },
         {
           path: "/promos",
           name: "promos",
           component: _import_("admin/Promos"),
+          meta: {
+            title: "dashboard",
+            role: ["1", "4"],
+          },
         },
         {
           path: "/grades",
           name: "grades",
           component: _import_("admin/Grades"),
+          meta: {
+            title: "dashboard",
+            role: ["1", "4"],
+          },
         },
         {
           path: "/classrooms",
           name: "classrooms",
           component: _import_("admin/Classrooms"),
+          meta: {
+            title: "dashboard",
+            role: ["1", "4"],
+          },
         },
         {
           path: "/employees",
           name: "employees",
           component: _import_("admin/Employees"),
+          meta: {
+            title: "dashboard",
+            role: ["4"],
+          },
         },
       ],
     },
@@ -91,6 +114,21 @@ const router = createRouter({
       name: "404",
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta && to.meta.role) {
+    const userRole = userAuthStore().role;
+    console.log(to.meta.role.includes(userRole));
+
+    if (!to.meta.role.includes(userRole)) {
+      next("/forbidden");
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
