@@ -37,6 +37,7 @@ export const userAuthStore = defineStore("userAuthStore", {
         useToast().success("user login with success", {
           timeout: 2000,
         });
+        
         switch (this.role) {
           case 1:
             router.push("/dashboard");

@@ -35,8 +35,8 @@ export const employeeStore = defineStore("employeeStore", {
       return employeeInitiolvalue;
     },
     getterTeachers: (state) => {
-      const employees = state.employees;
-      return employees.map((employee) => ({
+      
+      return state.employees.map((employee) => ({
         value: employee.id,
         name: employee.firstName + " " + employee.lastName,
       }));
@@ -46,6 +46,7 @@ export const employeeStore = defineStore("employeeStore", {
     async getTeachers() {
       try {
         const response = await instance.get("/admin/allteachers");
+        console.log(response);
         this.employees = response.data.data;
       } catch (err) {
         console.log(err);
@@ -101,7 +102,7 @@ export const employeeStore = defineStore("employeeStore", {
             this.employee
           );
 
-          if (response.status === 200) {
+           
             console.log(response);
             this.employees = this.employees.map((t) => {
               if (t.id !== this.employee.id) return t;
@@ -115,7 +116,7 @@ export const employeeStore = defineStore("employeeStore", {
             useToast().success("employee updated with success", {
               timeout: 2000,
             });
-          }
+          
         } catch (err) {
           console.log(err);
         } finally {

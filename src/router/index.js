@@ -118,10 +118,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta && to.meta.role) {
-    const userRole = userAuthStore().role;
-    console.log(to.meta.role.includes(userRole));
-
-    if (!to.meta.role.includes(userRole)) {
+    
+    if (!to.meta.role.includes(userAuthStore().role)) {
       next("/forbidden");
     } else {
       next();

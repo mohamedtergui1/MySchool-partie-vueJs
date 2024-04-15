@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
 
-
 export const classroomStore = defineStore("classroomStore", {
   id: "classroomStore",
   state: () => ({
@@ -18,7 +17,10 @@ export const classroomStore = defineStore("classroomStore", {
     idDeleteclassroom: null,
     isShowModalDelete: false,
     loader: false,
-    isShowModal: false
+    isShowModal: false,
+    modalMangeStudents: false,
+    SelectedClass: [],
+    availableStudent: [],
   }),
   getters: {
     getclassroomById: function (state) {
@@ -35,19 +37,47 @@ export const classroomStore = defineStore("classroomStore", {
         promo_id: "",
       };
     },
-     
-    
   },
   actions: {
-    async getclassrooms() {
-       
+    async syncStudents(id, students) {
+      this.loader = true;
+      try {
+        const response = await instance.put("/admin/syncStudents/" + id, {
+          student_ids: students,
+        });
+        console.log(response.data);
+        this.classrooms = this.classrooms.map((t) => {
+          if (t.id !== response.data.id) return t;
+          else return response.data;
+        });
+        this.modalMangeStudents = false;
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loader = false;
+      }
+    },
 
+    async getAvailableStudent(id) {
+      this.loader = true;
+
+      try {
+        const response = await instance.get(
+          "/admin/getAvailableStudents/" + id
+        );
+        console.log(response);
+        this.availableStudent = response.data.data;
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loader = false;
+      }
+    },
+    async getclassrooms() {
       try {
         const response = await instance.get("/admin/classrooms");
         this.allResponse = response.data;
         this.classrooms = this.allResponse.data.data;
-        console.log(this.classrooms);
-        return this.allResponse;
       } catch (err) {
         console.log(err);
       }
