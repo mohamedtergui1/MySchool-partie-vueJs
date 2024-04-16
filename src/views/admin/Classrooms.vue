@@ -139,7 +139,8 @@ onMounted(() => {
                 <fwb-button @click="isShowModalDelete = !isShowModalDelete" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="deleteclassroom" :disabled="loader" type="submit" :loading="loader" color="red">
+                <fwb-button @click="classroomStore().deleteclassroom" :disabled="loader" type="submit" :loading="loader"
+                    color="red">
                     confirm
                 </fwb-button>
             </div>
