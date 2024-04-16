@@ -1,8 +1,12 @@
 import "./style.css";
 import "../node_modules/flowbite-vue/dist/index.css";
 import "primevue/resources/themes/aura-light-green/theme.css";
+import "primevue/resources/primevue.min.css"; /* Deprecated */
+
 import "vue-toastification/dist/index.css";
 import "primevue/resources/primevue.min.css";
+import "primeicons/primeicons.css";
+
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import Toast from "vue-toastification";
