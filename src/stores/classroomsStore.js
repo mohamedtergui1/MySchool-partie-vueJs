@@ -52,7 +52,7 @@ export const classroomStore = defineStore("classroomStore", {
         });
         this.modalMangeStudents = false;
       } catch (err) {
-        console.log(err);
+        
       } finally {
         this.loader = false;
       }
@@ -68,7 +68,7 @@ export const classroomStore = defineStore("classroomStore", {
         console.log(response);
         this.availableStudent = response.data;
       } catch (err) {
-        console.log(err);
+        
       } finally {
         this.loader = false;
       }
@@ -76,10 +76,12 @@ export const classroomStore = defineStore("classroomStore", {
     async getclassrooms() {
       try {
         const response = await instance.get("/admin/classrooms");
+        console.log(response);  
         this.allResponse = response;
         this.classrooms = this.allResponse.data.data;
+
       } catch (err) {
-        console.log(err);
+        
       }
     },
     async deleteclassroom() {
@@ -99,13 +101,13 @@ export const classroomStore = defineStore("classroomStore", {
           return true;
         }
       } catch (err) {
-        console.log(err);
+         
       } finally {
         this.loader = false;
       }
     },
     async updateAndEdit() {
-      console.log(this.classroom);
+      
 
       if (this.classroom.id) {
         // update
@@ -114,15 +116,11 @@ export const classroomStore = defineStore("classroomStore", {
             "/admin/classrooms/" + this.classroom.id,
             this.classroom
           );
-          let tmp = this.classrooms;
-          if (response.status === 200) {
-            for (let i = 0; i < tmp.length; i++) {
-              if (tmp[i].id === this.classroom.id) {
-                tmp[i] = response.data;
-                break;
-              }
-            }
-            this.classrooms = tmp;
+             this.classrooms = this.classrooms.map((t) => {
+               if (t.id !== this.classroom.id) return t;
+               else return response.data;
+             });
+               
             this.classroom = {
               id: null,
               name: "",
@@ -132,10 +130,10 @@ export const classroomStore = defineStore("classroomStore", {
             };
 
             this.isShowModal = false;
-            return true;
-          }
+           
+          
         } catch (err) {
-          console.log(err);
+           
         } finally {
           this.loader = false;
         }
@@ -157,7 +155,7 @@ export const classroomStore = defineStore("classroomStore", {
           this.isShowModal = false;
           return true;
         } catch (err) {
-          console.log(err);
+          
         } finally {
           this.loader = false;
         }

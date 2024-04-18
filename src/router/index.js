@@ -25,6 +25,11 @@ const router = createRouter({
           meta: { title: "about" },
         },
         {
+          path: "/contact",
+          name: "contact",
+          component: _import_("Contact"),
+        },
+        {
           path: "/login",
           name: "login",
           component: _import_("Login"),
@@ -105,8 +110,7 @@ const router = createRouter({
             title: "dashboard",
             role: ["4", "1"],
           },
-        }
-        ,
+        },
         {
           path: "/annonces",
           name: "annonces",
@@ -128,7 +132,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta && to.meta.role) {
-    
     if (!to.meta.role.includes(userAuthStore().role)) {
       next("/forbidden");
     } else {

@@ -14,11 +14,9 @@
                         <router-link :to="{ name: 'about' }" exact>About</router-link>
                     </fwb-navbar-link>
 
+                    
                     <fwb-navbar-link>
-                        Pricing
-                    </fwb-navbar-link>
-                    <fwb-navbar-link>
-                        Contact
+                        <router-link :to="{ name: 'contact' }" exact>Contact</router-link>
                     </fwb-navbar-link>
                 </fwb-navbar-collapse>
             </template>

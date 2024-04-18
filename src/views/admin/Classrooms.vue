@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import ModalMangeStudentIncClass from '@/components/modals/ModalMangeStudentsInClass.vue';
 import {
     FwbA,
@@ -8,7 +8,7 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbCheckbox, FwbSelect
+    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbCheckbox, FwbSelect, FwbAvatar
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
 import { classroomStore } from '@/stores/classroomsStore.js'
@@ -69,6 +69,7 @@ onMounted(() => {
     gradeStore().getgradesWithoutPaginate()
     employeeStore().getTeachers()
 })
+const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 
 </script>
 
@@ -85,50 +86,45 @@ onMounted(() => {
 
 
 
-    <fwb-table>
-        <fwb-table-head>
-            <fwb-table-head-cell>name</fwb-table-head-cell>
-            <fwb-table-head-cell>teacher</fwb-table-head-cell>
-            <fwb-table-head-cell>promo</fwb-table-head-cell>
-            <fwb-table-head-cell>grade</fwb-table-head-cell>
 
-            <fwb-table-head-cell>
-                <span class="sr-only">Edit</span>
-            </fwb-table-head-cell>
-        </fwb-table-head>
-        <fwb-table-body>
+    <div class="flex flex-wrap gap-5 justify-center">
 
+        <div v-for="(c, index) in classrooms " :key="index" class="p-5 border rounded text-center text-gray-500 w-3/12">
+            <div class="flex justify-center">
 
-            <fwb-table-row v-for="(c, index) in classrooms " :key="index">
-                <fwb-table-cell>{{ c.name }} </fwb-table-cell>
-                <fwb-table-cell>{{ c.teacher.firstName + ' ' + c.teacher.lastName }} </fwb-table-cell>
-                <fwb-table-cell>{{ c.promo.year }} </fwb-table-cell>
-                <fwb-table-cell>{{ c.grade.name }} </fwb-table-cell>
-                <fwb-table-cell class="flex justify-end gag-2">
-                    <FwbButton @click="handleDeleteButtonClick(c.id, index)" color="red">delete</FwbButton>
-                    <FwbButton @click="handleEditButtonClick(index)">edit</FwbButton>
-                    <FwbButton @click="handleMangeStudentButtonClick(c.id, index)">Mange Student</FwbButton>
-                </fwb-table-cell>
-            </fwb-table-row>
+                <fwb-avatar size="lg" :img="c.teacher.image ? baseUrlfroPicinClassroom + c.teacher.image : ''" />
+            </div>
 
+            <div class="flex mt-4 justify-center">
+                <div class="text-sm mt-5">
+                    <a href="#"
+                        class="font-medium leading-none text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out">
+                        {{ c.name }}
+                    </a>
+                    <p>{{ c.teacher.firstName + ' ' + c.teacher.lastName }}</p>
+                </div>
+            </div>
+            <div class="py-5 flex justify-around ">
+                <span>{{ c.grade.name }}</span> <span>{{ c.promo.year }}</span>
+            </div>
+            <div class="  h-10 ">
 
-        </fwb-table-body>
-
-    </fwb-table>
-    <div v-for="(c, index) in classrooms " :key="index" class="p-5 border rounded text-center text-gray-500 max-w-sm">
-        <img class="w-32 h-32 rounded-full mx-auto" src="https://loremflickr.com/320/320/girl" alt="">
-
-
-
-        <div class="flex mt-4 justify-center">
-            <div class="text-sm mt-5">
-                <a href="#"
-                    class="font-medium leading-none text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out">Jane
-                    Doe
-                </a>
-                <p>Blogger &amp; Youtuber</p>
+                <div class="flex">
+                    <fwb-avatar v-for="(s, i) in c.students.slice(0, 7)" :key="i"
+                        :img="s.image ? baseUrlfroPicinClassroom + s.image : ''" rounded stacked />
+                    <fwb-avatar v-if="c.students.length > 7" :initials=" '+' + (c.students.length -7) " rounded
+                        stacked />
+                    <!-- <stacked-avatars-counter href="#" total="99" /> -->
+                </div>
+            </div>
+            <div class="flex justify-end py-5 gap-2">
+                <FwbButton @click="handleDeleteButtonClick(c.id, index)" color="red">delete</FwbButton>
+                <FwbButton @click="handleEditButtonClick(index)">edit</FwbButton>
+                <FwbButton @click="handleMangeStudentButtonClick(c.id, index)">Mange Student</FwbButton>
             </div>
         </div>
+
+
 
     </div>
     <!-- modal delete -->
