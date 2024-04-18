@@ -87,12 +87,15 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
 
 
 
-    <div class="flex flex-wrap gap-5 justify-center">
+    <div class="flex flex-wrap gap-5 justify-center lg:justify-start mx-10">
 
-        <div v-for="(c, index) in classrooms " :key="index" class="p-5 border rounded text-center text-gray-500 w-3/12">
-            <div class="flex justify-center">
+        <div v-for="(c, index) in classrooms " :key="index"
+            class=" border rounded shadow-lg text-center text-gray-500 w-[430px]">
+            <div class="flex justify-center p-5 "
+                :style="{ 'background-image': 'url(https://png.pngtree.com/png-clipart/20211017/original/pngtree-school-logo-png-image_6851480.png)' }">
 
-                <fwb-avatar size="lg" :img="c.teacher.image ? baseUrlfroPicinClassroom + c.teacher.image : ''" />
+                <fwb-avatar size="xl" :img="c.teacher.image ? baseUrlfroPicinClassroom + c.teacher.image : ''"
+                    rounded />
             </div>
 
             <div class="flex mt-4 justify-center">
@@ -107,7 +110,7 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
             <div class="py-5 flex justify-around ">
                 <span>{{ c.grade.name }}</span> <span>{{ c.promo.year }}</span>
             </div>
-            <div class="  h-10 ">
+            <div class="  h-10 px-2 ">
 
                 <div class="flex">
                     <fwb-avatar v-for="(s, i) in c.students.slice(0, 7)" :key="i"
@@ -117,7 +120,7 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
                     <!-- <stacked-avatars-counter href="#" total="99" /> -->
                 </div>
             </div>
-            <div class="flex justify-end py-5 gap-2">
+            <div class="flex justify-end py-5  pr-2 gap-2">
                 <FwbButton @click="handleDeleteButtonClick(c.id, index)" color="red">delete</FwbButton>
                 <FwbButton @click="handleEditButtonClick(index)">edit</FwbButton>
                 <FwbButton @click="handleMangeStudentButtonClick(c.id, index)">Mange Student</FwbButton>

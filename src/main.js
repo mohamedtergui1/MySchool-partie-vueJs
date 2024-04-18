@@ -14,6 +14,8 @@ import App from "./App.vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 
+import ProgressSpinner from "primevue/progressspinner";
+
 import PickList from "primevue/picklist";
 
 import ProgressBar from "primevue/progressbar";
@@ -33,6 +35,8 @@ app.use(PrimeVue);
 app.component("ProgressBar", ProgressBar);
 app.component("PickList", PickList);
 app.component("ScrollPanel", ScrollPanel);
+app.component("ProgressSpinner", ProgressSpinner);
+
 
 
 

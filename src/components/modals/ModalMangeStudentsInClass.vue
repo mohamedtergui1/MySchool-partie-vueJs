@@ -38,13 +38,18 @@ watch(SelectedClass, (newValue) => {
 });
 const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 const students = ref([[], []])
- 
+
 </script>
 
 <template>
     <fwb-modal size="x" v-if="modalMangeStudents" @close="closeModal">
         <template #body>
-            <div class="card">
+
+            <div class="relative">
+                <div class="card flex w-full  justify-content-center">
+                    <ProgressSpinner v-if="loader" style="width: 100px; height: 100px" strokeWidth="8"
+                        fill="var(--surface-ground)" animationDuration=".5s" aria-label="Custom ProgressSpinner" />
+                </div>
                 <PickList v-model="students" listStyle="height:342px" dataKey="id" breakpoint="1400px">
                     <template #sourceheader> Available Students </template>
                     <template #targetheader> Selected Students </template>
