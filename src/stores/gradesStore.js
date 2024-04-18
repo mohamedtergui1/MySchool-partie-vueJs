@@ -41,7 +41,7 @@ export const gradeStore = defineStore("gradeStore", {
       try {
         const response = await instance.get("/admin/allgrades");
 
-        this.grades = response.data.data;
+        this.grades = response.data;
       } catch (err) {
         console.log(err);
       }
@@ -49,7 +49,7 @@ export const gradeStore = defineStore("gradeStore", {
     async getgrades() {
       try {
         const response = await instance.get("/admin/grades");
-        this.allResponse = response.data;
+        this.allResponse = response;
         this.grades = this.allResponse.data.data;
 
         return this.grades;
@@ -108,7 +108,7 @@ export const gradeStore = defineStore("gradeStore", {
       } else {
         try {
           const response = await instance.post("/admin/grades", this.grade);
-          this.grades.unshift(response.data.data);
+          this.grades.unshift(response.data);
           this.grade = {
             id: null,
             name: "",

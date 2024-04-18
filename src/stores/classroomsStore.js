@@ -45,10 +45,10 @@ export const classroomStore = defineStore("classroomStore", {
         const response = await instance.put("/admin/syncStudents/" + id, {
           student_ids: students,
         });
-        console.log(response.data);
+        console.log(response);
         this.classrooms = this.classrooms.map((t) => {
-          if (t.id !== response.data.id) return t;
-          else return response.data;
+          if (t.id !== response.id) return t;
+          else return response;
         });
         this.modalMangeStudents = false;
       } catch (err) {
@@ -66,7 +66,7 @@ export const classroomStore = defineStore("classroomStore", {
           "/admin/getAvailableStudents/" + id
         );
         console.log(response);
-        this.availableStudent = response.data.data;
+        this.availableStudent = response.data;
       } catch (err) {
         console.log(err);
       } finally {
@@ -76,7 +76,7 @@ export const classroomStore = defineStore("classroomStore", {
     async getclassrooms() {
       try {
         const response = await instance.get("/admin/classrooms");
-        this.allResponse = response.data;
+        this.allResponse = response;
         this.classrooms = this.allResponse.data.data;
       } catch (err) {
         console.log(err);
@@ -118,7 +118,7 @@ export const classroomStore = defineStore("classroomStore", {
           if (response.status === 200) {
             for (let i = 0; i < tmp.length; i++) {
               if (tmp[i].id === this.classroom.id) {
-                tmp[i] = response.data.data;
+                tmp[i] = response.data;
                 break;
               }
             }
@@ -145,7 +145,7 @@ export const classroomStore = defineStore("classroomStore", {
             "/admin/classrooms",
             this.classroom
           );
-          this.classrooms.unshift(response.data.data);
+          this.classrooms.unshift(response.data);
           this.classroom = {
             id: null,
             name: "",

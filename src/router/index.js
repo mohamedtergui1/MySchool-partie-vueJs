@@ -103,7 +103,17 @@ const router = createRouter({
           component: _import_("admin/Employees"),
           meta: {
             title: "dashboard",
-            role: ["4"],
+            role: ["4", "1"],
+          },
+        }
+        ,
+        {
+          path: "/annonces",
+          name: "annonces",
+          component: _import_("admin/Annonces"),
+          meta: {
+            title: "dashboard",
+            role: ["4", "1"],
           },
         },
       ],

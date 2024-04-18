@@ -18,7 +18,10 @@ import PickList from "primevue/picklist";
 
 import ProgressBar from "primevue/progressbar";
 
-import Message from "primevue/message";
+ 
+
+import ScrollPanel from "primevue/scrollpanel";
+
 
 const app = createApp(App);
 
@@ -29,7 +32,9 @@ app.use(PrimeVue);
 
 app.component("ProgressBar", ProgressBar);
 app.component("PickList", PickList);
+app.component("ScrollPanel", ScrollPanel);
 
- 
+
+
 
 app.mount("#app");

@@ -47,7 +47,7 @@ export const employeeStore = defineStore("employeeStore", {
       try {
         const response = await instance.get("/admin/allteachers");
         console.log(response);
-        this.employees = response.data.data;
+        this.employees = response.data;
       } catch (err) {
         console.log(err);
       }
@@ -56,7 +56,7 @@ export const employeeStore = defineStore("employeeStore", {
     async getemployees() {
       try {
         const response = await instance.get("/admin/employees");
-        this.allResponse = response.data;
+        this.allResponse = response;
         this.employees = this.allResponse.data.data;
         console.log(response);
       } catch (err) {
@@ -106,7 +106,7 @@ export const employeeStore = defineStore("employeeStore", {
             console.log(response);
             this.employees = this.employees.map((t) => {
               if (t.id !== this.employee.id) return t;
-              else return response.data.data;
+              else return response.data;
             });
 
             this.employee = employeeInitiolvalue;
@@ -136,7 +136,7 @@ export const employeeStore = defineStore("employeeStore", {
             },
           });
           console.log(response);
-          this.employees.unshift(response.data.data);
+          this.employees.unshift(response.data);
           this.employee = employeeInitiolvalue;
           this.isShowModal = false;
           useToast().success("employee created with success", {

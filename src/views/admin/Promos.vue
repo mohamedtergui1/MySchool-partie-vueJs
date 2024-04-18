@@ -1,9 +1,6 @@
 <script setup>
 import { onMounted, ref, watch, computed } from 'vue'
-// import { Swiper, SwiperSlide } from 'swiper/vue';
-
-// Import Swiper styles
-// import 'swiper/css';
+ 
 import {
   FwbA,
   FwbTable,

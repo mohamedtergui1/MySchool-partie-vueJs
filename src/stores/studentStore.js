@@ -44,7 +44,7 @@ export const studentStore = defineStore("studentStore", {
     async getAllStudents() {
       try {
         const response = await instance.get("/admin/allstudents");
-        this.students = response.data.data;
+        this.students = response.data;
       } catch (err) {
         console.log(err);
       }
@@ -52,7 +52,7 @@ export const studentStore = defineStore("studentStore", {
     async getstudents() {
       try {
         const response = await instance.get("/admin/students");
-        this.allResponse = response.data;
+        this.allResponse = response;
         this.students = this.allResponse.data.data;
       } catch (err) {
         console.log(err);
@@ -101,7 +101,7 @@ export const studentStore = defineStore("studentStore", {
             console.log(response);
             this.students = this.students.map((t) => {
               if (t.id !== this.student.id) return t;
-              else return response.data.data;
+              else return response.data;
             });
 
             this.student = studentInitiolvalue;
@@ -129,7 +129,7 @@ export const studentStore = defineStore("studentStore", {
               "Content-Type": "multipart/form-data",
             },
           });
-          this.students.unshift(response.data.data);
+          this.students.unshift(response.data);
           this.student = studentInitiolvalue;
 
           this.isShowModal = false;

@@ -22,16 +22,17 @@ export const userAuthStore = defineStore("userAuthStore", {
       this.loading = true;
       try {
         const response = await instance.post("/login", this.userCredential);
+        console.log(response);
         this.userCredential.password = "";
         this.userCredential.email = "";
-        const { token, role } = response.data.data.authorization;
+        const { token, role } = response.data.authorization;
 
         localStorage.setItem("token", token);
         localStorage.setItem("role", role);
-        localStorage.setItem("user", JSON.stringify(response.data.data.user));
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         this.token = token;
         this.role = role;
-        this.user = response.data.data.user;
+        this.user = response.user;
         this.errors = null;
 
         useToast().success("user login with success", {
@@ -52,15 +53,8 @@ export const userAuthStore = defineStore("userAuthStore", {
             router.push("/");
         }
       } catch (error) {
-        this.userCredential.password = "";
-        console.log(error);
-        if (error.response.status === 422) {
-          this.errors = error.response.data.errors;
-        } else if (error.response.status === 401) {
-          this.errors = {
-            error: "your credentials not match our records try again",
-          };
-        }
+        console.log(error)
+        
       } finally {
         this.loading = false;
       }

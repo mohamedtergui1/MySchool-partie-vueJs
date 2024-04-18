@@ -37,7 +37,7 @@ watch(SelectedClass, (newValue) => {
 
 });
 const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
-const students = ref(null)
+const students = ref([[], []])
  
 </script>
 
@@ -45,7 +45,7 @@ const students = ref(null)
     <fwb-modal size="x" v-if="modalMangeStudents" @close="closeModal">
         <template #body>
             <div class="card">
-                <PickList v-model="students" listStyle="height:80vh" dataKey="id" breakpoint="1400px">
+                <PickList v-model="students" listStyle="height:342px" dataKey="id" breakpoint="1400px">
                     <template #sourceheader> Available Students </template>
                     <template #targetheader> Selected Students </template>
                     <template #item="slotProps">

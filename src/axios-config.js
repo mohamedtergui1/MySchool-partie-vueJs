@@ -17,4 +17,33 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
+// Interceptor to handle response errors
+instance.interceptors.response.use(
+  (response) => {
+     
+    return response.data;
+  },
+  (error) => {
+    
+    if (error.response) {
+      console.log(error);
+      if (error.response.status === 401) {
+        localStorage.clear();
+       window.location.href = "http://localhost:5174/login";
+      } else if (error.response.status === 403) {
+        console.log("you don t have permition to open this route");
+      }
+        
+    } else if (error.request) {
+       
+      console.log("Request error:", error.request);
+    } else {
+      
+      console.log("Error:", error.message);
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
 export default instance;

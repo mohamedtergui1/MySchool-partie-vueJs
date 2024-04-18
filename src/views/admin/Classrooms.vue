@@ -115,7 +115,22 @@ onMounted(() => {
         </fwb-table-body>
 
     </fwb-table>
+    <div v-for="(c, index) in classrooms " :key="index" class="p-5 border rounded text-center text-gray-500 max-w-sm">
+        <img class="w-32 h-32 rounded-full mx-auto" src="https://loremflickr.com/320/320/girl" alt="">
 
+
+
+        <div class="flex mt-4 justify-center">
+            <div class="text-sm mt-5">
+                <a href="#"
+                    class="font-medium leading-none text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out">Jane
+                    Doe
+                </a>
+                <p>Blogger &amp; Youtuber</p>
+            </div>
+        </div>
+
+    </div>
     <!-- modal delete -->
     <fwb-modal v-if="isShowModalDelete" @close="isShowModalDelete = !isShowModalDelete">
         <template #header>
@@ -182,6 +197,34 @@ onMounted(() => {
             </div>
         </template>
     </fwb-modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </template>
