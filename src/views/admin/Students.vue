@@ -11,12 +11,12 @@ import {
 } from 'flowbite-vue'
 import ModalAddEditStudent from "@/components/modals/ModalAddEditStudent.vue"
 import ModalDeleteStudent from "@/components/modals/ModalDeleteStudent.vue"
-
+import { TailwindPagination } from 'laravel-vue-pagination';
 import { storeToRefs } from "pinia";
 import { studentStore } from '@/stores/studentStore.js'
 import { gradeStore } from '@/stores/gradesStore.js'
 
-const { students, isShowModal, idDeletestudent, student, isShowModalDelete, ModalChangeImage } = storeToRefs(studentStore());
+const { students, isShowModal, idDeletestudent, student, isShowModalDelete, ModalChangeImage, allResponse } = storeToRefs(studentStore());
 
 const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 const imageUrl = ref(null)
@@ -56,7 +56,10 @@ function changePic(id, index) {
 
         student.value[key] = tmp[key];
     }
-    imageUrl.value = baseUrlfroPic.value + student.value.image
+ 
+    student.value.image ? imageUrl.value = baseUrlfroPic.value + student.value.image : imageUrl.value =null
+
+    
     ModalChangeImage.value = true
      
 
@@ -74,7 +77,9 @@ function showModal() {
     isShowModal.value = true
 }
 
-
+const paginationStudents = (page) => {
+    studentStore().getstudents(page);
+}
 onMounted(() => {
     console.log(baseUrlfroPic);
     studentStore().getstudents();
@@ -106,7 +111,7 @@ onMounted(() => {
 
             <fwb-table-row v-for="(student, index) in students" :key="index">
                 <fwb-table-cell class="flex justify-start gap-4">
-                    <span class="cursor-pointer" @click="changePic(student.image.id, index)">
+                    <span class="cursor-pointer" @click="changePic(student.id, index)">
                         <fwb-avatar :img="student.image ? baseUrlfroPic + student.image : ''"
                             status-position="bottom-right" status="online" />
                     </span>
@@ -133,10 +138,13 @@ onMounted(() => {
 
             </fwb-table-row>
 
-
         </fwb-table-body>
 
     </fwb-table>
+    <div class="flex justify-end p-5">
+
+        <TailwindPagination :limit="2" :data="allResponse" @pagination-change-page="paginationStudents" />
+    </div>
 
     <!-- modal delete -->
 
@@ -161,7 +169,9 @@ onMounted(() => {
         <template #body>
             <div class="flex justify-center ">
                 <span class=" rounded-full p-1  border border-blue-600 bg-gradient-to-l    from-blue-500 to-red-500 ">
-                    <img class=" rounded-full h-80 border border-blue-600 " :src="imageUrl" :alt="student.name">
+                    <img class=" rounded-full h-80 w-80 border border-blue-600 "
+                        :src="imageUrl ? imageUrl : 'https://th.bing.com/th/id/R.1c2a84a1378f6bf7ad02b0bcf8e445f4?rik=TlikBeCFnlj72A&riu=http%3a%2f%2fayaan.ai%2fimg%2fteam%2fteam01.jpg&ehk=xCYgCvgUvLb1dM3n%2fVNYTtmypM9nxkCfVOdXU5dicps%3d&risl=&pid=ImgRaw&r=0' "
+                        :alt="student.name">
 
                 </span>
             </div>

@@ -43,7 +43,8 @@ function changePic(id, index) {
 
         employee.value[key] = tmp[key];
     }
-    imageUrl.value = baseUrlfroPic.value + employee.value.image
+     
+    employee.value.image ? imageUrl.value = baseUrlfroPic.value + employee.value.image : imageUrl.value = null
     ModalChangeImage.value = true
 
 
@@ -101,7 +102,7 @@ onMounted(() => {
 
             <fwb-table-row v-for="(employee, index) in employees" :key="index">
                 <fwb-table-cell class="flex justify-start gap-4">
-                    <span class="cursor-pointer" @click="changePic(employee.image.id, index)">
+                    <span class="cursor-pointer  " @click="changePic(employee.id, index)">
                         <fwb-avatar :img="employee.image ? baseUrlfroPic + employee.image : ''"
                             status-position="bottom-right" status="online" />
                     </span>
@@ -151,7 +152,9 @@ onMounted(() => {
         </template>
         <template #body>
             <div class="flex justify-center ">
-                <img class=" rounded-full border-2 " :src="imageUrl" :alt="employee.name">
+                <img class=" rounded-full h-80 w-80 border border-blue-600 "
+                    :src="imageUrl ? imageUrl : 'https://th.bing.com/th/id/R.1c2a84a1378f6bf7ad02b0bcf8e445f4?rik=TlikBeCFnlj72A&riu=http%3a%2f%2fayaan.ai%2fimg%2fteam%2fteam01.jpg&ehk=xCYgCvgUvLb1dM3n%2fVNYTtmypM9nxkCfVOdXU5dicps%3d&risl=&pid=ImgRaw&r=0'"
+                    :alt="employee.name">
             </div>
             <fwb-file-input v-model="employee.image" @change="handleFileUpload" label="Upload image" />
         </template>

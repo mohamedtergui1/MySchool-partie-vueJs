@@ -101,7 +101,7 @@ const closeModal = () => {
             <div v-if="imageUrl">
                 <img class="h-24 overflow-hidden p-2 " :src="imageUrl" alt="Uploaded Image">
             </div>
-            <fwb-file-input v-model="employee.image" @change="handleFileUpload" label="Upload file" />
+            
         </template>
         <template #footer>
             <div class="flex justify-between">

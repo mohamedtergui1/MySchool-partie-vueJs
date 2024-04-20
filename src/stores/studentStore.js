@@ -57,7 +57,7 @@ export const studentStore = defineStore("studentStore", {
     async getAllStudents() {
       try {
         const response = await instance.get("/admin/allstudents");
-        this.students = response;
+        this.students = response.data;
       } catch (err) {
         console.log(err);
       }
@@ -106,7 +106,7 @@ export const studentStore = defineStore("studentStore", {
           console.log(response);
           this.students = this.students.map((t) => {
             if (t.id !== this.student.id) return t;
-            else return response;
+            else return response.data;
           });
 
           this.student = {

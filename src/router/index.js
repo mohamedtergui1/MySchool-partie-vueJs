@@ -120,6 +120,15 @@ const router = createRouter({
             role: ["4", "1"],
           },
         },
+        {
+          path: "/lessons",
+          name: "lessons",
+          component: _import_("teacher/Lessons"),
+          meta: {
+            title: "dashboard",
+            role: ["4", "1"],
+          },
+        },
       ],
     },
     {

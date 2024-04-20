@@ -63,9 +63,9 @@ export const employeeStore = defineStore("employeeStore", {
       }
     },
 
-    async getemployees(id=1) {
+    async getemployees(id = 1) {
       try {
-        const response = await instance.get("/admin/employees?page="+id);
+        const response = await instance.get("/admin/employees?page=" + id);
         this.allResponse = response;
         this.employees = this.allResponse.data;
         console.log(response);
@@ -80,17 +80,16 @@ export const employeeStore = defineStore("employeeStore", {
           "/admin/employees/" + this.idDeleteemployee
         );
         console.log(response);
-        
-          this.employees = this.employees.filter(
-            (t) => t.id !== this.idDeleteemployee
-          );
 
-          this.idDeleteemployee = null;
-          this.isShowModalDelete = false;
-          useToast().success("employee deleted with success", {
-            timeout: 2000,
-          });
-        
+        this.employees = this.employees.filter(
+          (t) => t.id !== this.idDeleteemployee
+        );
+
+        this.idDeleteemployee = null;
+        this.isShowModalDelete = false;
+        useToast().success("employee deleted with success", {
+          timeout: 2000,
+        });
       } catch (err) {
         console.log(err);
       } finally {
@@ -175,6 +174,48 @@ export const employeeStore = defineStore("employeeStore", {
         } finally {
           this.loader = false;
         }
+      }
+    },
+    async changeImage() {
+      try {
+        let formData = new FormData();
+        formData.append("image", this.employee.image);
+        console.log(this.employee.image);
+        const response = await instance.post(
+          "/admin/employees/changeImage/" + this.employee.id,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        this.employees = this.employees.map((t) => {
+          if (t.id !== this.employee.id) return t;
+          else return response;
+        });
+
+        this.employee = {
+        id: null,
+        email: "",
+        firstName: "",
+        lastName: "",
+        address: "",
+        role_id: "",
+        number_phone: "",
+        image: "",
+        username: "",
+      };
+    
+
+        this.ModalChangeImage = false;
+        useToast().success("image updated with success", {
+          timeout: 2000,
+        });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loader = false;
       }
     },
   },
