@@ -66,19 +66,19 @@ export const classroomStore = defineStore("classroomStore", {
           "/admin/getAvailableStudents/" + id
         );
         console.log(response);
-        this.availableStudent = response.data;
+        this.availableStudent = response;
       } catch (err) {
         
       } finally {
         this.loader = false;
       }
     },
-    async getclassrooms() {
+    async getclassrooms(id=1) {
       try {
-        const response = await instance.get("/admin/classrooms");
+        const response = await instance.get("/admin/classrooms?page="+id);
         console.log(response);  
         this.allResponse = response;
-        this.classrooms = this.allResponse.data.data;
+        this.classrooms = this.allResponse.data;
 
       } catch (err) {
         
@@ -91,15 +91,15 @@ export const classroomStore = defineStore("classroomStore", {
           "/admin/classrooms/" + this.idDeleteclassroom
         );
 
-        if (response.status === 200) {
+       
           this.classrooms = this.classrooms.filter(
             (t) => t.id !== this.idDeleteclassroom
           );
 
           this.idDeleteclassroom = null;
           this.isShowModalDelete = false;
-          return true;
-        }
+           
+        
       } catch (err) {
          
       } finally {
@@ -118,7 +118,7 @@ export const classroomStore = defineStore("classroomStore", {
           );
              this.classrooms = this.classrooms.map((t) => {
                if (t.id !== this.classroom.id) return t;
-               else return response.data;
+               else return response;
              });
                
             this.classroom = {
@@ -143,7 +143,7 @@ export const classroomStore = defineStore("classroomStore", {
             "/admin/classrooms",
             this.classroom
           );
-          this.classrooms.unshift(response.data);
+          this.classrooms.unshift(response);
           this.classroom = {
             id: null,
             name: "",

@@ -67,9 +67,9 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
     </div>
 
     <div class="flex flex-wrap justify-center  lg:justify-start  gap-5  px-10 ">
-
-        <div v-for="(p, index) in annonces" :key="index" class=" lg:w-[650px] w-10/12 px-10 border shadow-lg ">
-
+       
+        <div v-for="(p, index) in annonces" :key="index" class=" rounded lg:w-[650px] w-10/12 px-10 border shadow-lg ">
+            <h1 class="font-bold pt-4  border-b " >{{ p.title }}</h1>
             <ScrollPanel class="pt-5" style="width: 100%; height: 200px">
                 <p>
                     {{ p.description }}
@@ -181,5 +181,5 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 
 
 
- 
+
 </template>

@@ -3,27 +3,28 @@ import instance from "@/axios-config.js";
 // import router from "@/router";
 
 import { useToast } from "vue-toastification";
-const employeeInitiolvalue = {
-  id: null,
-  email: "",
-  firstName: "",
-  lastName: "",
-  address: "",
-  role_id : "" ,
-  number_phone: "",
-  image: "",
-  username: "",
-};
+
 export const employeeStore = defineStore("employeeStore", {
   id: "employeeStore",
   state: () => ({
-    employee: employeeInitiolvalue,
+    employee: {
+      id: null,
+      email: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+      role_id: "",
+      number_phone: "",
+      image: "",
+      username: "",
+    },
     employees: {},
     allResponse: {},
     idDeleteemployee: null,
     isShowModalDelete: false,
     loader: false,
     isShowModal: false,
+    ModalChangeImage: false,
   }),
   getters: {
     getemployeeById: function (state) {
@@ -32,10 +33,19 @@ export const employeeStore = defineStore("employeeStore", {
       };
     },
     intialValues: function (state) {
-      return employeeInitiolvalue;
+      return {
+        id: null,
+        email: "",
+        firstName: "",
+        lastName: "",
+        address: "",
+        role_id: "",
+        number_phone: "",
+        image: "",
+        username: "",
+      };
     },
     getterTeachers: (state) => {
-      
       return state.employees.map((employee) => ({
         value: employee.id,
         name: employee.firstName + " " + employee.lastName,
@@ -47,17 +57,17 @@ export const employeeStore = defineStore("employeeStore", {
       try {
         const response = await instance.get("/admin/allteachers");
         console.log(response);
-        this.employees = response.data;
+        this.employees = response;
       } catch (err) {
         console.log(err);
       }
     },
 
-    async getemployees() {
+    async getemployees(id=1) {
       try {
-        const response = await instance.get("/admin/employees");
+        const response = await instance.get("/admin/employees?page="+id);
         this.allResponse = response;
-        this.employees = this.allResponse.data.data;
+        this.employees = this.allResponse.data;
         console.log(response);
       } catch (err) {
         console.log(err);
@@ -70,7 +80,7 @@ export const employeeStore = defineStore("employeeStore", {
           "/admin/employees/" + this.idDeleteemployee
         );
         console.log(response);
-        if (response.status === 200) {
+        
           this.employees = this.employees.filter(
             (t) => t.id !== this.idDeleteemployee
           );
@@ -80,7 +90,7 @@ export const employeeStore = defineStore("employeeStore", {
           useToast().success("employee deleted with success", {
             timeout: 2000,
           });
-        }
+        
       } catch (err) {
         console.log(err);
       } finally {
@@ -102,21 +112,29 @@ export const employeeStore = defineStore("employeeStore", {
             this.employee
           );
 
-           
-            console.log(response);
-            this.employees = this.employees.map((t) => {
-              if (t.id !== this.employee.id) return t;
-              else return response.data;
-            });
+          console.log(response);
+          this.employees = this.employees.map((t) => {
+            if (t.id !== this.employee.id) return t;
+            else return response;
+          });
 
-            this.employee = employeeInitiolvalue;
+          this.employee = {
+            id: null,
+            email: "",
+            firstName: "",
+            lastName: "",
+            address: "",
+            role_id: "",
+            number_phone: "",
+            image: "",
+            username: "",
+          };
 
-            this.isShowModal = false;
+          this.isShowModal = false;
 
-            useToast().success("employee updated with success", {
-              timeout: 2000,
-            });
-          
+          useToast().success("employee updated with success", {
+            timeout: 2000,
+          });
         } catch (err) {
           console.log(err);
         } finally {
@@ -136,8 +154,18 @@ export const employeeStore = defineStore("employeeStore", {
             },
           });
           console.log(response);
-          this.employees.unshift(response.data);
-          this.employee = employeeInitiolvalue;
+          this.employees.unshift(response);
+          this.employee = {
+            id: null,
+            email: "",
+            firstName: "",
+            lastName: "",
+            address: "",
+            role_id: "",
+            number_phone: "",
+            image: "",
+            username: "",
+          };
           this.isShowModal = false;
           useToast().success("employee created with success", {
             timeout: 2000,

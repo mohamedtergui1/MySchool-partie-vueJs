@@ -81,7 +81,7 @@ onMounted(() => {
             <fwb-table-row v-for="(g, index) in grades " :key="index">
                 <fwb-table-cell>{{ g.name }} </fwb-table-cell>
 
-                <fwb-table-cell class="flex justify-end gag-2">
+                <fwb-table-cell class=" flex  justify-end gap-2">
                     <FwbButton @click="handleDeleteButtonClick(g.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(g.id,index)">edit</FwbButton>
 

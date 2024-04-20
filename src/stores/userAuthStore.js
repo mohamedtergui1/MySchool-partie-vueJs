@@ -25,14 +25,14 @@ export const userAuthStore = defineStore("userAuthStore", {
         console.log(response);
         this.userCredential.password = "";
         this.userCredential.email = "";
-        const { token, role } = response.data.authorization;
+        const { token, role } = response.authorization;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("role", role);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
         this.token = token;
         this.role = role;
         this.user = response.user;
+        await localStorage.setItem("token", token);
+        await localStorage.setItem("role", role);
+        await localStorage.setItem("user", JSON.stringify(response.user));
         this.errors = null;
 
         useToast().success("user login with success", {
@@ -41,13 +41,13 @@ export const userAuthStore = defineStore("userAuthStore", {
         
         switch (this.role) {
           case 1:
-            router.push("/dashboard");
-            break;
+             router.push("/dashboard");
+             break;
           case 2:
-            router.push("/teacher");
+              router.push("/teacher");
             break;
           case 3:
-            router.push("/student");
+             router.push("/student");
             break;
           default:
             router.push("/");

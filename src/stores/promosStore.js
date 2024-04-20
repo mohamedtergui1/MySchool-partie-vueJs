@@ -45,16 +45,16 @@ export const promoStore = defineStore("promoStore", {
       try {
         const response = await instance.get("/admin/allpromos");
 
-        this.promos = response.data;
+        this.promos = response;
       } catch (err) {
         console.log(err);
       }
     },
-    async getpromos() {
+    async getpromos(id=1) {
       try {
-        const response = await instance.get("/admin/promos");
+        const response = await instance.get("/admin/promos?page=" + id);
         this.allResponse = response;
-        this.promos = this.allResponse.data.data;
+        this.promos = this.allResponse.data;
 
         return this.allResponse;
       } catch (err) {
@@ -93,7 +93,7 @@ export const promoStore = defineStore("promoStore", {
 
           for (let i = 0; i < tmp.length; i++) {
             if (tmp[i].id === this.promo.id) {
-              tmp[i] = response.data;
+              tmp[i] = response;
               break;
             }
           }
@@ -114,7 +114,7 @@ export const promoStore = defineStore("promoStore", {
       } else {
         try {
           const response = await instance.post("/admin/promos", this.promo);
-          this.promos.unshift(response.data);
+          this.promos.unshift(response);
           this.promo = {
             id: null,
             year: "",

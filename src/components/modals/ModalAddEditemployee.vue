@@ -16,7 +16,7 @@ const handleFileUpload = (event) => {
         reader.onload = (e) => {
             imageUrl.value = e.target.result;
             employee.image = file;
-        };
+        }; 
         reader.readAsDataURL(file);
     }
 }

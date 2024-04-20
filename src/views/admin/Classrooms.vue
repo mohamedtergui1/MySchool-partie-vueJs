@@ -113,9 +113,9 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
             <div class="  h-10 px-2 ">
 
                 <div class="flex">
-                    <fwb-avatar v-for="(s, i) in c.students.slice(0, 7)" :key="i"
+                    <fwb-avatar v-for="(s, i) in c.students.slice(0, 9)" :key="i"
                         :img="s.image ? baseUrlfroPicinClassroom + s.image : ''" rounded stacked />
-                    <fwb-avatar v-if="c.students.length > 7" :initials=" '+' + (c.students.length -7) " rounded
+                    <fwb-avatar v-if="c.students.length > 9" :initials=" '+' + (c.students.length -7) " rounded
                         stacked />
                     <!-- <stacked-avatars-counter href="#" total="99" /> -->
                 </div>

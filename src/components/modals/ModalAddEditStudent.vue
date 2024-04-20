@@ -21,10 +21,10 @@ const handleFileUpload = (event) => {
     }
 }
  
-const genres = [
+const genres = ref([
     { value: 'man', name: 'man' },
-    { value: 'woman', name: 'woman' }
-]
+    { value: 'woman', name: 'woman' },
+])
 
 
 const closeModal = () => {
@@ -98,10 +98,10 @@ const closeModal = () => {
                 </div>
 
             </div>
-            <div v-if="imageUrl">
+            <!-- <div v-if="imageUrl">
                 <img class="h-24 overflow-hidden p-2 " :src="imageUrl" alt="Uploaded Image">
             </div>
-            <fwb-file-input v-model="student.image" @change="handleFileUpload" label="Upload file" />
+            <fwb-file-input v-model="student.image" @change="handleFileUpload" label="Upload file" /> -->
         </template>
         <template #footer>
             <div class="flex justify-between">

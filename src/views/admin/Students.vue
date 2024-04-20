@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted , ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import {
     FwbA,
     FwbTable,
@@ -7,7 +7,7 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow, FwbButton, FwbAvatar
+    FwbTableRow, FwbButton, FwbAvatar, FwbModal, FwbFileInput
 } from 'flowbite-vue'
 import ModalAddEditStudent from "@/components/modals/ModalAddEditStudent.vue"
 import ModalDeleteStudent from "@/components/modals/ModalDeleteStudent.vue"
@@ -16,9 +16,11 @@ import { storeToRefs } from "pinia";
 import { studentStore } from '@/stores/studentStore.js'
 import { gradeStore } from '@/stores/gradesStore.js'
 
-const { students, isShowModal, idDeletestudent, student, isShowModalDelete } = storeToRefs(studentStore());
+const { students, isShowModal, idDeletestudent, student, isShowModalDelete, ModalChangeImage } = storeToRefs(studentStore());
 
-
+const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
+const imageUrl = ref(null)
+ 
 const handleDeleteButtonClick = (id) => {
     idDeletestudent.value = id
     isShowModalDelete.value = true
@@ -35,7 +37,30 @@ const handleEditButtonClick = (id, index) => {
     isShowModal.value = true
 }
 
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
 
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imageUrl.value = e.target.result;
+            student.image = file;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+function changePic(id, index) {
+    let tmp = students.value[index];
+
+    for (const key of Object.keys(student.value)) {
+
+        student.value[key] = tmp[key];
+    }
+    imageUrl.value = baseUrlfroPic.value + student.value.image
+    ModalChangeImage.value = true
+     
+
+}
 
 function showModal() {
     console.log(student.value);
@@ -44,12 +69,11 @@ function showModal() {
 
         student.value[key] = tmp[key];
     }
-     
+
 
     isShowModal.value = true
 }
 
-const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 
 onMounted(() => {
     console.log(baseUrlfroPic);
@@ -60,7 +84,7 @@ onMounted(() => {
 
 <template>
 
-    
+
     <div class="flex justify-end p-5 ">
         <fwb-button @click="showModal">
             add
@@ -82,8 +106,11 @@ onMounted(() => {
 
             <fwb-table-row v-for="(student, index) in students" :key="index">
                 <fwb-table-cell class="flex justify-start gap-4">
-                    <fwb-avatar :img="student.image ? baseUrlfroPic + student.image : ''" status-position="bottom-right"
-                        status="online" />
+                    <span class="cursor-pointer" @click="changePic(student.image.id, index)">
+                        <fwb-avatar :img="student.image ? baseUrlfroPic + student.image : ''"
+                            status-position="bottom-right" status="online" />
+                    </span>
+
 
                     <div class="flex flex-col items-between ">
                         <span>{{ student.lastName + " " + student.firstName }}</span>
@@ -121,5 +148,40 @@ onMounted(() => {
     <!-- modal add and edit -->
 
     <ModalAddEditStudent />
+
+
+
+
+    <fwb-modal v-if="ModalChangeImage" @close="ModalChangeImage = !ModalChangeImage">
+        <template #header>
+            <div class="flex items-center text-lg">
+                Terms of Service
+            </div>
+        </template>
+        <template #body>
+            <div class="flex justify-center ">
+                <span class=" rounded-full p-1  border border-blue-600 bg-gradient-to-l    from-blue-500 to-red-500 ">
+                    <img class=" rounded-full h-80 border border-blue-600 " :src="imageUrl" :alt="student.name">
+
+                </span>
+            </div>
+            <fwb-file-input v-model="student.image" @change="handleFileUpload" label="Upload image" />
+        </template>
+        <template #footer>
+            <div class=" flex justify-end gap-2 pr-4 ">
+                <fwb-button @click="ModalChangeImage = !ModalChangeImage" color="alternative">
+                    Decline
+                </fwb-button>
+                <fwb-button @click="studentStore().deleteImage" color="red">
+                    delete
+                </fwb-button>
+                <fwb-button @click="studentStore().changeImage" color="blue">
+                    save
+                </fwb-button>
+            </div>
+        </template>
+    </fwb-modal>
+
+
 
 </template>

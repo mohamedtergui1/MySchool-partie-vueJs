@@ -41,17 +41,16 @@ export const gradeStore = defineStore("gradeStore", {
       try {
         const response = await instance.get("/admin/allgrades");
 
-        this.grades = response.data;
+        this.grades = response;
       } catch (err) {
         console.log(err);
       }
     },
-    async getgrades() {
+    async getgrades(id=1) {
       try {
-        const response = await instance.get("/admin/grades");
+        const response = await instance.get("/admin/grades?page=" + id);
         this.allResponse = response;
-        this.grades = this.allResponse.data.data;
-
+        this.grades = this.allResponse.data;
         return this.grades;
       } catch (err) {
         console.log(err);
@@ -64,13 +63,13 @@ export const gradeStore = defineStore("gradeStore", {
           "/admin/grades/" + this.idDeletegrade
         );
 
-        if (response.status === 200) {
+      
           this.grades = this.grades.filter((t) => t.id !== this.idDeletegrade);
 
           this.idDeletegrade = null;
           this.isShowModalDelete = false;
-          return true;
-        }
+           
+        
       } catch (err) {
         console.log(err);
       } finally {
@@ -86,7 +85,7 @@ export const gradeStore = defineStore("gradeStore", {
             this.grade
           );
 
-          if (response.status === 200) {
+          
             this.grades = this.grades.map((t) => {
               if (t.id !== this.grade.id) return t;
               else return this.grade;
@@ -98,8 +97,7 @@ export const gradeStore = defineStore("gradeStore", {
             };
 
             this.isShowModal = false;
-            return true;
-          }
+           
         } catch (err) {
           console.log(err);
         } finally {
@@ -108,7 +106,7 @@ export const gradeStore = defineStore("gradeStore", {
       } else {
         try {
           const response = await instance.post("/admin/grades", this.grade);
-          this.grades.unshift(response.data);
+          this.grades.unshift(response);
           this.grade = {
             id: null,
             name: "",

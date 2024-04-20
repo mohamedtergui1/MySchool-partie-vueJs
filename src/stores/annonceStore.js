@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
- 
+
 export const annonceStore = defineStore("annonceStore", {
   id: "annonceStore",
   state: () => ({
@@ -27,7 +27,7 @@ export const annonceStore = defineStore("annonceStore", {
       return {
         id: null,
         title: "",
-        description: ""
+        description: "",
       };
     },
     getterAnnonces: (state) => {
@@ -39,11 +39,11 @@ export const annonceStore = defineStore("annonceStore", {
     },
   },
   actions: {
-    async getannonces() {
+    async getannonces(id = 1) {
       try {
-        const response = await instance.get("/admin/annonces");
+        const response = await instance.get("/admin/annonces?page=" + id);
         this.allResponse = response;
-        this.annonces = this.allResponse.data.data;
+        this.annonces = this.allResponse.data;
         console.log(response);
       } catch (err) {
         console.log(err);
@@ -56,15 +56,13 @@ export const annonceStore = defineStore("annonceStore", {
           "/admin/annonces/" + this.idDeleteannonce
         );
 
-        if (response.status === 200) {
-          this.annonces = this.annonces.filter(
-            (t) => t.id !== this.idDeleteannonce
-          );
+        this.annonces = this.annonces.filter(
+          (t) => t.id !== this.idDeleteannonce
+        );
 
-          this.idDeleteannonce = null;
-          this.isShowModalDelete = false;
-          return true;
-        }
+        this.idDeleteannonce = null;
+        this.isShowModalDelete = false;
+        return true;
       } catch (err) {
         console.log(err);
       } finally {
@@ -82,7 +80,7 @@ export const annonceStore = defineStore("annonceStore", {
 
           this.annonces = this.annonces.map((t) => {
             if (t.id !== this.annonce.id) return t;
-            else return response.data;
+            else return response;
           });
 
           this.annonce = {
@@ -101,7 +99,7 @@ export const annonceStore = defineStore("annonceStore", {
         try {
           const response = await instance.post("/admin/annonces", this.annonce);
           console.log(response);
-          this.annonces.unshift(response.data);
+          this.annonces.unshift(response);
           this.annonce = {
             id: null,
             title: "",

@@ -7,21 +7,46 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow, FwbButton, FwbAvatar
+    FwbTableRow, FwbButton, FwbAvatar, FwbModal, FwbFileInput
 } from 'flowbite-vue'
 import ModalAddEditemployee from "@/components/modals/ModalAddEditemployee.vue"
 import ModalDeleteemployee from "@/components/modals/ModalDeleteemployee.vue"
 
 import { storeToRefs } from "pinia";
 import { employeeStore } from '@/stores/employeeStore.js'
-import { gradeStore } from '@/stores/gradesStore.js'
 
-const { employees, isShowModal, idDeleteemployee, employee, isShowModalDelete } = storeToRefs(employeeStore());
 
+const { employees, isShowModal, idDeleteemployee, employee, isShowModalDelete, ModalChangeImage } = storeToRefs(employeeStore());
+const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
+const imageUrl = ref(null)
 
 const handleDeleteButtonClick = (id) => {
     idDeleteemployee.value = id
     isShowModalDelete.value = true
+}
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imageUrl.value = e.target.result;
+            employee.image = file;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+function changePic(id, index) {
+    let tmp = employees.value[index];
+
+    for (const key of Object.keys(employee.value)) {
+
+        employee.value[key] = tmp[key];
+    }
+    imageUrl.value = baseUrlfroPic.value + employee.value.image
+    ModalChangeImage.value = true
+
+
 }
 const handleEditButtonClick = (id, index) => {
 
@@ -35,8 +60,6 @@ const handleEditButtonClick = (id, index) => {
     isShowModal.value = true
 }
 
-
-
 function showModal() {
     console.log(employee.value);
     let tmp = employeeStore().intialValues
@@ -49,10 +72,7 @@ function showModal() {
     isShowModal.value = true
 }
 
-const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
-
 onMounted(() => {
-    
     employeeStore().getemployees();
 })
 </script>
@@ -81,8 +101,10 @@ onMounted(() => {
 
             <fwb-table-row v-for="(employee, index) in employees" :key="index">
                 <fwb-table-cell class="flex justify-start gap-4">
-                    <fwb-avatar :img="employee.image ? baseUrlfroPic + employee.image : ''" status-position="bottom-right"
-                        status="online" />
+                    <span class="cursor-pointer" @click="changePic(employee.image.id, index)">
+                        <fwb-avatar :img="employee.image ? baseUrlfroPic + employee.image : ''"
+                            status-position="bottom-right" status="online" />
+                    </span>
 
                     <div class="flex flex-col items-between ">
                         <span>{{ employee.lastName + " " + employee.firstName }}</span>
@@ -120,5 +142,29 @@ onMounted(() => {
     <!-- modal add and edit -->
 
     <ModalAddEditemployee />
+
+    <fwb-modal v-if="ModalChangeImage" @close="ModalChangeImage = !ModalChangeImage">
+        <template #header>
+            <div class="flex items-center text-lg">
+                Terms of Service
+            </div>
+        </template>
+        <template #body>
+            <div class="flex justify-center ">
+                <img class=" rounded-full border-2 " :src="imageUrl" :alt="employee.name">
+            </div>
+            <fwb-file-input v-model="employee.image" @change="handleFileUpload" label="Upload image" />
+        </template>
+        <template #footer>
+            <div class=" flex justify-between">
+                <fwb-button @click="ModalChangeImage = !ModalChangeImage" color="alternative">
+                    Decline
+                </fwb-button>
+                <fwb-button @click="employeeStore().changeImage" color="green">
+                    I accept
+                </fwb-button>
+            </div>
+        </template>
+    </fwb-modal>
 
 </template>

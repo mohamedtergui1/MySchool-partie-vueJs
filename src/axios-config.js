@@ -20,12 +20,14 @@ instance.interceptors.request.use((config) => {
 // Interceptor to handle response errors
 instance.interceptors.response.use(
   (response) => {
-    return response.data;
+    console.log(response.data)
+    return response.data.data;
   },
   (error) => {
+    console.log(error)
     if (error.response) {
       console.log(error);
-      if (error.response.status === 401) {
+      if (error.response.status === 401 && localStorage.getItem("token")) {
         localStorage.clear();
         window.location.href = "http://localhost:5174/login";
         if (localStorage.getItem("token")) {
