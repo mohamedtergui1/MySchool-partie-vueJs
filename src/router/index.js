@@ -129,6 +129,15 @@ const router = createRouter({
             role: ["4", "1"],
           },
         },
+        {
+          path: "/exams",
+          name: "exams",
+          component: _import_("teacher/Exams"),
+          meta: {
+            title: "dashboard",
+            role: ["4", "1"],
+          },
+        },
       ],
     },
     {
