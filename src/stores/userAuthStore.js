@@ -1,18 +1,17 @@
 import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 import router from "@/router";
-import { useToast } from "vue-toastification";
+
 export const userAuthStore = defineStore("userAuthStore", {
   id: "userAuthStore",
   state: () => ({
-     
     userCredential: {
       email: "",
       password: "",
     },
     user: JSON.parse(localStorage.getItem("user")) || null,
-    role: localStorage.getItem("role") || "",
-    token: localStorage.getItem("token") || "",
+    role: parseInt(localStorage.getItem("role")) || null ,
+    token: localStorage.getItem("token") || null,
     loading: false,
     errors: null,
   }),
@@ -35,26 +34,21 @@ export const userAuthStore = defineStore("userAuthStore", {
         await localStorage.setItem("user", JSON.stringify(response.user));
         this.errors = null;
 
-        useToast().success("user login with success", {
-          timeout: 2000,
-        });
-        
         switch (this.role) {
           case 1:
-             router.push("/dashboard");
-             break;
+            router.push("/dashboard");
+            break;
           case 2:
-              router.push("/teacher");
+            router.push("/teacher");
             break;
           case 3:
-             router.push("/student");
+            router.push("/student");
             break;
           default:
             router.push("/");
         }
       } catch (error) {
-        console.log(error)
-        
+        console.log(error);
       } finally {
         this.loading = false;
       }
@@ -81,9 +75,7 @@ export const userAuthStore = defineStore("userAuthStore", {
         throw error;
       } finally {
         this.loading = false;
-        useToast().success("user logout with success", {
-          timeout: 2000,
-        });
+
         router.push("/login");
       }
     },
@@ -94,7 +86,6 @@ export const userAuthStore = defineStore("userAuthStore", {
           "/forgot-password",
           this.userCredential
         );
-
       } catch (error) {
         this.message = "Error sending reset link.";
         console.error(error);
@@ -106,26 +97,21 @@ export const userAuthStore = defineStore("userAuthStore", {
       this.loading = true;
 
       try {
-        
-        
-          const response = await instance.post(
-            "/reset-password",
-            Object.assign({}, this.userCredential, {
-              token : this.token
-            } )
-        )
-        this.userCredential.password = ""
-        this.token = ""
+        const response = await instance.post(
+          "/reset-password",
+          Object.assign({}, this.userCredential, {
+            token: this.token,
+          })
+        );
+        this.userCredential.password = "";
+        this.token = "";
 
-        router.push("/login")
-
-          
-        } catch (error) {
-          
-          console.error(error);
-        } finally {
-          this.loading = false;
-        }
-    }
+        router.push("/login");
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 });

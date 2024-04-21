@@ -87,9 +87,7 @@ export const employeeStore = defineStore("employeeStore", {
 
         this.idDeleteemployee = null;
         this.isShowModalDelete = false;
-        useToast().success("employee deleted with success", {
-          timeout: 2000,
-        });
+       
       } catch (err) {
         console.log(err);
       } finally {
@@ -131,9 +129,7 @@ export const employeeStore = defineStore("employeeStore", {
 
           this.isShowModal = false;
 
-          useToast().success("employee updated with success", {
-            timeout: 2000,
-          });
+         
         } catch (err) {
           console.log(err);
         } finally {
@@ -166,9 +162,7 @@ export const employeeStore = defineStore("employeeStore", {
             username: "",
           };
           this.isShowModal = false;
-          useToast().success("employee created with success", {
-            timeout: 2000,
-          });
+        
         } catch (err) {
           console.log(err);
         } finally {
@@ -207,11 +201,8 @@ export const employeeStore = defineStore("employeeStore", {
         username: "",
       };
     
-
         this.ModalChangeImage = false;
-        useToast().success("image updated with success", {
-          timeout: 2000,
-        });
+        
       } catch (err) {
         console.log(err);
       } finally {

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
 
-import { useToast } from "vue-toastification";
+ 
 
 export const studentStore = defineStore("studentStore", {
   id: "studentStore",
@@ -85,9 +85,7 @@ export const studentStore = defineStore("studentStore", {
 
         this.idDeletestudent = null;
         this.isShowModalDelete = false;
-        useToast().success("student deleted with success", {
-          timeout: 2000,
-        });
+        
       } catch (err) {
         console.log(err);
       } finally {
@@ -125,9 +123,7 @@ export const studentStore = defineStore("studentStore", {
 
           this.isShowModal = false;
 
-          useToast().success("student updated with success", {
-            timeout: 2000,
-          });
+      
         } catch (err) {
           console.log(err);
         } finally {
@@ -159,9 +155,7 @@ export const studentStore = defineStore("studentStore", {
           };
 
           this.isShowModal = false;
-          useToast().success("student created with success", {
-            timeout: 2000,
-          });
+          
         } catch (err) {
           console.log(err);
         } finally {
@@ -203,9 +197,7 @@ export const studentStore = defineStore("studentStore", {
         };
 
         this.ModalChangeImage = false;
-        useToast().success("student created with success", {
-          timeout: 2000,
-        });
+        
       } catch (err) {
         console.log(err);
       } finally {

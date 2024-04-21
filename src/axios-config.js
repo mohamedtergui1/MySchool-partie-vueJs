@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useToast } from "vue-toastification";
 
 // Access Vite environment variables through import.meta.env
 const baseUrl = import.meta.env.VITE_API_URL;
@@ -20,7 +21,12 @@ instance.interceptors.request.use((config) => {
 // Interceptor to handle response errors
 instance.interceptors.response.use(
   (response) => {
-    console.log(response.data)
+    console.log(response)
+    if (response.data.message) {
+         useToast().success(response.data.message, {
+           timeout: 2000,
+         });
+    }
     return response.data.data;
   },
   (error) => {

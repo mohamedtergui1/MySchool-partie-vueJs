@@ -80,6 +80,11 @@ function showModal() {
 const paginationStudents = (page) => {
     studentStore().getstudents(page);
 }
+const deleteImage = () => {
+    console.log(student.value);
+    student.value.image = ""
+    studentStore().changeImage()
+}
 onMounted(() => {
     console.log(baseUrlfroPic);
     studentStore().getstudents();
@@ -182,7 +187,7 @@ onMounted(() => {
                 <fwb-button @click="ModalChangeImage = !ModalChangeImage" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="studentStore().deleteImage" color="red">
+                <fwb-button @click="deleteImage" color="red">
                     delete
                 </fwb-button>
                 <fwb-button @click="studentStore().changeImage" color="blue">

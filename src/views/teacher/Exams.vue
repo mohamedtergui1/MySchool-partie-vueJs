@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, watch, computed } from 'vue'
- 
+
 import {
     FwbA,
     FwbTable,
@@ -8,15 +8,16 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbTextarea, FwbSelect
+    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbTextarea, FwbSelect, FwbAvatar
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
 import { examStore } from '@/stores/examStore.js'
 
 
 
-const { exams, isShowModal, idDeleteexam, exam, isShowModalDelete, loader } = storeToRefs(examStore());
+const { exams, isShowModal, idDeleteexam, exam, isShowModalDelete, loader, mangeNoteModal, studentWithResult } = storeToRefs(examStore());
 
+const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 
 
 const handleDeleteButtonClick = (id) => {
@@ -36,6 +37,19 @@ const handleEditButtonClick = (id, index) => {
 }
 
 
+const handleCorrectButtonClick = (index) => {
+
+    let tmp = exams.value[index];
+
+    for (const key of Object.keys(exam.value)) {
+
+        exam.value[key] = tmp[key];
+    }
+    mangeNoteModal.value = true
+    examStore().getStudentWithResult();
+
+}
+
 
 function closeModal() {
     isShowModal.value = false
@@ -53,7 +67,6 @@ function showModal() {
 onMounted(() => {
     examStore().getexams();
     examStore().getClassroomsForexam();
-
 })
 
 </script>
@@ -77,8 +90,7 @@ onMounted(() => {
             <fwb-table-head-cell>title</fwb-table-head-cell>
             <fwb-table-head-cell>description</fwb-table-head-cell>
             <fwb-table-head-cell>classroom name</fwb-table-head-cell>
-
-
+            <fwb-table-head-cell>classroom promo</fwb-table-head-cell>
 
             <fwb-table-head-cell>
                 <span class="sr-only">Edit</span>
@@ -90,10 +102,16 @@ onMounted(() => {
             <fwb-table-row v-for="(l, index) in exams " :key="index">
                 <fwb-table-cell>{{ l.title }} </fwb-table-cell>
                 <fwb-table-cell>
-                    {{ l.date}}
+                    {{ l.date }}
                 </fwb-table-cell>
                 <fwb-table-cell>{{ l.classroom.name }} </fwb-table-cell>
-                <fwb-table-cell class=" flex  justify-end lap-2">
+                <fwb-table-cell>{{ l.classroom.promo.year }} </fwb-table-cell>
+
+
+
+
+                <fwb-table-cell class=" flex  justify-end gap-2">
+                    <FwbButton @click="handleCorrectButtonClick(index)" color="green">correct</FwbButton>
                     <FwbButton @click="handleDeleteButtonClick(l.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(l.id, index)">edit</FwbButton>
                 </fwb-table-cell>
@@ -171,6 +189,57 @@ onMounted(() => {
             </div>
         </template>
     </fwb-modal>
+
+
+    <!-- modal mange  note -->
+
+
+    <fwb-modal size="5xl" v-if="mangeNoteModal" @close="mangeNoteModal = !mangeNoteModal">
+        <template #header>
+
+        </template>
+        <template #body>
+            <div class=" h-96 overflow-y-scroll px-2 ">
+                <div class="flex justify-between my-5 items-center " v-for="(s, index) in studentWithResult "
+                    :key="index">
+                    <div class="flex justify-start gap-4">
+                        <span class="cursor-pointer">
+                            <fwb-avatar :img="s.student.image ? baseUrlfroPic + s.student.image : ''"
+                                status-position="bottom-right" status="online" />
+                        </span>
+
+
+                        <div class="flex flex-col items-between ">
+                            <span>{{ s.student.lastName + " " + s.student.firstName }}</span>
+                            <span>{{ s.student.username }}</span>
+
+                        </div>
+
+                    </div>
+                    <div>
+                        <fwb-input class="w-full" v-model="s.note" type="number" placeholder="enter note" />
+                    </div>
+
+                </div>
+            </div>
+        </template>
+        <template #footer>
+            <div class="flex justify-end gap-5 ">
+                <fwb-button class="mr-2" @click="mangeNoteModal = !mangeNoteModal" color="alternative">
+                    Decline
+                </fwb-button>
+                <fwb-button @click="examStore().updateExamNote()" :disabled="loader" type="submit" :loading="loader"
+                    color="blue">
+                    confirm
+                </fwb-button>
+            </div>
+        </template>
+    </fwb-modal>
+
+
+
+
+
 
 
 </template>

@@ -63,7 +63,7 @@ const router = createRouter({
           component: _import_("admin/Dashboard"),
           meta: {
             title: "dashboard",
-            role: ["1", "4"],
+            role: [1, 4],
           },
         },
         {
@@ -72,7 +72,7 @@ const router = createRouter({
           component: _import_("admin/Students"),
           meta: {
             title: "dashboard",
-            role: ["1", "4"],
+            role: [1,4],
           },
         },
         {
@@ -81,7 +81,7 @@ const router = createRouter({
           component: _import_("admin/Promos"),
           meta: {
             title: "dashboard",
-            role: ["1", "4"],
+            role: [1, 4],
           },
         },
         {
@@ -90,7 +90,7 @@ const router = createRouter({
           component: _import_("admin/Grades"),
           meta: {
             title: "dashboard",
-            role: ["1", "4"],
+            role: [1, 4],
           },
         },
         {
@@ -99,7 +99,7 @@ const router = createRouter({
           component: _import_("admin/Classrooms"),
           meta: {
             title: "dashboard",
-            role: ["1", "4"],
+            role: [1, 4],
           },
         },
         {
@@ -108,7 +108,7 @@ const router = createRouter({
           component: _import_("admin/Employees"),
           meta: {
             title: "dashboard",
-            role: ["4", "1"],
+            role: [4, 1],
           },
         },
         {
@@ -117,7 +117,7 @@ const router = createRouter({
           component: _import_("admin/Annonces"),
           meta: {
             title: "dashboard",
-            role: ["4", "1"],
+            role: [4, 1],
           },
         },
         {
@@ -126,7 +126,7 @@ const router = createRouter({
           component: _import_("teacher/Lessons"),
           meta: {
             title: "dashboard",
-            role: ["4", "1"],
+            role: [4, 1],
           },
         },
         {
@@ -135,10 +135,15 @@ const router = createRouter({
           component: _import_("teacher/Exams"),
           meta: {
             title: "dashboard",
-            role: ["4", "1"],
+            role: [4, 1],
           },
         },
       ],
+    },
+    {
+      path: "/forbidden",
+      component: () => import("@/errors/403.vue"),
+      name: "403",
     },
     {
       path: "/(.*)",

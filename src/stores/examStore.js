@@ -18,6 +18,8 @@ export const examStore = defineStore("examStore", {
     isShowModalDelete: false,
     loader: false,
     isShowModal: false,
+    studentWithResult: null,
+    mangeNoteModal: false,
   }),
   getters: {
     getexamById: function (state) {
@@ -123,6 +125,32 @@ export const examStore = defineStore("examStore", {
         } finally {
           this.loader = false;
         }
+      }
+    },
+    async getStudentWithResult() {
+      try {
+        const response = await instance.get(
+          "/teacher/resultexam/" + this.exam.id
+        );
+        console.log(response);
+        this.studentWithResult = response;
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loader = false;
+      }
+    },
+    async updateExamNote() {
+      try {
+        const response = await instance.put(
+          "/teacher/updateResult/" + this.exam.id
+        );
+        
+       this.studentWithResult= null;
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loader = false;
       }
     },
   },

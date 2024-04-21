@@ -60,7 +60,11 @@ const handleEditButtonClick = (id, index) => {
     console.log(employee.value);
     isShowModal.value = true
 }
-
+const deleteImage = () => {
+    console.log(employee.value);
+    employee.value.image = ""
+    employeeStore().changeImage()
+}
 function showModal() {
     console.log(employee.value);
     let tmp = employeeStore().intialValues
@@ -168,7 +172,7 @@ onMounted(() => {
                 <fwb-button @click="ModalChangeImage = !ModalChangeImage" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="employeeStore().deleteImage" color="red">
+                <fwb-button @click="deleteImage" color="red">
                     delete
                 </fwb-button>
                 <fwb-button @click="employeeStore().changeImage" color="blue">
