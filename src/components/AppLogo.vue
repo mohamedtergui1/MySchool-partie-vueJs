@@ -6,6 +6,7 @@
             <span class="text-xl">My</span><span class="text-blue-500">School</span>
         </span>
     </fwb-navbar-logo>
+    
 </template>
 <script setup>
  import {FwbNavbarLogo} from 'flowbite-vue'

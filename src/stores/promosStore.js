@@ -38,25 +38,24 @@ export const promoStore = defineStore("promoStore", {
       }));
       console.log(test);
       return test;
-    }
+    },
   },
   actions: {
     async getpromosWithoutPaginate() {
       try {
         const response = await instance.get("/admin/allpromos");
 
-        this.promos = response.data.data;
-        console.log(this.promos);
+        this.promos = response;
       } catch (err) {
         console.log(err);
       }
     },
-    async getpromos() {
+    async getpromos(id=1) {
       try {
-        const response = await instance.get("/admin/promos");
-        this.allResponse = response.data;
-        this.promos = this.allResponse.data.data;
-        console.log(this.promos);
+        const response = await instance.get("/admin/promos?page=" + id);
+        this.allResponse = response;
+        this.promos = this.allResponse.data;
+
         return this.allResponse;
       } catch (err) {
         console.log(err);
@@ -94,7 +93,7 @@ export const promoStore = defineStore("promoStore", {
 
           for (let i = 0; i < tmp.length; i++) {
             if (tmp[i].id === this.promo.id) {
-              tmp[i] = response.data.data;
+              tmp[i] = response;
               break;
             }
           }
@@ -115,7 +114,7 @@ export const promoStore = defineStore("promoStore", {
       } else {
         try {
           const response = await instance.post("/admin/promos", this.promo);
-          this.promos.unshift(response.data.data);
+          this.promos.unshift(response);
           this.promo = {
             id: null,
             year: "",

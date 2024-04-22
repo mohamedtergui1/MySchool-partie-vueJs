@@ -1,18 +1,17 @@
 import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 import router from "@/router";
-import { useToast } from "vue-toastification";
+
 export const userAuthStore = defineStore("userAuthStore", {
   id: "userAuthStore",
   state: () => ({
-     
     userCredential: {
       email: "",
       password: "",
     },
     user: JSON.parse(localStorage.getItem("user")) || null,
-    role: localStorage.getItem("role") || "",
-    token: localStorage.getItem("token") || "",
+    role: parseInt(localStorage.getItem("role")) || null ,
+    token: localStorage.getItem("token") || null,
     loading: false,
     errors: null,
   }),
@@ -22,21 +21,19 @@ export const userAuthStore = defineStore("userAuthStore", {
       this.loading = true;
       try {
         const response = await instance.post("/login", this.userCredential);
+        console.log(response);
         this.userCredential.password = "";
         this.userCredential.email = "";
-        const { token, role } = response.data.data.authorization;
+        const { token, role } = response.authorization;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("role", role);
-        localStorage.setItem("user", JSON.stringify(response.data.data.user));
         this.token = token;
         this.role = role;
-        this.user = response.data.data.user;
+        this.user = response.user;
+        await localStorage.setItem("token", token);
+        await localStorage.setItem("role", role);
+        await localStorage.setItem("user", JSON.stringify(response.user));
         this.errors = null;
 
-        useToast().success("user login with success", {
-          timeout: 2000,
-        });
         switch (this.role) {
           case 1:
             router.push("/dashboard");
@@ -51,15 +48,7 @@ export const userAuthStore = defineStore("userAuthStore", {
             router.push("/");
         }
       } catch (error) {
-        this.userCredential.password = "";
         console.log(error);
-        if (error.response.status === 422) {
-          this.errors = error.response.data.errors;
-        } else if (error.response.status === 401) {
-          this.errors = {
-            error: "your credentials not match our records try again",
-          };
-        }
       } finally {
         this.loading = false;
       }
@@ -86,9 +75,7 @@ export const userAuthStore = defineStore("userAuthStore", {
         throw error;
       } finally {
         this.loading = false;
-        useToast().success("user logout with success", {
-          timeout: 2000,
-        });
+
         router.push("/login");
       }
     },
@@ -99,7 +86,6 @@ export const userAuthStore = defineStore("userAuthStore", {
           "/forgot-password",
           this.userCredential
         );
-
       } catch (error) {
         this.message = "Error sending reset link.";
         console.error(error);
@@ -111,26 +97,21 @@ export const userAuthStore = defineStore("userAuthStore", {
       this.loading = true;
 
       try {
-        
-        
-          const response = await instance.post(
-            "/reset-password",
-            Object.assign({}, this.userCredential, {
-              token : this.token
-            } )
-        )
-        this.userCredential.password = ""
-        this.token = ""
+        const response = await instance.post(
+          "/reset-password",
+          Object.assign({}, this.userCredential, {
+            token: this.token,
+          })
+        );
+        this.userCredential.password = "";
+        this.token = "";
 
-        router.push("/login")
-
-          
-        } catch (error) {
-          
-          console.error(error);
-        } finally {
-          this.loading = false;
-        }
-    }
+        router.push("/login");
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 });

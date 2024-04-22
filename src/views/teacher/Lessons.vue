@@ -11,28 +11,28 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbCheckbox
+    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbTextarea, FwbSelect
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
-import { gradeStore } from '@/stores/gradesStore.js'
+import { lessonStore } from '@/stores/lessonStore.js'
 
 
- 
-const { grades, isShowModal, idDeletegrade, grade, isShowModalDelete, loader } = storeToRefs(gradeStore());
+
+const { lessons, isShowModal, idDeletelesson, lesson, isShowModalDelete, loader } = storeToRefs(lessonStore());
 
 
 
 const handleDeleteButtonClick = (id) => {
-    idDeletegrade.value = id
+    idDeletelesson.value = id
     isShowModalDelete.value = true
 }
-const handleEditButtonClick = (id,index) => {
+const handleEditButtonClick = (id, index) => {
 
-    let tmp = grades.value[index];
-    
-    for (const key of Object.keys(grade.value)) {
+    let tmp = lessons.value[index];
 
-        grade.value[key] = tmp[key];
+    for (const key of Object.keys(lesson.value)) {
+
+        lesson.value[key] = tmp[key];
     }
 
     isShowModal.value = true
@@ -44,11 +44,19 @@ function closeModal() {
     isShowModal.value = false
 }
 function showModal() {
-    grade.value = gradeStore().intialValues
+    let  p = lessonStore().intialValues
+    
+
+    for (const key of Object.keys(lesson.value)) {
+
+        lesson.value[key] = p[key];
+    }
     isShowModal.value = true
 }
 onMounted(() => {
-    gradeStore().getgrades();
+    lessonStore().getlessons();
+    lessonStore().getClassroomsForLesson();
+
 })
 
 </script>
@@ -69,7 +77,11 @@ onMounted(() => {
 
     <fwb-table>
         <fwb-table-head>
-            <fwb-table-head-cell>grades</fwb-table-head-cell>
+            <fwb-table-head-cell>title</fwb-table-head-cell>
+            <fwb-table-head-cell>description</fwb-table-head-cell>
+            <fwb-table-head-cell>classroom name</fwb-table-head-cell>
+
+
 
             <fwb-table-head-cell>
                 <span class="sr-only">Edit</span>
@@ -78,24 +90,20 @@ onMounted(() => {
         <fwb-table-body>
 
 
-            <fwb-table-row v-for="(g, index) in grades " :key="index">
-                <fwb-table-cell>{{ g.name }} </fwb-table-cell>
-
-                <fwb-table-cell class=" flex  justify-end gap-2">
-                    <FwbButton @click="handleDeleteButtonClick(g.id)" color="red">delete</FwbButton>
-                    <FwbButton @click="handleEditButtonClick(g.id,index)">edit</FwbButton>
-
-                    <!-- <button @click="idEditgrades = p.id">edit</button> -->
+            <fwb-table-row v-for="(l, index) in lessons " :key="index">
+                <fwb-table-cell>{{ l.name }} </fwb-table-cell>
+                <fwb-table-cell>
+                    {{ l.description ? l.description.substring(0, 20) : "—" }}
+                </fwb-table-cell>
+                <fwb-table-cell>{{ l.classroom.name }} </fwb-table-cell>
+                <fwb-table-cell class=" flex  justify-end lap-2">
+                    <FwbButton @click="handleDeleteButtonClick(l.id)" color="red">delete</FwbButton>
+                    <FwbButton @click="handleEditButtonClick(l.id, index)">edit</FwbButton>
                 </fwb-table-cell>
             </fwb-table-row>
 
         </fwb-table-body>
-        <!-- <swiper :slides-per-view="3" :space-between="50" @swiper="onSwiper" @slideChange="onSlideChange">
-        <swiper-slide>Slide 1</swiper-slide>
-        <swiper-slide>Slide 2</swiper-slide>
-        <swiper-slide>Slide 3</swiper-slide>
-        ...
-      </swiper> -->
+
     </fwb-table>
 
     <!-- modal delete -->
@@ -117,11 +125,11 @@ onMounted(() => {
 
         </template>
         <template #footer>
-            <div class=" flex justify-end gap-2 ">
-                <fwb-button @click="isShowModalDelete = !isShowModalDelete" color="alternative">
+            <div class="flex justify-end gap-5" >
+                <fwb-button class="mr-2" @click="isShowModalDelete = !isShowModalDelete" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="gradeStore().deletegrade()" :disabled="loader" type="submit" :loading="loader"
+                <fwb-button @click="lessonStore().deletelesson()" :disabled="loader" type="submit" :loading="loader"
                     color="red">
                     confirm
                 </fwb-button>
@@ -143,9 +151,17 @@ onMounted(() => {
         </template>
         <template #body>
             <div class="flex gap-2   flex-col justify-center items-center">
-                <fwb-input v-model="grade.name" placeholder="enter year" label="Year" />
+                <fwb-input class="w-full" v-model="lesson.name" placeholder="enter title" label="title" />
+                <div class="w-full">
+                    <fwb-textarea v-model="lesson.description" :rows="7" label="Your description"
+                        placeholder="Write your description..." />
 
-                <!-- <fwb-checkbox v-if="grade.TheCurrent"  v-model="grade.TheCurrent" label=" current grade" /> -->
+                </div>
+                <fwb-select class="w-full" v-model="lesson.classroom_id"
+                    :options="lessonStore().getterClassroomsForLesson" label="Select a classroom"
+                    placeholder="select a classroom" />
+
+                <!-- <fwb-checkbox v-if="lesson.TheCurrent"  v-model="lesson.TheCurrent" label=" current lesson" /> -->
 
 
             </div>
@@ -155,8 +171,8 @@ onMounted(() => {
                 <fwb-button @click="closeModal" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="gradeStore().updateAndEdit()" :disabled="loader" :loading="loader" color="blue">
-                    {{ grade.id ? 'update' : 'add' }}
+                <fwb-button @click="lessonStore().updateAndEdit()" :disabled="loader" :loading="loader" color="blue">
+                    {{ lesson.id ? 'update' : 'add' }}
                 </fwb-button>
             </div>
         </template>

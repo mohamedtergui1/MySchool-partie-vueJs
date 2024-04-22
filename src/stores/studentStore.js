@@ -2,29 +2,31 @@ import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
 
-import { useToast } from "vue-toastification";
-const studentInitiolvalue = {
-  id: null,
-  username: "",
-  email: "",
-  firstName: "",
-  lastName: "",
-  grade_id: "",
-  address: "",
-  number_phone: "",
-  date_d_inscription: "",
-  image: "",
-};
+ 
+
 export const studentStore = defineStore("studentStore", {
   id: "studentStore",
   state: () => ({
-    student: studentInitiolvalue,
+    student: {
+      id: null,
+      username: "",
+      email: "",
+      firstName: "",
+      genre: "",
+      lastName: "",
+      grade_id: "",
+      address: "",
+      number_phone: "",
+      date_d_inscription: "",
+      image: "",
+    },
     students: {},
     allResponse: {},
     idDeletestudent: null,
     isShowModalDelete: false,
     loader: false,
     isShowModal: false,
+    ModalChangeImage: false,
   }),
   getters: {
     getstudentById: function (state) {
@@ -33,16 +35,38 @@ export const studentStore = defineStore("studentStore", {
       };
     },
     intialValues: function (state) {
-      return studentInitiolvalue;
+      return {
+        id: null,
+        username: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        grade_id: "",
+        address: "",
+        genre: "",
+        number_phone: "",
+        date_d_inscription: "",
+        image: "",
+      };
+    },
+    getterStudents: function (state) {
+      return [state.students, []];
     },
   },
   actions: {
-    async getstudents() {
+    async getAllStudents() {
       try {
-        const response = await instance.get("/admin/students");
-        this.allResponse = response.data;
-        this.students = this.allResponse.data.data;
-        console.log(response);
+        const response = await instance.get("/admin/allstudents");
+        this.students = response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getstudents(id = 1) {
+      try {
+        const response = await instance.get("/admin/students?page=" + id);
+        this.allResponse = response;
+        this.students = this.allResponse.data;
       } catch (err) {
         console.log(err);
       }
@@ -53,18 +77,15 @@ export const studentStore = defineStore("studentStore", {
         const response = await instance.delete(
           "/admin/students/" + this.idDeletestudent
         );
+        console.log(response);
 
-        if (response.status === 200) {
-          this.students = this.students.filter(
-            (t) => t.id !== this.idDeletestudent
-          );
+        this.students = this.students.filter(
+          (t) => t.id !== this.idDeletestudent
+        );
 
-          this.idDeletestudent = null;
-          this.isShowModalDelete = false;
-          useToast().success("student deleted with success", {
-            timeout: 2000,
-          });
-        }
+        this.idDeletestudent = null;
+        this.isShowModalDelete = false;
+        
       } catch (err) {
         console.log(err);
       } finally {
@@ -75,33 +96,34 @@ export const studentStore = defineStore("studentStore", {
       if (this.student.id) {
         // update
         try {
-          // let formData = new FormData();
-          // for (const [key, value] of Object.entries(this.student)) {
-          //   console.log(key + " " + value);
-          //   formData.append(key, value);
-          // }
-          
-          
           const response = await instance.put(
             "/admin/students/" + this.student.id,
-            this.student 
+            this.student
           );
 
-          if (response.status === 200) {
-            console.log(response);
-            this.students = this.students.map((t) => {
-              if (t.id !== this.student.id) return t;
-              else return response.data.data;
-            });
+          console.log(response);
+          this.students = this.students.map((t) => {
+            if (t.id !== this.student.id) return t;
+            else return response.data;
+          });
 
-            this.student = studentInitiolvalue;
+          this.student = {
+            id: null,
+            username: "",
+            email: "",
+            firstName: "",
+            genre: "",
+            lastName: "",
+            grade_id: "",
+            address: "",
+            number_phone: "",
+            date_d_inscription: "",
+            image: "",
+          };
 
-            this.isShowModal = false;
+          this.isShowModal = false;
 
-            useToast().success("student updated with success", {
-              timeout: 2000,
-            });
-          }
+      
         } catch (err) {
           console.log(err);
         } finally {
@@ -110,27 +132,76 @@ export const studentStore = defineStore("studentStore", {
       } else {
         try {
           let formData = new FormData();
-       
-          for (const [key, value] of Object.entries(this.student)) {
-            formData.append(key, value);
-          }
-          const response = await instance.post("/admin/students", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
-          this.students.unshift(response.data.data);
-          this.student = studentInitiolvalue;
+
+          formData.append("username", this.student.username);
+          const response = await instance.post(
+            "/admin/students",
+
+            this.student
+          );
+          this.students.unshift(response);
+          this.student = {
+            id: null,
+            username: "",
+            email: "",
+            firstName: "",
+            genre: "",
+            lastName: "",
+            grade_id: "",
+            address: "",
+            number_phone: "",
+            date_d_inscription: "",
+            image: "",
+          };
 
           this.isShowModal = false;
-          useToast().success("student created with success", {
-            timeout: 2000,
-          });
+          
         } catch (err) {
           console.log(err);
         } finally {
           this.loader = false;
         }
+      }
+    },
+    async changeImage() {
+      try {
+        let formData = new FormData();
+        formData.append("image", this.student.image);
+        console.log(this.student.image);
+        const response = await instance.post(
+          "/admin/students/changeImage/" + this.student.id,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        this.students = this.students.map((t) => {
+          if (t.id !== this.student.id) return t;
+          else return response;
+        });
+
+        this.student = {
+          id: null,
+          username: "",
+          email: "",
+          firstName: "",
+          genre: "",
+          lastName: "",
+          grade_id: "",
+          address: "",
+          number_phone: "",
+          date_d_inscription: "",
+          image: "",
+        };
+
+        this.ModalChangeImage = false;
+        
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loader = false;
       }
     },
   },

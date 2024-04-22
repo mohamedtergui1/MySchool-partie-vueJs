@@ -14,16 +14,18 @@
                         <router-link :to="{ name: 'about' }" exact>About</router-link>
                     </fwb-navbar-link>
 
+
                     <fwb-navbar-link>
-                        Pricing
-                    </fwb-navbar-link>
-                    <fwb-navbar-link>
-                        Contact
+                        <router-link :to="{ name: 'contact' }" exact>Contact</router-link>
                     </fwb-navbar-link>
                 </fwb-navbar-collapse>
             </template>
             <template #right-side>
-                <div v-if="user" class="flex gap-2">
+                <div v-if="user" class="flex items-center gap-2">
+                    <router-link :to="{ name: 'dashboard' }" > <span class="border  px-4 py-2 ">
+                        dashboard
+                    </span></router-link>
+                   
                     <fwb-button color="alternative">
                         {{ user.username }}
                     </fwb-button>

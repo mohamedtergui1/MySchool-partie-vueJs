@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
 
-
 export const classroomStore = defineStore("classroomStore", {
   id: "classroomStore",
   state: () => ({
@@ -18,7 +17,10 @@ export const classroomStore = defineStore("classroomStore", {
     idDeleteclassroom: null,
     isShowModalDelete: false,
     loader: false,
-    isShowModal: false
+    isShowModal: false,
+    modalMangeStudents: false,
+    SelectedClass: [],
+    availableStudent: [],
   }),
   getters: {
     getclassroomById: function (state) {
@@ -35,21 +37,51 @@ export const classroomStore = defineStore("classroomStore", {
         promo_id: "",
       };
     },
-     
-    
   },
   actions: {
-    async getclassrooms() {
-       
+    async syncStudents(id, students) {
+      this.loader = true;
+      try {
+        const response = await instance.put("/admin/syncStudents/" + id, {
+          student_ids: students,
+        });
+        console.log(response);
+        this.classrooms = this.classrooms.map((t) => {
+          if (t.id !== response.id) return t;
+          else return response;
+        });
+        this.modalMangeStudents = false;
+      } catch (err) {
+        
+      } finally {
+        this.loader = false;
+      }
+    },
+
+    async getAvailableStudent(id) {
+      this.loader = true;
 
       try {
-        const response = await instance.get("/admin/classrooms");
-        this.allResponse = response.data;
-        this.classrooms = this.allResponse.data.data;
-        console.log(this.classrooms);
-        return this.allResponse;
+        const response = await instance.get(
+          "/admin/getAvailableStudents/" + id
+        );
+        console.log(response);
+        this.availableStudent = response;
       } catch (err) {
-        console.log(err);
+        
+      } finally {
+        this.loader = false;
+      }
+    },
+    async getclassrooms(id=1) {
+      try {
+        const response = await instance.get("/admin/classrooms?page="+id);
+        console.log(response);  
+        this.allResponse = response;
+        this.classrooms = this.allResponse.data;
+
+      } catch (err) {
+        
       }
     },
     async deleteclassroom() {
@@ -59,23 +91,23 @@ export const classroomStore = defineStore("classroomStore", {
           "/admin/classrooms/" + this.idDeleteclassroom
         );
 
-        if (response.status === 200) {
+       
           this.classrooms = this.classrooms.filter(
             (t) => t.id !== this.idDeleteclassroom
           );
 
           this.idDeleteclassroom = null;
           this.isShowModalDelete = false;
-          return true;
-        }
+           
+        
       } catch (err) {
-        console.log(err);
+         
       } finally {
         this.loader = false;
       }
     },
     async updateAndEdit() {
-      console.log(this.classroom);
+      
 
       if (this.classroom.id) {
         // update
@@ -84,15 +116,11 @@ export const classroomStore = defineStore("classroomStore", {
             "/admin/classrooms/" + this.classroom.id,
             this.classroom
           );
-          let tmp = this.classrooms;
-          if (response.status === 200) {
-            for (let i = 0; i < tmp.length; i++) {
-              if (tmp[i].id === this.classroom.id) {
-                tmp[i] = response.data.data;
-                break;
-              }
-            }
-            this.classrooms = tmp;
+             this.classrooms = this.classrooms.map((t) => {
+               if (t.id !== this.classroom.id) return t;
+               else return response;
+             });
+               
             this.classroom = {
               id: null,
               name: "",
@@ -102,10 +130,10 @@ export const classroomStore = defineStore("classroomStore", {
             };
 
             this.isShowModal = false;
-            return true;
-          }
+           
+          
         } catch (err) {
-          console.log(err);
+           
         } finally {
           this.loader = false;
         }
@@ -115,7 +143,7 @@ export const classroomStore = defineStore("classroomStore", {
             "/admin/classrooms",
             this.classroom
           );
-          this.classrooms.unshift(response.data.data);
+          this.classrooms.unshift(response);
           this.classroom = {
             id: null,
             name: "",
@@ -127,7 +155,7 @@ export const classroomStore = defineStore("classroomStore", {
           this.isShowModal = false;
           return true;
         } catch (err) {
-          console.log(err);
+          
         } finally {
           this.loader = false;
         }
