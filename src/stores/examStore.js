@@ -141,12 +141,13 @@ export const examStore = defineStore("examStore", {
       }
     },
     async updateExamNote() {
+      this.loader = true;
       try {
-        const response = await instance.put(
-          "/teacher/updateResult/" + this.exam.id
-        );
-        
-       this.studentWithResult= null;
+        console.log();
+        const response = await instance.post("/teacher/updateResult", {
+          notes: this.studentWithResult.map((t) => [t.id, t.note])
+        });
+        this.mangeNoteModal = false
       } catch (err) {
         console.log(err);
       } finally {

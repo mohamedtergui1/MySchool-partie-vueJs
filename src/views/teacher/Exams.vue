@@ -217,7 +217,7 @@ onMounted(() => {
 
                     </div>
                     <div>
-                        <fwb-input class="w-full" v-model="s.note" type="number" placeholder="enter note" />
+                        <fwb-input class="w-full"   v-model="s.note" type="number" placeholder="enter note" />
                     </div>
 
                 </div>

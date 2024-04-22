@@ -33,12 +33,19 @@ const router = createRouter({
           path: "/login",
           name: "login",
           component: _import_("Login"),
-          meta: { title: "login" },
+
+          meta: {
+            noAuth: true,
+          },
         },
         {
           path: "/signup",
           name: "signup",
           component: _import_("Signup"),
+
+          meta: {
+            noAuth: true,
+          },
         },
         {
           path: "/forgot-password",
@@ -72,7 +79,7 @@ const router = createRouter({
           component: _import_("admin/Students"),
           meta: {
             title: "dashboard",
-            role: [1,4],
+            role: [1, 4],
           },
         },
         {
@@ -163,6 +170,12 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+  if (to.meta && to.meta.noAuth) {
+    if (localStorage.getItem("token")) {
+      next("/");
+      return;
+    }
+  } else next();
 });
 
 export default router;

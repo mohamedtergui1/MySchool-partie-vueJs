@@ -119,6 +119,7 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
                         stacked />
                     <!-- <stacked-avatars-counter href="#" total="99" /> -->
                 </div>
+                 
             </div>
             <div class="flex justify-end py-5  pr-2 gap-2">
                 <FwbButton @click="handleDeleteButtonClick(c.id, index)" color="red">delete</FwbButton>

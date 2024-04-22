@@ -125,7 +125,7 @@ onMounted(() => {
 
         </template>
         <template #footer>
-            <div     class="flex justify-end gap-5 " >
+            <div class="flex justify-end gap-5" >
                 <fwb-button class="mr-2" @click="isShowModalDelete = !isShowModalDelete" color="alternative">
                     Decline
                 </fwb-button>
