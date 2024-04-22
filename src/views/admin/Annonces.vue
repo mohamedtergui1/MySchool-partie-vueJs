@@ -53,7 +53,21 @@ onMounted(() => {
     annonceStore().getannonces()
 })
 const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
+function timeSince(date) {
+    const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    let interval = Math.floor(seconds / 3600);
 
+    if (interval >= 24) {
+        return `${interval} days ago`;
+    } else {
+        interval = Math.floor(seconds / 60);
+        if (interval >= 2) {
+            return `${interval} minutes ago`;
+        } else {
+            return 'Just now';
+        }
+    }
+}
 </script>
 
 <template>
@@ -67,9 +81,16 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
     </div>
 
     <div class="flex flex-wrap justify-center  lg:justify-start  gap-5  px-10 ">
-       
+
         <div v-for="(p, index) in annonces" :key="index" class=" rounded lg:w-[650px] w-10/12 px-10 border shadow-lg ">
-            <h1 class="font-bold pt-4  border-b " >{{ p.title }}</h1>
+            <div class="flex justify-between items-center  font-bold pt-4  border-b">
+
+                <h1>{{ p.title }}</h1>
+
+                <span class="text-md text-gray-700 font-normal  " >
+                    {{ timeSince(new Date(p.updated_at))}}
+                </span>
+            </div>
             <ScrollPanel class="pt-5" style="width: 100%; height: 200px">
                 <p>
                     {{ p.description }}

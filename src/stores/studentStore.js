@@ -2,8 +2,6 @@ import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
 
- 
-
 export const studentStore = defineStore("studentStore", {
   id: "studentStore",
   state: () => ({
@@ -17,7 +15,7 @@ export const studentStore = defineStore("studentStore", {
       grade_id: "",
       address: "",
       number_phone: "",
-      date_d_inscription: "",
+      date_of_birth: "",
       image: "",
     },
     students: {},
@@ -40,12 +38,12 @@ export const studentStore = defineStore("studentStore", {
         username: "",
         email: "",
         firstName: "",
+        genre: "",
         lastName: "",
         grade_id: "",
         address: "",
-        genre: "",
         number_phone: "",
-        date_d_inscription: "",
+        date_of_birth: "",
         image: "",
       };
     },
@@ -85,7 +83,6 @@ export const studentStore = defineStore("studentStore", {
 
         this.idDeletestudent = null;
         this.isShowModalDelete = false;
-        
       } catch (err) {
         console.log(err);
       } finally {
@@ -104,7 +101,7 @@ export const studentStore = defineStore("studentStore", {
           console.log(response);
           this.students = this.students.map((t) => {
             if (t.id !== this.student.id) return t;
-            else return response.data;
+            else return response;
           });
 
           this.student = {
@@ -117,13 +114,11 @@ export const studentStore = defineStore("studentStore", {
             grade_id: "",
             address: "",
             number_phone: "",
-            date_d_inscription: "",
+            date_of_birth: "",
             image: "",
           };
 
           this.isShowModal = false;
-
-      
         } catch (err) {
           console.log(err);
         } finally {
@@ -150,12 +145,11 @@ export const studentStore = defineStore("studentStore", {
             grade_id: "",
             address: "",
             number_phone: "",
-            date_d_inscription: "",
+            date_of_birth: "",
             image: "",
           };
 
           this.isShowModal = false;
-          
         } catch (err) {
           console.log(err);
         } finally {
@@ -192,12 +186,11 @@ export const studentStore = defineStore("studentStore", {
           grade_id: "",
           address: "",
           number_phone: "",
-          date_d_inscription: "",
+          date_of_birth: "",
           image: "",
         };
 
         this.ModalChangeImage = false;
-        
       } catch (err) {
         console.log(err);
       } finally {

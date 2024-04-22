@@ -10,10 +10,11 @@ export const userAuthStore = defineStore("userAuthStore", {
       password: "",
     },
     user: JSON.parse(localStorage.getItem("user")) || null,
-    role: parseInt(localStorage.getItem("role")) || null ,
+    role: parseInt(localStorage.getItem("role")) || null,
     token: localStorage.getItem("token") || null,
     loading: false,
     errors: null,
+    isShowModal : false,
   }),
 
   actions: {

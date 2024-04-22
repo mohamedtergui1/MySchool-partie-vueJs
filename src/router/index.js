@@ -70,7 +70,7 @@ const router = createRouter({
           component: _import_("admin/Dashboard"),
           meta: {
             title: "dashboard",
-            role: [1, 4],
+            role: [1, 4,3,2],
           },
         },
         {
@@ -164,18 +164,15 @@ router.beforeEach((to, from, next) => {
   if (to.meta && to.meta.role) {
     if (!to.meta.role.includes(userAuthStore().role)) {
       next("/forbidden");
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
+    }  
+  }  
   if (to.meta && to.meta.noAuth) {
     if (localStorage.getItem("token")) {
       next("/");
       return;
     }
-  } else next();
+  }
+  next();
 });
 
 export default router;
