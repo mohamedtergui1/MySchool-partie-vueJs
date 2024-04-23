@@ -3,7 +3,7 @@ import { ref } from "vue"
 import ModalUpdateProfile from "@/components/modals/profile/ModalUpdateProfile.vue"
 import { userAuthStore } from "@/stores/userAuthStore";
 import { storeToRefs } from "pinia";
-const { user , isShowModal  } = storeToRefs(userAuthStore())
+const { user, isShowModal } = storeToRefs(userAuthStore())
 const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 
 </script>
@@ -17,7 +17,7 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
                 alt="User Cover" class="w-full xl:h-[20rem] lg:h-[18rem] md:h-[16rem] sm:h-[14rem] xs:h-[11rem]" />
 
             <!-- Profile Image -->
-            <div class="sm:w-[80%] xs:w-[90%] justify-around items-center mx-auto flex">
+            <div class="sm:w-[80%] xs:w-[90%] justify-start items-center mx-auto flex">
                 <img :src="user.image ? user.image + baseUrlfroPic : 'https://th.bing.com/th/id/R.1c2a84a1378f6bf7ad02b0bcf8e445f4?rik=TlikBeCFnlj72A&riu=http%3a%2f%2fayaan.ai%2fimg%2fteam%2fteam01.jpg&ehk=xCYgCvgUvLb1dM3n%2fVNYTtmypM9nxkCfVOdXU5dicps%3d&risl=&pid=ImgRaw&r=0'"
                     alt="User Profile"
                     class="rounded-full lg:w-[12rem] lg:h-[12rem] md:w-[10rem] md:h-[10rem] sm:w-[8rem] sm:h-[8rem] xs:w-[7rem] xs:h-[7rem] outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem] xs:bottom-[3rem]" />
@@ -34,7 +34,7 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
                     </h2>
                 </div>
                 <div v-if="userAuthStore().role == 1 || userAuthStore().role == 2"
-                    class="flex justify-end h-10  pr-16 ">
+                    class="flex justify-end h-10    ">
                     <ModalUpdateProfile />
                 </div>
 
@@ -70,25 +70,26 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
                         </div>
                         <div class="w-full">
                             <dl class="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+
                                 <div class="flex flex-col ">
                                     <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">username</dt>
                                     <dd class="text-lg pb-3 font-semibold">{{ user.username }}</dd>
                                 </div>
+
                                 <div class="flex flex-col pb-3">
-                                    <dt class="mb-1 pt-3 text-gray-500 md:text-lg dark:text-gray-400">Location</dt>
-                                    <dd class="text-lg   font-semibold">{{ user.address }}</dd>
+                                    <dt class="mb-1 pt-3 text-gray-500 md:text-lg dark:text-gray-400">address</dt>
+                                    <dd class="text-lg selection:font-semibold">{{ user.address }}</dd>
                                 </div>
 
                                 <div class="flex flex-col ">
                                     <dt class="mb-1 pt-3 text-gray-500 md:text-lg dark:text-gray-400">Phone Number</dt>
-                                    <dd class="text-lg pt-3   font-semibold">{{ user.number_phone }}</dd>
+                                    <dd class="text-lg pt-3 font-semibold">{{ user.number_phone }}</dd>
                                 </div>
+
                                 <div class="flex flex-col ">
                                     <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Email</dt>
-                                    <dd class="text-lg pt-3   font-semibold">{{ user.email }}</dd>
+                                    <dd class="text-lg pt-3 font-semibold">{{ user.email }}</dd>
                                 </div>
-
-
                             </dl>
                         </div>
                     </div>

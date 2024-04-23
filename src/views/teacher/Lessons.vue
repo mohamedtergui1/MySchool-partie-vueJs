@@ -96,7 +96,7 @@ onMounted(() => {
                     {{ l.description ? l.description.substring(0, 20) : "—" }}
                 </fwb-table-cell>
                 <fwb-table-cell>{{ l.classroom.name }} </fwb-table-cell>
-                <fwb-table-cell class=" flex  justify-end lap-2">
+                <fwb-table-cell class=" flex  justify-end gap-2">
                     <FwbButton @click="handleDeleteButtonClick(l.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(l.id, index)">edit</FwbButton>
                 </fwb-table-cell>

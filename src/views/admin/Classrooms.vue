@@ -87,7 +87,7 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
 
 
 
-    <div class="flex flex-wrap gap-5 justify-center lg:justify-start mx-10">
+    <div class="flex flex-wrap gap-8 justify-center lg:justify-start mx-10">
 
         <div v-for="(c, index) in classrooms " :key="index"
             class=" border rounded shadow-lg text-center text-gray-500 w-[430px]">
@@ -198,33 +198,5 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
         </template>
     </fwb-modal>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 </template>
