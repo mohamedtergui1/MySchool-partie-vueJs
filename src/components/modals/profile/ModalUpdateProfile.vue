@@ -7,7 +7,7 @@ import { storeToRefs } from "pinia";
 import {
     FwbModal, FwbButton, FwbInput, FwbCheckbox, FwbSelect, FwbFileInput
 } from 'flowbite-vue'  
-const { user, isShowModal } = storeToRefs(userAuthStore())
+const { user, isShowModal, loading } = storeToRefs(userAuthStore())
 const genres = ref([
     { value: 'man', name: 'man' },
     { value: 'woman', name: 'woman' },
@@ -69,8 +69,8 @@ const genres = ref([
                             Please enter a valid date date of birth
                         </template>
                     </fwb-input>
-                    <fwb-input v-model="user.address" required placeholder="enter address" label="address"
-                        type="text" validation-status="">
+                    <fwb-input v-model="user.address" required placeholder="enter address" label="address" type="text"
+                        validation-status="">
                         <template #validationMessage>
                             Please enter a valid address
                         </template>
@@ -87,7 +87,7 @@ const genres = ref([
                 <fwb-button @click="isShowModal =  ! isShowModal" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="userStore().updateAndEdit()" :disabled="loader" :loading="loader" color="blue">
+                <fwb-button @click="userAuthStore().update()" :disabled="loading" :loading="loading" color="blue">
                     {{ user.id ? 'update' : 'add' }}
                 </fwb-button>
             </div>

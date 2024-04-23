@@ -171,6 +171,31 @@ const { role, user, loading } = storeToRefs(userAuthStore());
                                     </router-link>
                                 </li>
                             </div>
+                            <!-- end admin -->
+                            <!-- teacher -->
+                            <div v-if="userAuthStore().role == 2">
+                                 
+                                <li>
+                                    <router-link :to="{ name: 'teacherClasses' }"
+                                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                            viewBox="0 0 18 18">
+                                            <path
+                                                d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                        </svg>
+                                        <span class="flex-1 ms-3 whitespace-nowrap">Classooms</span>
+                                        <span
+                                            class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
+                                    </router-link>
+                                </li>
+                            </div>
+                            <!-- end teacher -->
+                            <!-- student  -->
+                            <div v-if="userAuthStore().role == 1">
+
+                            </div>
+
 
                             <FwbButton @click="userAuthStore().logout()" :disabled="loader" class="w-full" type="submit"
                                 color="alternative" :loading="loader">
@@ -189,29 +214,8 @@ const { role, user, loading } = storeToRefs(userAuthStore());
 
                         </ul>
                     </div>
-                    <!-- end admin -->
-                    <!-- teacher -->
-                    <div v-if="userAuthStore().role == 2" >
-                        <li>
-                            <router-link :to="{ name: 'classrooms' }"
-                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    viewBox="0 0 18 18">
-                                    <path
-                                        d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                                </svg>
-                                <span class="flex-1 ms-3 whitespace-nowrap">Classooms</span>
-                                <span
-                                    class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
-                            </router-link>
-                        </li>
-                    </div>
-                    <!-- end teacher -->
-                    <!-- student  -->
-                    <div  v-if="userAuthStore().role == 1" >
 
-                    </div>
+
                     <div>
 
                     </div>
@@ -221,7 +225,7 @@ const { role, user, loading } = storeToRefs(userAuthStore());
             <!-- Content -->
             <div class="flex-1 flex flex-col overflow-hidden">
                 <!-- Nav bar   -->
-                <div class="bg-gray-100 shadow-lg ">
+                <div class="bg-gray-100 md:px-20 shadow-lg ">
 
                     <div class="container mx-auto">
                         <div class="flex justify-between items-center py-4 px-2">
