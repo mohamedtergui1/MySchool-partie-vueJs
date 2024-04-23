@@ -70,7 +70,8 @@ const router = createRouter({
           component: _import_("admin/Dashboard"),
           meta: {
             title: "dashboard",
-            role: [1, 4,3,2],
+            Auth: true,
+            role: [1, 4, 3, 2],
           },
         },
         {
@@ -79,6 +80,7 @@ const router = createRouter({
           component: _import_("admin/Students"),
           meta: {
             title: "dashboard",
+            Auth: true,
             role: [1, 4],
           },
         },
@@ -88,6 +90,8 @@ const router = createRouter({
           component: _import_("admin/Promos"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [1, 4],
           },
         },
@@ -97,6 +101,8 @@ const router = createRouter({
           component: _import_("admin/Grades"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [1, 4],
           },
         },
@@ -106,6 +112,8 @@ const router = createRouter({
           component: _import_("admin/Classrooms"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [1, 4],
           },
         },
@@ -115,6 +123,8 @@ const router = createRouter({
           component: _import_("admin/Employees"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [4, 1],
           },
         },
@@ -124,6 +134,8 @@ const router = createRouter({
           component: _import_("admin/Annonces"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [4, 1],
           },
         },
@@ -133,6 +145,8 @@ const router = createRouter({
           component: _import_("teacher/Lessons"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [4, 1],
           },
         },
@@ -142,16 +156,39 @@ const router = createRouter({
           component: _import_("teacher/Exams"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [4, 1],
+          },
+        },
+        {
+          path: "/forbidden",
+          component: () => import("@/errors/403.vue"),
+          name: "403",
+        },
+        {
+          path: "/teacher/classroms",
+          name: "teacherClasses",
+          component: _import_("teacher/Classrooms"),
+          meta: {
+            title: "classroom",
+            Auth: true,
+            role: [2],
+          },
+        },
+        {
+          path: "/teacher/classrom",
+          name: "ClassroomDetails",
+          component: _import_("teacher/ClassroomDetails"),
+          meta: {
+            title: "classroom",
+            Auth: true,
+            role: [2],
           },
         },
       ],
     },
-    {
-      path: "/forbidden",
-      component: () => import("@/errors/403.vue"),
-      name: "403",
-    },
+
     {
       path: "/(.*)",
       component: () => import("@/errors/404.vue"),
@@ -161,13 +198,19 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.meta && to.meta.Auth) {
+    if (!userAuthStore().token) {
+      next("/login");
+      return;
+    }
+  }
   if (to.meta && to.meta.role) {
     if (!to.meta.role.includes(userAuthStore().role)) {
       next("/forbidden");
     }  
   }  
   if (to.meta && to.meta.noAuth) {
-    if (localStorage.getItem("token")) {
+    if (userAuthStore().token) {
       next("/");
       return;
     }
