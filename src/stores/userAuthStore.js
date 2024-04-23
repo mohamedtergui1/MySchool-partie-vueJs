@@ -14,7 +14,7 @@ export const userAuthStore = defineStore("userAuthStore", {
     token: localStorage.getItem("token") || null,
     loading: false,
     errors: null,
-    isShowModal : false,
+    isShowModal: false,
   }),
 
   actions: {
@@ -108,6 +108,20 @@ export const userAuthStore = defineStore("userAuthStore", {
         this.token = "";
 
         router.push("/login");
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async update() {
+      this.loading = true;
+
+      try {
+        const response = await instance.put("/updateProfile", this.user);
+        this.user = response
+        localStorage.setItem("user", JSON.stringify(this.user));
+        
       } catch (error) {
         console.error(error);
       } finally {
