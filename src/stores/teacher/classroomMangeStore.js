@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import instance from "@/axios-config.js";  
+import instance from "@/axios-config.js";
 import router from "@/router";
 
 export const classroomMangeStore = defineStore("classroomMangeStore", {
@@ -8,17 +8,7 @@ export const classroomMangeStore = defineStore("classroomMangeStore", {
     classrooms: null,
     lessons: null,
     exams: null,
-    classroom: null,
-    loading: false,
   }),
-getters: {
-  getById: (state) => (index) => {
-    state.classroom = state.classrooms[index];
-    state.loading = false
-    router.push({ name: "ClassroomDetails" });
-  },
-},
-
   actions: {
     async fetchClassroomData() {
       try {

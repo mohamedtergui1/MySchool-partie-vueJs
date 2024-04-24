@@ -37,11 +37,12 @@ onMounted(() => {
                 </div>
 
             </div>
+            <router-link :to="{ name: 'ClassroomDetails', params: { id: c.id } }">
 
-            <fwb-button @click="classroomMangeStore().getById(index)" :loading="loading"
-                class="px-8 rounded-2xl   bg-blue-500 text-white font-bold py-2">
-                view
-            </fwb-button>
+                <div :loading="loading" class="px-8 rounded-2xl   bg-blue-500 text-white font-bold py-2">
+                    view
+                </div>
+            </router-link>
 
 
         </div>

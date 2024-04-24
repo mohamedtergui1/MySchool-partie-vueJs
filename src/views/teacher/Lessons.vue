@@ -93,7 +93,7 @@ onMounted(() => {
             <fwb-table-row v-for="(l, index) in lessons " :key="index">
                 <fwb-table-cell>{{ l.name }} </fwb-table-cell>
                 <fwb-table-cell>
-                    {{ l.description ? l.description.substring(0, 20) : "—" }}
+                    {{ l.description.length > 20 ? l.description.substring(0, 20) + "...." : l.description }}
                 </fwb-table-cell>
                 <fwb-table-cell>{{ l.classroom.name }} </fwb-table-cell>
                 <fwb-table-cell class=" flex  justify-end gap-2">
@@ -125,7 +125,7 @@ onMounted(() => {
 
         </template>
         <template #footer>
-            <div class="flex justify-end gap-5" >
+            <div class="flex justify-end gap-5">
                 <fwb-button class="mr-2" @click="isShowModalDelete = !isShowModalDelete" color="alternative">
                     Decline
                 </fwb-button>
@@ -150,11 +150,12 @@ onMounted(() => {
             </div>
         </template>
         <template #body>
-            <div class="flex gap-2   flex-col justify-center items-center">
+            <div class="flex gap-2 flex-col justify-center items-center">
                 <fwb-input class="w-full" v-model="lesson.name" placeholder="enter title" label="title" />
                 <div class="w-full">
-                    <fwb-textarea v-model="lesson.description" :rows="7" label="Your description"
-                        placeholder="Write your description..." />
+                    <!-- <fwb-textarea v-model="lesson.description" :rows="7" label="Your description"
+                        placeholder="Write your description..." /> -->
+                    <Editor v-model="lesson.description" editorStyle="height: 320px" />
 
                 </div>
                 <fwb-select class="w-full" v-model="lesson.classroom_id"

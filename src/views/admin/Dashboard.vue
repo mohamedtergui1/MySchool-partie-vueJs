@@ -18,7 +18,7 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 
             <!-- Profile Image -->
             <div class="sm:w-[80%] xs:w-[90%] justify-start items-center mx-auto flex">
-                <img :src="user.image ? user.image + baseUrlfroPic : 'https://th.bing.com/th/id/R.1c2a84a1378f6bf7ad02b0bcf8e445f4?rik=TlikBeCFnlj72A&riu=http%3a%2f%2fayaan.ai%2fimg%2fteam%2fteam01.jpg&ehk=xCYgCvgUvLb1dM3n%2fVNYTtmypM9nxkCfVOdXU5dicps%3d&risl=&pid=ImgRaw&r=0'"
+                <img :src="user.image ? baseUrlfroPic + user.image : 'https://th.bing.com/th/id/R.1c2a84a1378f6bf7ad02b0bcf8e445f4?rik=TlikBeCFnlj72A&riu=http%3a%2f%2fayaan.ai%2fimg%2fteam%2fteam01.jpg&ehk=xCYgCvgUvLb1dM3n%2fVNYTtmypM9nxkCfVOdXU5dicps%3d&risl=&pid=ImgRaw&r=0'"
                     alt="User Profile"
                     class="rounded-full lg:w-[12rem] lg:h-[12rem] md:w-[10rem] md:h-[10rem] sm:w-[8rem] sm:h-[8rem] xs:w-[7rem] xs:h-[7rem] outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem] xs:bottom-[3rem]" />
 
@@ -33,8 +33,7 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
                         {{ user.username }}
                     </h2>
                 </div>
-                <div v-if="userAuthStore().role == 1 || userAuthStore().role == 2"
-                    class="flex justify-end h-10    ">
+                <div v-if="userAuthStore().role == 1 || userAuthStore().role == 2" class="flex justify-end h-10    ">
                     <ModalUpdateProfile />
                 </div>
 

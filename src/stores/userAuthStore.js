@@ -109,7 +109,7 @@ export const userAuthStore = defineStore("userAuthStore", {
 
         router.push("/login");
       } catch (error) {
-        console.error(error);
+      
       } finally {
         this.loading = false;
       }
@@ -123,7 +123,7 @@ export const userAuthStore = defineStore("userAuthStore", {
         localStorage.setItem("user", JSON.stringify(this.user));
         
       } catch (error) {
-        console.error(error);
+        
       } finally {
         this.loading = false;
       }

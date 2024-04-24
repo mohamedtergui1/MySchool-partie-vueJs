@@ -1,16 +1,17 @@
 import axios from "axios";
 import { useToast } from "vue-toastification";
-
-// Access Vite environment variables through import.meta.env
+import { progressStore } from "@/stores/progressStore";
+ 
 const baseUrl = import.meta.env.VITE_API_URL;
 
 const instance = axios.create({
-  baseURL: `${baseUrl}/api`, // Ensure that VITE_API_URL ends with a trailing slash
+  baseURL: `${baseUrl}/api`, 
   timeout: 10000,
 });
 
-// Interceptor to attach the Bearer token to every request
+ 
 instance.interceptors.request.use((config) => {
+  progressStore().progress = true;
   const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -21,6 +22,9 @@ instance.interceptors.request.use((config) => {
 // Interceptor to handle response errors
 instance.interceptors.response.use(
   (response) => {
+      progressStore().progress = false;
+
+
     console.log(response)
     if (response.data.message) {
          useToast().success(response.data.message, {
@@ -30,6 +34,7 @@ instance.interceptors.response.use(
     return response.data.data;
   },
   (error) => {
+    progressStore().progress = false;
     console.log(error)
     if (error.response) {
       console.log(error);
@@ -48,7 +53,7 @@ instance.interceptors.response.use(
     } else {
       console.log("Error:", error.message);
     }
-
+    
     return Promise.reject(error);
   }
 );

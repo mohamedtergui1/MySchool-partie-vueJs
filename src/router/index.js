@@ -177,7 +177,7 @@ const router = createRouter({
           },
         },
         {
-          path: "/teacher/classrom",
+          path: "/teacher/classroom/:id",
           name: "ClassroomDetails",
           component: _import_("teacher/ClassroomDetails"),
           meta: {
@@ -190,7 +190,7 @@ const router = createRouter({
     },
 
     {
-      path: "/(.*)",
+      path: "/notfound(.*)",
       component: () => import("@/errors/404.vue"),
       name: "404",
     },
