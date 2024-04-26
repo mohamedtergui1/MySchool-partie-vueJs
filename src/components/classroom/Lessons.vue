@@ -110,7 +110,9 @@ onMounted(async () => {
             <div class="  flex  justify-end items-center pt-10 gap-2 ">
                 <FwbButton @click="openDelete(l.id)" color="red">delete</FwbButton>
                 <FwbButton @click="handleEditButtonClick(i)">edit</FwbButton>
-                <FwbButton color="green">upload pfd</FwbButton>
+                 
+                <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" :maxFileSize="1000000"
+                    @upload="onUpload" />
             </div>
 
 
@@ -129,7 +131,7 @@ onMounted(async () => {
             </div>
             <div class="py-8">
                 <h3 class="text-2xl font-bold text-center ">
-                    are you sue you wannna delete this student
+                    are you sue you wanna delete this student
                 </h3>
             </div>
 

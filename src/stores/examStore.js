@@ -47,7 +47,6 @@ export const examStore = defineStore("examStore", {
     async getClassroomsForexam(id = 1) {
       try {
         const response = await instance.get("/classrooms/lesson");
-
         this.ClassroomsForexam = response;
       } catch (err) {
         console.log(err);
@@ -154,5 +153,16 @@ export const examStore = defineStore("examStore", {
         this.loader = false;
       }
     },
+    async getexamClassroom(id) {
+      try {
+         
+        const response = await instance.get("/teacher/examsClassroom/"+id);
+        this.allResponse = {};
+        this.exams = response;
+         
+      } catch (err) {
+        console.log(err);
+      }
+    }
   },
 });

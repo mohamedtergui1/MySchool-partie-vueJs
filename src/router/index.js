@@ -62,14 +62,14 @@ const router = createRouter({
     {
       path: "/admin",
       component: AdminLayout,
-      redirect: "/dashboard",
+      redirect: "/profile",
       children: [
         {
-          path: "/dashboard",
+          path: "/profile",
           name: "dashboard",
           component: _import_("admin/Dashboard"),
           meta: {
-            title: "dashboard",
+            title: "profile",
             Auth: true,
             role: [1, 4, 3, 2],
           },
@@ -124,7 +124,6 @@ const router = createRouter({
           meta: {
             title: "dashboard",
             Auth: true,
-
             role: [4, 1],
           },
         },
@@ -135,8 +134,7 @@ const router = createRouter({
           meta: {
             title: "dashboard",
             Auth: true,
-
-            role: [4, 1],
+            role: [4, 1, 2],
           },
         },
         {
@@ -207,8 +205,8 @@ router.beforeEach((to, from, next) => {
   if (to.meta && to.meta.role) {
     if (!to.meta.role.includes(userAuthStore().role)) {
       next("/forbidden");
-    }  
-  }  
+    }
+  }
   if (to.meta && to.meta.noAuth) {
     if (userAuthStore().token) {
       next("/");

@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from "vue"
 import ModalUpdateProfile from "@/components/modals/profile/ModalUpdateProfile.vue"
+import ModllChangeImage from "@/components/modals/profile/ModllChangeImage.vue"
 import { userAuthStore } from "@/stores/userAuthStore";
 import { storeToRefs } from "pinia";
-const { user, isShowModal } = storeToRefs(userAuthStore())
+const { user, isShowModal, modaImageChange } = storeToRefs(userAuthStore())
 const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 
 </script>
@@ -14,14 +15,28 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
         <div class="flex flex-col">
             <!-- Cover Image -->
             <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw5fHxjb3ZlcnxlbnwwfDB8fHwxNzEwNzQxNzY0fDA&ixlib=rb-4.0.3&q=80&w=1080"
-                alt="User Cover" class="w-full xl:h-[20rem] lg:h-[18rem] md:h-[16rem] sm:h-[14rem] xs:h-[11rem]" />
+                alt="User Cover" class="w-full  xl:h-[20rem] lg:h-[18rem] md:h-[16rem] sm:h-[14rem] xs:h-[11rem]" />
 
             <!-- Profile Image -->
-            <div class="sm:w-[80%] xs:w-[90%] justify-start items-center mx-auto flex">
+            <div class="sm:w-[80%] relative xs:w-[90%] justify-start items-center mx-auto flex">
+
+
                 <img :src="user.image ? baseUrlfroPic + user.image : 'https://th.bing.com/th/id/R.1c2a84a1378f6bf7ad02b0bcf8e445f4?rik=TlikBeCFnlj72A&riu=http%3a%2f%2fayaan.ai%2fimg%2fteam%2fteam01.jpg&ehk=xCYgCvgUvLb1dM3n%2fVNYTtmypM9nxkCfVOdXU5dicps%3d&risl=&pid=ImgRaw&r=0'"
                     alt="User Profile"
-                    class="rounded-full lg:w-[12rem] lg:h-[12rem] md:w-[10rem] md:h-[10rem] sm:w-[8rem] sm:h-[8rem] xs:w-[7rem] xs:h-[7rem] outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem] xs:bottom-[3rem]" />
+                    class="rounded-full   lg:w-[12rem] lg:h-[12rem] md:w-[10rem] md:h-[10rem] sm:w-[8rem] sm:h-[8rem] xs:w-[7rem] xs:h-[7rem] outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem] xs:bottom-[3rem]" />
 
+                <button v-if="userAuthStore().role == 1 || userAuthStore().role == 2"
+                    @click="modaImageChange = !modaImageChange" class="absolute p-1 rounded-full bg-slate-50 left-28 ">
+                    <svg class="w-10 h-10 text-gray-800 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                            d="M4 18V8a1 1 0 0 1 1-1h1.5l1.707-1.707A1 1 0 0 1 8.914 5h6.172a1 1 0 0 1 .707.293L17.5 7H19a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" />
+                        <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+
+
+                </button>
                 <!-- FullName -->
                 <div class="flex flex-col xs:pl-4 sm:mx-4  my-4 p-4  ">
 
@@ -35,6 +50,9 @@ const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
                 </div>
                 <div v-if="userAuthStore().role == 1 || userAuthStore().role == 2" class="flex justify-end h-10    ">
                     <ModalUpdateProfile />
+                </div>
+                <div v-if="userAuthStore().role == 1 || userAuthStore().role == 2" class="flex justify-end h-10    ">
+                    <ModllChangeImage />
                 </div>
 
             </div>

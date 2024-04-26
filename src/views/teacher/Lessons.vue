@@ -119,7 +119,7 @@ onMounted(() => {
             </div>
             <div class="py-8">
                 <h3 class="text-2xl font-bold text-center ">
-                    are you sue you wannna delete this student
+                   
                 </h3>
             </div>
 

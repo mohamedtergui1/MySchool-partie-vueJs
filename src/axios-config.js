@@ -19,7 +19,7 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor to handle response errors
+ 
 instance.interceptors.response.use(
   (response) => {
       progressStore().progress = false;
@@ -28,7 +28,7 @@ instance.interceptors.response.use(
     console.log(response)
     if (response.data.message) {
          useToast().success(response.data.message, {
-           timeout: 2000,
+           timeout: 2000
          });
     }
     return response.data.data;
@@ -46,7 +46,10 @@ instance.interceptors.response.use(
         } else {
         }
       } else if (error.response.status === 403) {
-        console.log("you don t have permition to open this route");
+        
+         useToast().warning("you don t have permition to open this route", {
+           timeout: 2000,
+         });
       }
     } else if (error.request) {
       console.log("Request error:", error.request);

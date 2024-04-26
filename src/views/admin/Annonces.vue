@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, watch, computed } from 'vue'
-
+import { userAuthStore } from "@/stores/userAuthStore"
 import {
     FwbA,
     FwbTable,
@@ -87,7 +87,7 @@ function timeSince(date) {
 
                 <h1>{{ p.title }}</h1>
 
-                <span class="text-md text-gray-700 font-normal  " >
+                <span class="text-md text-gray-700 font-normal  ">
                     {{ timeSince(new Date(p.updated_at))}}
                 </span>
             </div>
@@ -106,7 +106,7 @@ function timeSince(date) {
 
                     </div>
                 </div>
-                <div class="flex  items-center gap-1">
+                <div v-if="userAuthStore().role == 1 || userAuthStore().user.id == p.user_id " class="flex  items-center gap-1">
                     <FwbButton @click="handleDeleteButtonClick(p.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(p.id, index)">edit</FwbButton>
                 </div>
