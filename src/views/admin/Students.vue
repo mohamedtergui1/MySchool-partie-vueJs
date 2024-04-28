@@ -131,7 +131,7 @@ onMounted(() => {
                 </fwb-table-cell>
 
                 <fwb-table-cell>{{ student.email }}</fwb-table-cell>
-                <fwb-table-cell>{{ student.grade.name }}</fwb-table-cell>
+                <fwb-table-cell>{{ student.grade ?  student.grade.name :  'no grade' }}</fwb-table-cell>
                 <fwb-table-cell>{{ student.date_of_birth }}</fwb-table-cell>
 
                 <fwb-table-cell class=" flex justify-end gap-2">

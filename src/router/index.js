@@ -51,11 +51,17 @@ const router = createRouter({
           path: "/forgot-password",
           name: "forgotpassword",
           component: _import_("ForgotPassword"),
+          meta: {
+            noAuth: true,
+          },
         },
         {
           path: "/reset-password",
           name: "reset-password",
           component: _import_("ResetPassword"),
+          meta: {
+            noAuth: true,
+          },
         },
       ],
     },
@@ -134,7 +140,6 @@ const router = createRouter({
           meta: {
             title: "dashboard",
             Auth: true,
-            role: [4, 1, 2],
           },
         },
         {
@@ -182,6 +187,26 @@ const router = createRouter({
             title: "classroom",
             Auth: true,
             role: [2],
+          },
+        },
+        {
+          path: "/student/classroom/:id",
+          name: "StudentClassroomDetails",
+          component: _import_("student/StudentClassroomDetails"),
+          meta: {
+            title: "classroom",
+            Auth: true,
+            role: [3],
+          },
+        },
+        {
+          path: "/student/classroms",
+          name: "studentClassrooms",
+          component: _import_("student/ClassroomsStudent"),
+          meta: {
+            title: "classroom",
+            Auth: true,
+            role: [3],
           },
         },
       ],

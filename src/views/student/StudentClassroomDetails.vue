@@ -2,7 +2,7 @@
 
 import Students from '@/components/classroom/Students.vue'
 import Lessons from '@/components/classroom/Lessons.vue'
-import Exams from '@/components/classroom/Exams.vue'
+
 
 </script>
 
@@ -16,6 +16,9 @@ import Exams from '@/components/classroom/Exams.vue'
                 <Lessons />
             </TabPanel>
             <TabPanel header="Exams">
+                
+            </TabPanel>
+            <TabPanel header="My Results">
                 <Exams />
             </TabPanel>
         </TabView>

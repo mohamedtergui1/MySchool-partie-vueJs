@@ -4,18 +4,18 @@ import instance from "@/axios-config.js";
 export const classroomDetails = defineStore("classroomDetails", {
   id: "classroomDetails",
   state: () => ({
-    isShowModalDeleteLessons:false,
-    isShowModalLesson:false,
+    isShowModalDeleteLessons: false,
+    isShowModalLesson: false,
     loader: false,
-    students: null,
-    lessons: null,
-    exams: null,
+    students: [],
+    lessons: [],
+    exams: [],
     lesson: {
       id: null,
       name: null,
       description: null,
       course_file: null,
-      classroom_id:null
+      classroom_id: null,
     },
   }),
   actions: {
@@ -103,12 +103,21 @@ export const classroomDetails = defineStore("classroomDetails", {
 
         this.lessons = this.lessons.filter((t) => t.id !== this.lesson.id);
 
-         this.lesson.id = null;
+        this.lesson.id = null;
         this.isShowModalDeleteLessons = false;
       } catch (err) {
         console.log(err);
       } finally {
         this.loader = false;
+      }
+    },
+    async getexamClassroom(id) {
+      try {
+        const response = await instance.get("/teacher/examsClassroom/" + id);
+         
+        this.exams = response;
+      } catch (err) {
+        console.log(err);
       }
     },
   },

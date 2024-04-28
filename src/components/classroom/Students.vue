@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import { classroomDetails } from "@/stores/teacher/classroomDetails";
 import { storeToRefs } from "pinia";
 import { useRouter } from 'vue-router';
-
+import { userAuthStore } from "@/stores/userAuthStore";
 const { students } = storeToRefs(classroomDetails());
 const router = useRouter();
 
@@ -84,7 +84,8 @@ onMounted(async () => {
                         </svg> </a>
                 </li>
             </ul>
-            <div class="bg-blue-500 w-full  cursor-pointer rounded-b-xl text-white font-bold mt-4 ">
+            <div v-if="userAuthStore().role == 2 || userAuthStore().role == 1"
+                class="bg-blue-500 w-full  cursor-pointer rounded-b-xl text-white font-bold mt-4 ">
                 view results
             </div>
         </div>

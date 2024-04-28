@@ -3,7 +3,7 @@ import {
     FwbModal, FwbButton, FwbInput, FwbTextarea 
 } from 'flowbite-vue'
 
-
+import { userAuthStore } from '@/stores/userAuthStore';
 import { ref, onMounted } from "vue";
 import { classroomDetails } from "@/stores/teacher/classroomDetails";
  
@@ -61,7 +61,7 @@ onMounted(async () => {
 
 <template>
     <div class="flex justify-end p-5 ">
-        <fwb-button @click="showModal">
+        <fwb-button v-if="userAuthStore().role == 2 || userAuthStore().role == 1" @click="showModal">
             add
         </fwb-button>
     </div>
@@ -107,10 +107,11 @@ onMounted(async () => {
             </div>
 
 
-            <div class="  flex  justify-end items-center pt-10 gap-2 ">
+            <div v-if="userAuthStore().role == 2 || userAuthStore().role == 1"
+                class="  flex  justify-end items-center pt-10 gap-2 ">
                 <FwbButton @click="openDelete(l.id)" color="red">delete</FwbButton>
                 <FwbButton @click="handleEditButtonClick(i)">edit</FwbButton>
-                 
+
                 <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" :maxFileSize="1000000"
                     @upload="onUpload" />
             </div>

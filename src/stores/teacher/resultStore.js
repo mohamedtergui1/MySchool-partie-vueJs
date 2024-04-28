@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
 
-export const examStore = defineStore("examStore", {
-  id: "examStore",
+export const resultStore = defineStore("resultStore", {
+  id: "resultStore",
   state: () => ({
     exam: {
       id: null,
       title: "",
       date: "",
-      classroom_id: null,
+    
     },
     exams: [],
     allResponse: [],
@@ -27,37 +27,22 @@ export const examStore = defineStore("examStore", {
         return state.exams.find((obj) => obj.id === ID);
       };
     },
-    intialValues: function (state) {
+    initialValues: function (state) {
       return {
         id: null,
         title: "",
-        date: "",
-        classroom_id: null,
-      };
-    },
-    getterClassroomsForexam: (state) => {
-      const Classrooms = state.ClassroomsForexam;
-      return Classrooms.map((Classroom) => ({
-        value: Classroom.id,
-        name: Classroom.name,
-      }));
-    },
+        date: ""
+      }
+    } 
   },
   actions: {
-    async getClassroomsForexam(id = 1) {
+ 
+    async getexams(id ) {
       try {
-        const response = await instance.get("/classrooms/lesson");
-        this.ClassroomsForexam = response;
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async getexams(id = 1) {
-      try {
-        const response = await instance.get("/teacher/exams?page=" + id);
-        this.allResponse = response;
-        this.exams = this.allResponse.data;
-        return this.exams;
+        const response = await instance.get("/teacher/examsClassroom/" + id);
+      
+        this.exams = response;
+        
       } catch (err) {
         console.log(err);
       }
@@ -97,7 +82,7 @@ export const examStore = defineStore("examStore", {
             id: null,
             title: "",
             date: "",
-            classroom_id: null,
+          
           };
 
           this.isShowModal = false;
@@ -114,7 +99,7 @@ export const examStore = defineStore("examStore", {
             id: null,
             title: "",
             date: "",
-            classroom_id: null,
+          
           };
 
           this.isShowModal = false;
@@ -144,15 +129,14 @@ export const examStore = defineStore("examStore", {
       try {
         console.log();
         const response = await instance.post("/teacher/updateResult", {
-          notes: this.studentWithResult.map((t) => [t.id, t.note])
+          notes: this.studentWithResult.map((t) => [t.id, t.note]),
         });
-        this.mangeNoteModal = false
+        this.mangeNoteModal = false;
       } catch (err) {
         console.log(err);
       } finally {
         this.loader = false;
       }
-    }
-  
+    },
   },
 });

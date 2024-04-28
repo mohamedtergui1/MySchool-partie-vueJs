@@ -108,7 +108,7 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
                 </div>
             </div>
             <div class="py-5 flex justify-around ">
-                <span>{{ c.grade.name }}</span> <span>{{ c.promo.year }}</span>
+                <span>{{ c.grade ?  c.grade.name : 'no grade' }}</span> <span>{{ c.promo ? c.promo.year : 'no promo' }}</span>
             </div>
             <div class="  h-10 px-2 ">
 
