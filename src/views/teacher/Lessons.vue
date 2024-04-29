@@ -72,10 +72,13 @@ onMounted(() => {
     </div>
 
 
+    <div v-if="lessons.length == 0">
+        <img class="w-full" src="https://th.bing.com/th/id/OIP.pwWwXIMGatkmJKMZ0gE2SgHaDt?rs=1&pid=ImgDetMain" />
+    </div>
 
 
 
-    <fwb-table>
+    <fwb-table v-else>
         <fwb-table-head>
             <fwb-table-head-cell>title</fwb-table-head-cell>
             <fwb-table-head-cell>description</fwb-table-head-cell>
@@ -119,7 +122,7 @@ onMounted(() => {
             </div>
             <div class="py-8">
                 <h3 class="text-2xl font-bold text-center ">
-                   
+
                 </h3>
             </div>
 

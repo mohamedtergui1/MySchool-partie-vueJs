@@ -30,10 +30,13 @@ export const gradeStore = defineStore("gradeStore", {
     },
     getGrades: (state) => {
       const grades = state.grades;
-      return grades.map((grade) => ({
-        value: grade.id,
-        name: grade.name,
-      }));
+      if (Array.isArray(grades)){
+        return grades.map((grade) => ({
+          value: grade.id,
+          name: grade.name,
+        }));
+      }
+      return []
     },
   },
   actions: {

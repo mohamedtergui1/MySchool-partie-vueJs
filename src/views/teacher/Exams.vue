@@ -81,11 +81,13 @@ onMounted(() => {
         </fwb-button>
     </div>
 
+    <div v-if="exams.length == 0">
+        <img class="w-full" src="https://th.bing.com/th/id/OIP.pwWwXIMGatkmJKMZ0gE2SgHaDt?rs=1&pid=ImgDetMain" />
+    </div>
 
 
 
-
-    <fwb-table>
+    <fwb-table v-else >
         <fwb-table-head>
             <fwb-table-head-cell>title</fwb-table-head-cell>
             <fwb-table-head-cell>description</fwb-table-head-cell>
@@ -217,7 +219,7 @@ onMounted(() => {
 
                     </div>
                     <div>
-                        <fwb-input class="w-full"   v-model="s.note" type="number" placeholder="enter note" />
+                        <fwb-input class="w-full" v-model="s.note" type="number" placeholder="enter note" />
                     </div>
 
                 </div>

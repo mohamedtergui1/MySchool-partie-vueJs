@@ -8,7 +8,7 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbTextarea, FwbSelect, FwbAvatar
+    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbTextarea, FwbSelect, FwbAvatar, FwbBadge
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
 import { resultStore } from '@/stores/teacher/resultStore.js'
@@ -97,6 +97,8 @@ onMounted(() => {
         <fwb-table-head>
             <fwb-table-head-cell>title</fwb-table-head-cell>
             <fwb-table-head-cell>description</fwb-table-head-cell>
+            <fwb-table-head-cell>corrected</fwb-table-head-cell>
+
             <!-- <fwb-table-head-cell>classroom name</fwb-table-head-cell>
             <fwb-table-head-cell>classroom promo</fwb-table-head-cell> -->
 
@@ -112,15 +114,17 @@ onMounted(() => {
                 <fwb-table-cell>
                     {{ l.date }}
                 </fwb-table-cell>
+                <fwb-table-cell v-if="l.corrected"> <fwb-badge type="green">yes</fwb-badge>
+                </fwb-table-cell>
+                <fwb-table-cell v-else><fwb-badge type="red">no</fwb-badge></fwb-table-cell>
+
                 <!-- <fwb-table-cell>{{ l.classroom.name }} </fwb-table-cell>
                 <fwb-table-cell>{{ l.classroom.promo.year }} </fwb-table-cell> -->
 
-
-
-
                 <fwb-table-cell class=" flex  justify-end gap-2">
-                    <FwbButton  color="green">upload file</FwbButton>
-                    <FwbButton @click="handleCorrectButtonClick(index)" color="green">correct</FwbButton>
+                    <FwbButton v-if="l.corrected" color="green">upload file</FwbButton>
+                    <FwbButton @click="handleCorrectButtonClick(index)" color="green">correct
+                    </FwbButton>
                     <FwbButton @click="handleDeleteButtonClick(l.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(l.id, index)">edit</FwbButton>
                 </fwb-table-cell>

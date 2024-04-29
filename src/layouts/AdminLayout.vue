@@ -43,11 +43,12 @@ const { role, user, loading } = storeToRefs(userAuthStore());
                                             <path
                                                 d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                                         </svg>
-                                        <span class="ms-3">{{ role == 1 ? 'admin' : 'teacher' }}</span>
+                                        <span class="ms-3">profile</span>
                                     </span>
                                 </li>
                             </router-link>
                             <div v-if="userAuthStore().role == 1">
+                                
                                 <li>
                                     <router-link :to="{ name: 'classrooms' }"
                                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">

@@ -5,6 +5,7 @@ import instance from "@/axios-config.js";
 export const studentStore = defineStore("studentStore", {
   id: "studentStore",
   state: () => ({
+    
     student: {
       id: null,
       username: "",
@@ -24,7 +25,8 @@ export const studentStore = defineStore("studentStore", {
     isShowModalDelete: false,
     loader: false,
     isShowModal: false,
-    ModalChangeImage: false,
+    ModalChangeImage: false
+   
   }),
   getters: {
     getstudentById: function (state) {
@@ -197,5 +199,14 @@ export const studentStore = defineStore("studentStore", {
         this.loader = false;
       }
     },
+    async search(data) {
+         try {
+           const response = await instance.get("/students/search?name=" + data.name + "&grade=" + data.grade +"&genre=" + data.genre);
+           this.allResponse = response;
+           this.students = this.allResponse.data;
+         } catch (err) {
+           console.log(err);
+         }
+    }
   },
 });

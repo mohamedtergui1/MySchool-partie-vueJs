@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useToast } from "vue-toastification";
 import { progressStore } from "@/stores/progressStore";
-
+import { errorsStore } from "@/stores/errorsStore"; 
 const baseUrl = import.meta.env.VITE_API_URL;
 
 const instance = axios.create({
@@ -46,6 +46,8 @@ instance.interceptors.response.use(
           timeout: 2000,
         });
       } else if (error.response.status === 422) {
+        errorsStore().status = true
+        errorsStore().errors = error.response.data;
         console.log(error.response.data);
       }
     } else if (error.request) {

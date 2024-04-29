@@ -9,7 +9,7 @@ import {
 const { user, modaImageChange, loading } = storeToRefs(userAuthStore())
 const  tmpImage = ref(user.value.image)
 const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
-const imageUrl = ref(baseUrlfroPic.value + tmpImage.value)
+const imageUrl = ref(tmpImage.value ? baseUrlfroPic.value + tmpImage.value : null)
 const handleEditButtonClick = (id, index) => {
 
     let tmp = students.value[index];

@@ -37,6 +37,7 @@ export const userAuthStore = defineStore("userAuthStore", {
         this.errors = null;
         router.push("/profile");
       } catch (error) {
+        this.errors = "whrong email or password"
         console.log(error);
       } finally {
         this.loading = false;
@@ -106,6 +107,7 @@ export const userAuthStore = defineStore("userAuthStore", {
       try {
         const response = await instance.put("/updateProfile", this.user);
         this.user = response;
+        this.isShowModal = false
         localStorage.setItem("user", JSON.stringify(this.user));
       } catch (error) {
       } finally {

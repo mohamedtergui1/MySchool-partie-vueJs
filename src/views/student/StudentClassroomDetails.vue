@@ -2,8 +2,8 @@
 
 import Students from '@/components/classroom/Students.vue'
 import Lessons from '@/components/classroom/Lessons.vue'
-
-
+import MyResult from '@/components/student/MyResult.vue'
+import Exams from '@/components/student/Exams.vue';
 </script>
 
 <template>
@@ -16,11 +16,11 @@ import Lessons from '@/components/classroom/Lessons.vue'
                 <Lessons />
             </TabPanel>
             <TabPanel header="Exams">
-                
-            </TabPanel>
-            <TabPanel header="My Results">
-                <Exams />
-            </TabPanel>
+                <Exams/>
+             </TabPanel>
+                    <TabPanel header="My Results">
+                        <MyResult />
+                    </TabPanel>
         </TabView>
     </div>
 </template>

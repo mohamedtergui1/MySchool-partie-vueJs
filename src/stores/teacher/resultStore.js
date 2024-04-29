@@ -9,7 +9,6 @@ export const resultStore = defineStore("resultStore", {
       id: null,
       title: "",
       date: "",
-    
     },
     exams: [],
     allResponse: [],
@@ -31,18 +30,16 @@ export const resultStore = defineStore("resultStore", {
       return {
         id: null,
         title: "",
-        date: ""
-      }
-    } 
+        date: "",
+      };
+    },
   },
   actions: {
- 
-    async getexams(id ) {
+    async getexams(id) {
       try {
         const response = await instance.get("/teacher/examsClassroom/" + id);
-      
+
         this.exams = response;
-        
       } catch (err) {
         console.log(err);
       }
@@ -82,7 +79,6 @@ export const resultStore = defineStore("resultStore", {
             id: null,
             title: "",
             date: "",
-          
           };
 
           this.isShowModal = false;
@@ -99,7 +95,6 @@ export const resultStore = defineStore("resultStore", {
             id: null,
             title: "",
             date: "",
-          
           };
 
           this.isShowModal = false;
@@ -131,12 +126,30 @@ export const resultStore = defineStore("resultStore", {
         const response = await instance.post("/teacher/updateResult", {
           notes: this.studentWithResult.map((t) => [t.id, t.note]),
         });
+
+        this.exams = this.exams.map((t) => {
+          if (t.id !== this.exam.id) return t;
+          else {
+            this.exam.corrected = true;
+            return this.exam;
+          }
+        });
         this.mangeNoteModal = false;
       } catch (err) {
         console.log(err);
       } finally {
         this.loader = false;
       }
+    },
+    async getStudentExams(id) {
+        try {
+          const response = await instance.get("/student/examsClassroom/" + id);
+
+          this.exams = response;
+          console.log(response);
+        } catch (err) {
+          console.log(err);
+        }
     },
   },
 });
