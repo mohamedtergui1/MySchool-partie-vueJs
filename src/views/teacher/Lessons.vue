@@ -72,10 +72,13 @@ onMounted(() => {
     </div>
 
 
+    <div v-if="lessons.length == 0">
+        <img class="w-full" src="https://th.bing.com/th/id/OIP.pwWwXIMGatkmJKMZ0gE2SgHaDt?rs=1&pid=ImgDetMain" />
+    </div>
 
 
 
-    <fwb-table>
+    <fwb-table v-else>
         <fwb-table-head>
             <fwb-table-head-cell>title</fwb-table-head-cell>
             <fwb-table-head-cell>description</fwb-table-head-cell>
@@ -93,10 +96,10 @@ onMounted(() => {
             <fwb-table-row v-for="(l, index) in lessons " :key="index">
                 <fwb-table-cell>{{ l.name }} </fwb-table-cell>
                 <fwb-table-cell>
-                    {{ l.description ? l.description.substring(0, 20) : "—" }}
+                    {{ l.description.length > 20 ? l.description.substring(0, 20) + "...." : l.description }}
                 </fwb-table-cell>
                 <fwb-table-cell>{{ l.classroom.name }} </fwb-table-cell>
-                <fwb-table-cell class=" flex  justify-end lap-2">
+                <fwb-table-cell class=" flex  justify-end gap-2">
                     <FwbButton @click="handleDeleteButtonClick(l.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(l.id, index)">edit</FwbButton>
                 </fwb-table-cell>
@@ -119,13 +122,13 @@ onMounted(() => {
             </div>
             <div class="py-8">
                 <h3 class="text-2xl font-bold text-center ">
-                    are you sue you wannna delete this student
+
                 </h3>
             </div>
 
         </template>
         <template #footer>
-            <div class="flex justify-end gap-5" >
+            <div class="flex justify-end gap-5">
                 <fwb-button class="mr-2" @click="isShowModalDelete = !isShowModalDelete" color="alternative">
                     Decline
                 </fwb-button>
@@ -150,11 +153,12 @@ onMounted(() => {
             </div>
         </template>
         <template #body>
-            <div class="flex gap-2   flex-col justify-center items-center">
+            <div class="flex gap-2 flex-col justify-center items-center">
                 <fwb-input class="w-full" v-model="lesson.name" placeholder="enter title" label="title" />
                 <div class="w-full">
-                    <fwb-textarea v-model="lesson.description" :rows="7" label="Your description"
-                        placeholder="Write your description..." />
+                    <!-- <fwb-textarea v-model="lesson.description" :rows="7" label="Your description"
+                        placeholder="Write your description..." /> -->
+                    <Editor v-model="lesson.description" editorStyle="height: 320px" />
 
                 </div>
                 <fwb-select class="w-full" v-model="lesson.classroom_id"

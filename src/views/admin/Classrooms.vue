@@ -87,7 +87,7 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
 
 
 
-    <div class="flex flex-wrap gap-5 justify-center lg:justify-start mx-10">
+    <div class="flex flex-wrap gap-8 justify-center lg:justify-start mx-10">
 
         <div v-for="(c, index) in classrooms " :key="index"
             class=" border rounded shadow-lg text-center text-gray-500 w-[430px]">
@@ -108,7 +108,7 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
                 </div>
             </div>
             <div class="py-5 flex justify-around ">
-                <span>{{ c.grade.name }}</span> <span>{{ c.promo.year }}</span>
+                <span>{{ c.grade ?  c.grade.name : 'no grade' }}</span> <span>{{ c.promo ? c.promo.year : 'no promo' }}</span>
             </div>
             <div class="  h-10 px-2 ">
 
@@ -198,33 +198,5 @@ const baseUrlfroPicinClassroom = ref(import.meta.env.VITE_API_URL + '/uploads/st
         </template>
     </fwb-modal>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 </template>

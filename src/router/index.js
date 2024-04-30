@@ -51,26 +51,33 @@ const router = createRouter({
           path: "/forgot-password",
           name: "forgotpassword",
           component: _import_("ForgotPassword"),
+          meta: {
+            noAuth: true,
+          },
         },
         {
           path: "/reset-password",
           name: "reset-password",
           component: _import_("ResetPassword"),
+          meta: {
+            noAuth: true,
+          },
         },
       ],
     },
     {
       path: "/admin",
       component: AdminLayout,
-      redirect: "/dashboard",
+      redirect: "/profile",
       children: [
         {
-          path: "/dashboard",
+          path: "/profile",
           name: "dashboard",
           component: _import_("admin/Dashboard"),
           meta: {
-            title: "dashboard",
-            role: [1, 4],
+            title: "profile",
+            Auth: true,
+            role: [1, 4, 3, 2],
           },
         },
         {
@@ -79,6 +86,7 @@ const router = createRouter({
           component: _import_("admin/Students"),
           meta: {
             title: "dashboard",
+            Auth: true,
             role: [1, 4],
           },
         },
@@ -88,6 +96,8 @@ const router = createRouter({
           component: _import_("admin/Promos"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [1, 4],
           },
         },
@@ -97,6 +107,8 @@ const router = createRouter({
           component: _import_("admin/Grades"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [1, 4],
           },
         },
@@ -106,6 +118,8 @@ const router = createRouter({
           component: _import_("admin/Classrooms"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [1, 4],
           },
         },
@@ -115,6 +129,7 @@ const router = createRouter({
           component: _import_("admin/Employees"),
           meta: {
             title: "dashboard",
+            Auth: true,
             role: [4, 1],
           },
         },
@@ -124,7 +139,7 @@ const router = createRouter({
           component: _import_("admin/Annonces"),
           meta: {
             title: "dashboard",
-            role: [4, 1],
+            Auth: true,
           },
         },
         {
@@ -133,6 +148,8 @@ const router = createRouter({
           component: _import_("teacher/Lessons"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [4, 1],
           },
         },
@@ -142,18 +159,61 @@ const router = createRouter({
           component: _import_("teacher/Exams"),
           meta: {
             title: "dashboard",
+            Auth: true,
+
             role: [4, 1],
+          },
+        },
+        {
+          path: "/forbidden",
+          component: () => import("@/errors/403.vue"),
+          name: "403",
+        },
+        {
+          path: "/teacher/classroms",
+          name: "teacherClasses",
+          component: _import_("teacher/Classrooms"),
+          meta: {
+            title: "classroom",
+            Auth: true,
+            role: [2],
+          },
+        },
+        {
+          path: "/teacher/classroom/:id",
+          name: "ClassroomDetails",
+          component: _import_("teacher/ClassroomDetails"),
+          meta: {
+            title: "classroom",
+            Auth: true,
+            role: [2],
+          },
+        },
+        {
+          path: "/student/classroom/:id",
+          name: "StudentClassroomDetails",
+          component: _import_("student/StudentClassroomDetails"),
+          meta: {
+            title: "classroom",
+            Auth: true,
+            role: [3],
+          },
+        },
+        {
+          path: "/student/classroms",
+          name: "studentClassrooms",
+          component: _import_("student/ClassroomsStudent"),
+          meta: {
+            title: "classroom",
+            Auth: true,
+            role: [3],
           },
         },
       ],
     },
+
     {
-      path: "/forbidden",
-      component: () => import("@/errors/403.vue"),
-      name: "403",
-    },
-    {
-      path: "/(.*)",
+      path: "/notfound(.*)",
       component: () => import("@/errors/404.vue"),
       name: "404",
     },
@@ -161,21 +221,24 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.meta && to.meta.Auth) {
+    if (!userAuthStore().token) {
+      next("/login");
+      return;
+    }
+  }
   if (to.meta && to.meta.role) {
     if (!to.meta.role.includes(userAuthStore().role)) {
       next("/forbidden");
-    } else {
-      next();
     }
-  } else {
-    next();
   }
   if (to.meta && to.meta.noAuth) {
-    if (localStorage.getItem("token")) {
+    if (userAuthStore().token) {
       next("/");
       return;
     }
-  } else next();
+  }
+  next();
 });
 
 export default router;

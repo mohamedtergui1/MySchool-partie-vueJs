@@ -8,14 +8,16 @@ import {
     FwbTableCell,
     FwbTableHead,
     FwbTableHeadCell,
-    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbTextarea, FwbSelect, FwbAvatar
+    FwbTableRow, FwbModal, FwbButton, FwbInput, FwbTextarea, FwbSelect, FwbAvatar, FwbBadge
 } from 'flowbite-vue'
 import { storeToRefs } from "pinia";
-import { examStore } from '@/stores/examStore.js'
+import { resultStore } from '@/stores/teacher/resultStore.js'
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 
-
-const { exams, isShowModal, idDeleteexam, exam, isShowModalDelete, loader, mangeNoteModal, studentWithResult } = storeToRefs(examStore());
+const { exams, isShowModal, idDeleteexam, exam, isShowModalDelete, loader, mangeNoteModal, studentWithResult } = storeToRefs(resultStore());
 
 const baseUrlfroPic = ref(import.meta.env.VITE_API_URL + '/uploads/students/')
 
@@ -46,7 +48,7 @@ const handleCorrectButtonClick = (index) => {
         exam.value[key] = tmp[key];
     }
     mangeNoteModal.value = true
-    examStore().getStudentWithResult();
+    resultStore().getStudentWithResult();
 
 }
 
@@ -54,19 +56,25 @@ const handleCorrectButtonClick = (index) => {
 function closeModal() {
     isShowModal.value = false
 }
+
 function showModal() {
-    let p = examStore().intialValues
+    exam.value = {
+        id: null,
+        title: "",
+        date: "",
+        classroom_id: router.currentRoute.value.params.id
 
+    }; 
 
-    for (const key of Object.keys(exam.value)) {
-
-        exam.value[key] = p[key];
-    }
-    isShowModal.value = true
+     
+    isShowModal.value = true;
 }
+
 onMounted(() => {
-    examStore().getexams();
-    examStore().getClassroomsForexam();
+    const id = router.currentRoute.value.params.id;
+    
+    resultStore().getexams(id);
+
 })
 
 </script>
@@ -81,18 +89,18 @@ onMounted(() => {
         </fwb-button>
     </div>
 
-    <div v-if="exams.length == 0">
-        <img class="w-full" src="https://th.bing.com/th/id/OIP.pwWwXIMGatkmJKMZ0gE2SgHaDt?rs=1&pid=ImgDetMain" />
-    </div>
 
 
 
-    <fwb-table v-else >
+
+    <fwb-table>
         <fwb-table-head>
             <fwb-table-head-cell>title</fwb-table-head-cell>
             <fwb-table-head-cell>description</fwb-table-head-cell>
-            <fwb-table-head-cell>classroom name</fwb-table-head-cell>
-            <fwb-table-head-cell>classroom promo</fwb-table-head-cell>
+            <fwb-table-head-cell>corrected</fwb-table-head-cell>
+
+            <!-- <fwb-table-head-cell>classroom name</fwb-table-head-cell>
+            <fwb-table-head-cell>classroom promo</fwb-table-head-cell> -->
 
             <fwb-table-head-cell>
                 <span class="sr-only">Edit</span>
@@ -106,14 +114,17 @@ onMounted(() => {
                 <fwb-table-cell>
                     {{ l.date }}
                 </fwb-table-cell>
-                <fwb-table-cell>{{ l.classroom.name }} </fwb-table-cell>
-                <fwb-table-cell>{{ l.classroom.promo.year }} </fwb-table-cell>
+                <fwb-table-cell v-if="l.corrected"> <fwb-badge type="green">yes</fwb-badge>
+                </fwb-table-cell>
+                <fwb-table-cell v-else><fwb-badge type="red">no</fwb-badge></fwb-table-cell>
 
-
-
+                <!-- <fwb-table-cell>{{ l.classroom.name }} </fwb-table-cell>
+                <fwb-table-cell>{{ l.classroom.promo.year }} </fwb-table-cell> -->
 
                 <fwb-table-cell class=" flex  justify-end gap-2">
-                    <FwbButton @click="handleCorrectButtonClick(index)" color="green">correct</FwbButton>
+                    <FwbButton v-if="l.corrected" color="green">upload file</FwbButton>
+                    <FwbButton @click="handleCorrectButtonClick(index)" color="green">correct
+                    </FwbButton>
                     <FwbButton @click="handleDeleteButtonClick(l.id)" color="red">delete</FwbButton>
                     <FwbButton @click="handleEditButtonClick(l.id, index)">edit</FwbButton>
                 </fwb-table-cell>
@@ -146,7 +157,7 @@ onMounted(() => {
                 <fwb-button class="mr-2" @click="isShowModalDelete = !isShowModalDelete" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="examStore().deleteexam()" :disabled="loader" type="submit" :loading="loader"
+                <fwb-button @click="resultStore().deleteexam()" :disabled="loader" type="submit" :loading="loader"
                     color="red">
                     confirm
                 </fwb-button>
@@ -172,8 +183,7 @@ onMounted(() => {
                 <div class="w-full">
                     <fwb-input class="w-full" type="date" v-model="exam.date" placeholder="enter title" label="title" />
                 </div>
-                <fwb-select class="w-full" v-model="exam.classroom_id" :options="examStore().getterClassroomsForexam"
-                    label="Select a classroom" placeholder="select a classroom" />
+
 
                 <!-- <fwb-checkbox v-if="exam.TheCurrent"  v-model="exam.TheCurrent" label=" current exam" /> -->
 
@@ -185,7 +195,7 @@ onMounted(() => {
                 <fwb-button @click="closeModal" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="examStore().updateAndEdit()" :disabled="loader" :loading="loader" color="blue">
+                <fwb-button @click="resultStore().updateAndEdit()" :disabled="loader" :loading="loader" color="blue">
                     {{ exam.id ? 'update' : 'add' }}
                 </fwb-button>
             </div>
@@ -210,7 +220,6 @@ onMounted(() => {
                                 status-position="bottom-right" status="online" />
                         </span>
 
-
                         <div class="flex flex-col items-between ">
                             <span>{{ s.student.lastName + " " + s.student.firstName }}</span>
                             <span>{{ s.student.username }}</span>
@@ -218,6 +227,7 @@ onMounted(() => {
                         </div>
 
                     </div>
+
                     <div>
                         <fwb-input class="w-full" v-model="s.note" type="number" placeholder="enter note" />
                     </div>
@@ -230,7 +240,7 @@ onMounted(() => {
                 <fwb-button class="mr-2" @click="mangeNoteModal = !mangeNoteModal" color="alternative">
                     Decline
                 </fwb-button>
-                <fwb-button @click="examStore().updateExamNote()" :disabled="loader" type="submit" :loading="loader"
+                <fwb-button @click="resultStore().updateExamNote()" :disabled="loader" type="submit" :loading="loader"
                     color="blue">
                     confirm
                 </fwb-button>

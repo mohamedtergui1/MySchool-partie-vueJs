@@ -30,9 +30,7 @@ const isPasswordValid = computed(() => {
                     <div v-show="errors">
                         <fwb-alert closable icon="danger" type="danger">
                             <div class="flex flex-col gap-2">
-                                <li v-for="(error, index) in errors" :key="index">
-                                    {{ error.isArray ? error[0] : error }}
-                                </li>
+                                {{ errors }}
                             </div>
 
 

@@ -1,3 +1,23 @@
+<script setup>
+import { useRoute } from 'vue-router';
+import { computed, onMounted } from "vue"
+import { FwbButton } from 'flowbite-vue'
+import { storeToRefs } from "pinia"
+import { userAuthStore } from "@/stores/userAuthStore.js"
+
+const { token, userCredential, loading } = storeToRefs(userAuthStore());
+
+const isPasswordValid = computed(() => {
+
+    return userCredential.value.password.length >= 5;
+});
+onMounted(() => {
+    token.value = useRoute().query.token
+    userCredential.value.email = useRoute().query.email
+
+});
+
+</script>
 <template>
     <div class="min-h-screen bg-gray-100 flex items-center justify-center">
         <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-md w-full">
@@ -19,25 +39,3 @@
         </div>
     </div>
 </template>
-
-<script setup>
-import { useRoute } from 'vue-router';
-import { computed , onMounted } from "vue"
-import { FwbButton } from 'flowbite-vue'
-import { storeToRefs } from "pinia"
-import { userAuthStore } from "@/stores/userAuthStore.js"
-
-const { token, userCredential,  loading } = storeToRefs(userAuthStore());
-
-const isPasswordValid = computed(() => {
-
-    return userCredential.value.password.length >= 5;
-});
-onMounted(() => {
-    token.value = useRoute().query.token
-    userCredential.value.email = useRoute().query.email
-
-});
-
-</script>   
-

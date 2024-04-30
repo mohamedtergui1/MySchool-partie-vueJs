@@ -2,11 +2,10 @@ import { defineStore } from "pinia";
 import instance from "@/axios-config.js";
 // import router from "@/router";
 
- 
-
 export const studentStore = defineStore("studentStore", {
   id: "studentStore",
   state: () => ({
+    
     student: {
       id: null,
       username: "",
@@ -17,7 +16,7 @@ export const studentStore = defineStore("studentStore", {
       grade_id: "",
       address: "",
       number_phone: "",
-      date_d_inscription: "",
+      date_of_birth: "",
       image: "",
     },
     students: {},
@@ -26,7 +25,8 @@ export const studentStore = defineStore("studentStore", {
     isShowModalDelete: false,
     loader: false,
     isShowModal: false,
-    ModalChangeImage: false,
+    ModalChangeImage: false
+   
   }),
   getters: {
     getstudentById: function (state) {
@@ -40,12 +40,12 @@ export const studentStore = defineStore("studentStore", {
         username: "",
         email: "",
         firstName: "",
+        genre: "",
         lastName: "",
         grade_id: "",
         address: "",
-        genre: "",
         number_phone: "",
-        date_d_inscription: "",
+        date_of_birth: "",
         image: "",
       };
     },
@@ -85,7 +85,6 @@ export const studentStore = defineStore("studentStore", {
 
         this.idDeletestudent = null;
         this.isShowModalDelete = false;
-        
       } catch (err) {
         console.log(err);
       } finally {
@@ -104,7 +103,7 @@ export const studentStore = defineStore("studentStore", {
           console.log(response);
           this.students = this.students.map((t) => {
             if (t.id !== this.student.id) return t;
-            else return response.data;
+            else return response;
           });
 
           this.student = {
@@ -117,13 +116,11 @@ export const studentStore = defineStore("studentStore", {
             grade_id: "",
             address: "",
             number_phone: "",
-            date_d_inscription: "",
+            date_of_birth: "",
             image: "",
           };
 
           this.isShowModal = false;
-
-      
         } catch (err) {
           console.log(err);
         } finally {
@@ -150,12 +147,11 @@ export const studentStore = defineStore("studentStore", {
             grade_id: "",
             address: "",
             number_phone: "",
-            date_d_inscription: "",
+            date_of_birth: "",
             image: "",
           };
 
           this.isShowModal = false;
-          
         } catch (err) {
           console.log(err);
         } finally {
@@ -192,17 +188,25 @@ export const studentStore = defineStore("studentStore", {
           grade_id: "",
           address: "",
           number_phone: "",
-          date_d_inscription: "",
+          date_of_birth: "",
           image: "",
         };
 
         this.ModalChangeImage = false;
-        
       } catch (err) {
         console.log(err);
       } finally {
         this.loader = false;
       }
     },
+    async search(data) {
+         try {
+           const response = await instance.get("/students/search?name=" + data.name + "&grade=" + data.grade +"&genre=" + data.genre);
+           this.allResponse = response;
+           this.students = this.allResponse.data;
+         } catch (err) {
+           console.log(err);
+         }
+    }
   },
 });

@@ -10,10 +10,12 @@ export const userAuthStore = defineStore("userAuthStore", {
       password: "",
     },
     user: JSON.parse(localStorage.getItem("user")) || null,
-    role: parseInt(localStorage.getItem("role")) || null ,
+    role: parseInt(localStorage.getItem("role")) || null,
     token: localStorage.getItem("token") || null,
     loading: false,
     errors: null,
+    isShowModal: false,
+    modaImageChange: false,
   }),
 
   actions: {
@@ -33,21 +35,9 @@ export const userAuthStore = defineStore("userAuthStore", {
         await localStorage.setItem("role", role);
         await localStorage.setItem("user", JSON.stringify(response.user));
         this.errors = null;
-
-        switch (this.role) {
-          case 1:
-            router.push("/dashboard");
-            break;
-          case 2:
-            router.push("/teacher");
-            break;
-          case 3:
-            router.push("/student");
-            break;
-          default:
-            router.push("/");
-        }
+        router.push("/profile");
       } catch (error) {
+        this.errors = "whrong email or password"
         console.log(error);
       } finally {
         this.loading = false;
@@ -108,7 +98,39 @@ export const userAuthStore = defineStore("userAuthStore", {
 
         router.push("/login");
       } catch (error) {
-        console.error(error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async update() {
+      this.loading = true;
+      try {
+        const response = await instance.put("/updateProfile", this.user);
+        this.user = response;
+        this.isShowModal = false
+        localStorage.setItem("user", JSON.stringify(this.user));
+      } catch (error) {
+      } finally {
+        this.loading = false;
+      }
+    },
+    async changeImage(data) {
+      this.loading = true;
+      try {
+        let form = new FormData();
+        form.append("image", data);
+        const response = await instance.post("/updateProfileImage", form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(response);
+        if (response.id) {
+          this.user = response;
+          localStorage.setItem("user", JSON.stringify(this.user));
+        }
+        this.modaImageChange =  false;
+      } catch (error) {
       } finally {
         this.loading = false;
       }
